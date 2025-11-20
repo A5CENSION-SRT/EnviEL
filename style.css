@@ -20,15 +20,72 @@ body {
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    background: linear-gradient(135deg, #1a4d2e 0%, #2d5f3f 50%, #0f3a1f 100%);
     color: white;
     padding: 100px 20px;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+    min-height: 600px;
 }
 
+/* Animated Background Pattern - Trees and Animals */
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    background-image: 
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.15"><text x="10" y="50" font-size="40">🦌</text></svg>'),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.15"><text x="10" y="50" font-size="35">🌲</text></svg>'),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.15"><text x="10" y="50" font-size="30">🦊</text></svg>'),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.15"><text x="10" y="50" font-size="38">🌳</text></svg>');
+    background-size: 200px 200px, 150px 150px, 180px 180px, 160px 160px;
+    background-position: 0 0, 400px 100px, 800px 50px, 1200px 80px;
+    animation: moveBackground 60s linear infinite;
+    z-index: 0;
+}
+
+/* Second Layer of Animation - More Animals */
+.hero::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    background-image: 
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.12"><text x="10" y="50" font-size="32">🐘</text></svg>'),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.12"><text x="10" y="50" font-size="28">🦁</text></svg>'),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.12"><text x="10" y="50" font-size="36">🌲</text></svg>');
+    background-size: 220px 220px, 190px 190px, 170px 170px;
+    background-position: 600px 120px, 1000px 40px, 200px 90px;
+    animation: moveBackground 80s linear infinite;
+    z-index: 0;
+}
+
+/* Animation Keyframes */
+@keyframes moveBackground {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Make sure content appears above animated background */
+.hero .container {
+    position: relative;
+    z-index: 1;
+}
+
+/* Alert Badge */
 .alert-badge {
     display: inline-block;
-    background-color: #ff4444;
+    background-color: #dc3545;
     color: white;
     padding: 8px 20px;
     border-radius: 25px;
@@ -36,13 +93,21 @@ body {
     font-size: 14px;
     margin-bottom: 20px;
     animation: pulse 2s infinite;
+    border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
+    0%, 100% { 
+        opacity: 1; 
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
 }
 
+/* Main Title */
 .main-title {
     font-size: 48px;
     font-weight: 700;
@@ -50,12 +115,14 @@ body {
     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
+/* Subtitle */
 .subtitle {
     font-size: 24px;
     margin-bottom: 20px;
     font-weight: 300;
 }
 
+/* Hero Description */
 .hero-description {
     font-size: 18px;
     max-width: 800px;
@@ -86,29 +153,32 @@ body {
     background-color: #28a745;
     color: white;
     border: 2px solid #28a745;
+    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
 }
 
 .btn-primary:hover {
     background-color: #218838;
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.5);
 }
 
 .btn-secondary {
-    background-color: transparent;
+    background-color: rgba(255, 255, 255, 0.2);
     color: white;
     border: 2px solid white;
+    backdrop-filter: blur(10px);
 }
 
 .btn-secondary:hover {
     background-color: white;
-    color: #1e3c72;
+    color: #1a4d2e;
     transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 255, 255, 0.4);
 }
 
 /* Description Section */
 .description {
-    background-color: white;
+    background: linear-gradient(180deg, #d4edda 0%, #c3e6cb 100%);
     padding: 80px 20px;
 }
 
@@ -116,14 +186,14 @@ body {
     text-align: center;
     font-size: 36px;
     margin-bottom: 30px;
-    color: #1e3c72;
+    color: #1a4d2e;
 }
 
 .description p {
     font-size: 18px;
     line-height: 1.8;
     margin-bottom: 20px;
-    color: #555;
+    color: #2d5f3f;
     max-width: 900px;
     margin-left: auto;
     margin-right: auto;
@@ -131,7 +201,7 @@ body {
 
 /* Features Section */
 .features {
-    background-color: #f9f9f9;
+    background: linear-gradient(180deg, #b8dac0 0%, #a8cfb3 100%);
     padding: 80px 20px;
 }
 
@@ -139,7 +209,7 @@ body {
     text-align: center;
     font-size: 36px;
     margin-bottom: 50px;
-    color: #1e3c72;
+    color: #1a4d2e;
 }
 
 .features-grid {
@@ -151,16 +221,18 @@ body {
 }
 
 .feature-card {
-    background: white;
+    background: rgba(255, 255, 255, 0.95);
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(26, 77, 46, 0.15);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 2px solid rgba(26, 77, 46, 0.1);
 }
 
 .feature-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    box-shadow: 0 10px 25px rgba(26, 77, 46, 0.25);
+    border-color: #2d5f3f;
 }
 
 .feature-icon {
@@ -171,7 +243,7 @@ body {
 .feature-card h3 {
     font-size: 22px;
     margin-bottom: 15px;
-    color: #1e3c72;
+    color: #1a4d2e;
 }
 
 .feature-card ul {
@@ -215,7 +287,7 @@ body {
 
 /* Footer */
 footer {
-    background-color: #1e3c72;
+    background-color: #1a4d2e;
     color: white;
     text-align: center;
     padding: 30px 20px;
@@ -254,3 +326,4 @@ footer p {
         max-width: 300px;
     }
 }
+

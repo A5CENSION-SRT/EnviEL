@@ -1,3 +1,6 @@
+/* Import Beautiful Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@300;400;600;700&family=Merriweather:wght@300;400;700&display=swap');
+
 /* Reset and Base Styles */
 * {
     margin: 0;
@@ -6,7 +9,7 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     color: #333;
     background-color: #f4f4f4;
@@ -20,32 +23,34 @@ body {
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(135deg, #1a4d2e 0%, #2d5f3f 50%, #0f3a1f 100%);
+    background: linear-gradient(135deg, #0d3b1f 0%, #1a5530 30%, #0f4423 70%, #082d18 100%);
     color: white;
     padding: 100px 20px;
     text-align: center;
     position: relative;
     overflow: hidden;
-    min-height: 600px;
+    min-height: 650px;
 }
 
-/* Animated Background Pattern - Trees and Animals */
+/* Animated Background Pattern - Trees Layer 1 */
 .hero::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
-    width: 200%;
+    width: 300%;
     height: 100%;
     background-image: 
-        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.15"><text x="10" y="50" font-size="40">🦌</text></svg>'),
-        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.15"><text x="10" y="50" font-size="35">🌲</text></svg>'),
-        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.15"><text x="10" y="50" font-size="30">🦊</text></svg>'),
-        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.15"><text x="10" y="50" font-size="38">🌳</text></svg>');
-    background-size: 200px 200px, 150px 150px, 180px 180px, 160px 160px;
-    background-position: 0 0, 400px 100px, 800px 50px, 1200px 80px;
-    animation: moveBackground 60s linear infinite;
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.2"><text x="10" y="50" font-size="45">🦌</text></svg>'),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.18"><text x="10" y="50" font-size="50">🌲</text></svg>'),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.16"><text x="10" y="50" font-size="42">🦊</text></svg>'),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.19"><text x="10" y="50" font-size="48">🌳</text></svg>'),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.15"><text x="10" y="50" font-size="38">🐺</text></svg>');
+    background-size: 250px 250px, 180px 180px, 220px 220px, 200px 200px, 240px 240px;
+    background-position: 0 20px, 500px 80px, 900px 40px, 1300px 60px, 1700px 30px;
+    animation: moveBackgroundSlow 90s linear infinite;
     z-index: 0;
+    filter: blur(0.5px);
 }
 
 /* Second Layer of Animation - More Animals */
@@ -54,25 +59,28 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 200%;
+    width: 300%;
     height: 100%;
     background-image: 
-        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.12"><text x="10" y="50" font-size="32">🐘</text></svg>'),
-        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.12"><text x="10" y="50" font-size="28">🦁</text></svg>'),
-        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.12"><text x="10" y="50" font-size="36">🌲</text></svg>');
-    background-size: 220px 220px, 190px 190px, 170px 170px;
-    background-position: 600px 120px, 1000px 40px, 200px 90px;
-    animation: moveBackground 80s linear infinite;
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.14"><text x="10" y="50" font-size="40">🐘</text></svg>'),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.13"><text x="10" y="50" font-size="35">🦁</text></svg>'),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.17"><text x="10" y="50" font-size="52">🌲</text></svg>'),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.12"><text x="10" y="50" font-size="36">🦉</text></svg>'),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.15"><text x="10" y="50" font-size="44">🐻</text></svg>');
+    background-size: 270px 270px, 210px 210px, 190px 190px, 230px 230px, 260px 260px;
+    background-position: 700px 100px, 1100px 30px, 300px 70px, 1500px 50px, 100px 90px;
+    animation: moveBackgroundSlow 120s linear infinite;
     z-index: 0;
+    filter: blur(0.8px);
 }
 
-/* Animation Keyframes */
-@keyframes moveBackground {
+/* Slower, More Realistic Animation */
+@keyframes moveBackgroundSlow {
     0% {
         transform: translateX(0);
     }
     100% {
-        transform: translateX(-50%);
+        transform: translateX(-33.33%);
     }
 }
 
@@ -82,168 +90,252 @@ body {
     z-index: 1;
 }
 
-/* Alert Badge */
+/* Alert Badge with Enhanced Animation */
 .alert-badge {
     display: inline-block;
-    background-color: #dc3545;
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
     color: white;
-    padding: 8px 20px;
-    border-radius: 25px;
-    font-weight: bold;
-    font-size: 14px;
-    margin-bottom: 20px;
-    animation: pulse 2s infinite;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 10px 24px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    margin-bottom: 25px;
+    animation: pulseGlow 2.5s ease-in-out infinite;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+    text-transform: uppercase;
 }
 
-@keyframes pulse {
+@keyframes pulseGlow {
     0%, 100% { 
         opacity: 1; 
         transform: scale(1);
+        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
     }
     50% { 
-        opacity: 0.8;
+        opacity: 0.85;
         transform: scale(1.05);
+        box-shadow: 0 6px 25px rgba(220, 53, 69, 0.7);
     }
 }
 
-/* Main Title */
+/* Main Title with Fade-In and Subtle Float Animation */
 .main-title {
-    font-size: 48px;
-    font-weight: 700;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    font-weight: 900;
+    margin-bottom: 15px;
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5), 0 0 20px rgba(26, 167, 69, 0.3);
+    letter-spacing: 2px;
+    animation: fadeInDown 1.2s ease-out, gentleFloat 4s ease-in-out infinite;
+    background: linear-gradient(to right, #ffffff, #e8f5e9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-/* Subtitle */
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes gentleFloat {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+/* Subtitle with Slide-In Animation */
 .subtitle {
-    font-size: 24px;
-    margin-bottom: 20px;
-    font-weight: 300;
+    font-family: 'Merriweather', serif;
+    font-size: 26px;
+    margin-bottom: 25px;
+    font-weight: 400;
+    animation: fadeInUp 1.4s ease-out 0.3s backwards;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+    letter-spacing: 1px;
 }
 
-/* Hero Description */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hero Description with Enhanced Typography */
 .hero-description {
-    font-size: 18px;
-    max-width: 800px;
-    margin: 0 auto 40px;
-    line-height: 1.8;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 19px;
+    font-weight: 300;
+    max-width: 850px;
+    margin: 0 auto 45px;
+    line-height: 1.9;
+    animation: fadeIn 1.6s ease-out 0.6s backwards;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Buttons */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Buttons with Enhanced Hover Effects */
 .cta-buttons {
     display: flex;
     gap: 20px;
     justify-content: center;
     flex-wrap: wrap;
+    animation: fadeIn 1.8s ease-out 0.9s backwards;
 }
 
 .btn {
     display: inline-block;
-    padding: 15px 35px;
+    padding: 16px 40px;
     text-decoration: none;
-    border-radius: 30px;
+    border-radius: 35px;
     font-size: 16px;
-    font-weight: 600;
-    transition: all 0.3s ease;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 0.5px;
+    transition: all 0.4s ease;
     cursor: pointer;
+    text-transform: uppercase;
+    font-size: 14px;
 }
 
 .btn-primary {
-    background-color: #28a745;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
     color: white;
-    border: 2px solid #28a745;
-    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+    border: 2px solid transparent;
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
 }
 
 .btn-primary:hover {
-    background-color: #218838;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.5);
+    background: linear-gradient(135deg, #218838 0%, #1a9d7a 100%);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 30px rgba(40, 167, 69, 0.6);
 }
 
 .btn-secondary {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.15);
     color: white;
-    border: 2px solid white;
+    border: 2px solid rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(10px);
 }
 
 .btn-secondary:hover {
     background-color: white;
-    color: #1a4d2e;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(255, 255, 255, 0.4);
+    color: #0d3b1f;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.5);
 }
 
 /* Description Section */
 .description {
-    background: linear-gradient(180deg, #d4edda 0%, #c3e6cb 100%);
-    padding: 80px 20px;
+    background: linear-gradient(180deg, #c8e6c9 0%, #a5d6a7 100%);
+    padding: 90px 20px;
 }
 
 .description h2 {
+    font-family: 'Playfair Display', serif;
     text-align: center;
-    font-size: 36px;
-    margin-bottom: 30px;
-    color: #1a4d2e;
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 35px;
+    color: #0d3b1f;
+    text-shadow: 2px 2px 4px rgba(13, 59, 31, 0.1);
 }
 
 .description p {
+    font-family: 'Merriweather', serif;
     font-size: 18px;
-    line-height: 1.8;
-    margin-bottom: 20px;
-    color: #2d5f3f;
-    max-width: 900px;
+    line-height: 1.9;
+    margin-bottom: 22px;
+    color: #1a5530;
+    max-width: 950px;
     margin-left: auto;
     margin-right: auto;
 }
 
 /* Features Section */
 .features {
-    background: linear-gradient(180deg, #b8dac0 0%, #a8cfb3 100%);
-    padding: 80px 20px;
+    background: linear-gradient(180deg, #81c784 0%, #66bb6a 100%);
+    padding: 90px 20px;
 }
 
 .features h2 {
+    font-family: 'Playfair Display', serif;
     text-align: center;
-    font-size: 36px;
-    margin-bottom: 50px;
-    color: #1a4d2e;
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 60px;
+    color: #0d3b1f;
+    text-shadow: 2px 2px 4px rgba(13, 59, 31, 0.1);
 }
 
 .features-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 35px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
 .feature-card {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(26, 77, 46, 0.15);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 2px solid rgba(26, 77, 46, 0.1);
+    background: rgba(255, 255, 255, 0.97);
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(13, 59, 31, 0.2);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    border: 2px solid rgba(13, 59, 31, 0.15);
 }
 
 .feature-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(26, 77, 46, 0.25);
-    border-color: #2d5f3f;
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(13, 59, 31, 0.35);
+    border-color: #1a5530;
 }
 
 .feature-icon {
-    font-size: 48px;
-    margin-bottom: 15px;
+    font-size: 52px;
+    margin-bottom: 18px;
+    animation: iconBounce 2s ease-in-out infinite;
+}
+
+@keyframes iconBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
 }
 
 .feature-card h3 {
-    font-size: 22px;
-    margin-bottom: 15px;
-    color: #1a4d2e;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 23px;
+    font-weight: 700;
+    margin-bottom: 18px;
+    color: #0d3b1f;
 }
 
 .feature-card ul {
@@ -252,11 +344,13 @@ body {
 }
 
 .feature-card li {
-    padding: 8px 0;
-    padding-left: 25px;
+    font-family: 'Montserrat', sans-serif;
+    padding: 10px 0;
+    padding-left: 28px;
     position: relative;
-    color: #555;
-    line-height: 1.6;
+    color: #2d5f3f;
+    line-height: 1.7;
+    font-size: 15px;
 }
 
 .feature-card li:before {
@@ -265,51 +359,59 @@ body {
     left: 0;
     color: #28a745;
     font-weight: bold;
+    font-size: 18px;
 }
 
 /* Call to Action Section */
 .cta-section {
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    background: linear-gradient(135deg, #2e7d32 0%, #43a047 50%, #388e3c 100%);
     color: white;
-    padding: 80px 20px;
+    padding: 90px 20px;
     text-align: center;
 }
 
 .cta-section h2 {
-    font-size: 36px;
-    margin-bottom: 20px;
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .cta-section p {
-    font-size: 18px;
-    margin-bottom: 15px;
+    font-family: 'Merriweather', serif;
+    font-size: 19px;
+    margin-bottom: 18px;
+    font-weight: 300;
 }
 
 /* Footer */
 footer {
-    background-color: #1a4d2e;
+    background-color: #0d3b1f;
     color: white;
     text-align: center;
-    padding: 30px 20px;
+    padding: 35px 20px;
 }
 
 footer p {
-    margin: 5px 0;
+    font-family: 'Montserrat', sans-serif;
+    margin: 6px 0;
     font-size: 14px;
+    font-weight: 300;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .main-title {
-        font-size: 32px;
+        font-size: 36px;
     }
     
     .subtitle {
-        font-size: 18px;
+        font-size: 20px;
     }
     
     .hero-description {
-        font-size: 16px;
+        font-size: 17px;
     }
     
     .features-grid {
@@ -323,7 +425,18 @@ footer p {
     
     .btn {
         width: 100%;
-        max-width: 300px;
+        max-width: 320px;
     }
+    
+    .description h2,
+    .features h2,
+    .cta-section h2 {
+        font-size: 32px;
+    }
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
 }
 

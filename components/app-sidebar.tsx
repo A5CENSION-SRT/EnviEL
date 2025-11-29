@@ -15,7 +15,9 @@ import {
   ShieldCheck,
   LayoutDashboard,
   AlertTriangle,
-  LogOut
+  LogOut,
+  BarChart3,
+  Radio
 } from "lucide-react"
 
 import {
@@ -50,11 +52,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenuButton size="lg" asChild>
               <Link href="/dashboard">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-tech-green text-forest-900">
-                  <ShieldCheck className="size-4" />
+                  <Radio className="size-4" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">EcoGuard</span>
-                  <span className="truncate text-xs">Enterprise</span>
+                  <span className="truncate font-semibold">SentinelSound</span>
+                  <span className="truncate text-xs">Poaching Detection</span>
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -63,7 +65,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Platform</SidebarGroupLabel>
+          <SidebarGroupLabel>Monitoring</SidebarGroupLabel>
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Dashboard">
@@ -77,23 +79,36 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <SidebarMenuButton asChild tooltip="Live Map">
                 <Link href="/dashboard/map">
                   <Map />
-                  <span>Live Map</span>
+                  <span>Sensor Map</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Alerts">
+              <SidebarMenuButton asChild tooltip="Events">
                 <Link href="/dashboard/alerts">
                   <AlertTriangle />
-                  <span>Alerts</span>
+                  <span>Events Log</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild tooltip="Analytics">
+                <Link href="/dashboard/analytics">
+                  <BarChart3 />
+                  <span>Analytics</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>AI Tools</SidebarGroupLabel>
+          <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="AI Assistant">
                 <Link href="/dashboard/ai-assistant">
                   <Bot />
-                  <span>AI Assistant</span>
+                  <span>Voice Assistant</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

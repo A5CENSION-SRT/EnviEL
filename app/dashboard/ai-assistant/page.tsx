@@ -14,6 +14,7 @@ interface Message {
   role: 'user' | 'ai'
   content: string
   commandExecuted?: boolean
+  commandResult?: any
   timestamp: Date
 }
 
@@ -151,6 +152,7 @@ export default function AIAssistantPage() {
         role: 'ai',
         content: data.reply,
         commandExecuted: data.command_executed,
+        commandResult: data.command_result,
         timestamp: new Date()
       }
 
@@ -378,8 +380,16 @@ export default function AIAssistantPage() {
                     >
                       {message.content}
                     </div>
+                    {message.commandResult && (
+                      <div className="rounded-lg border border-border bg-background/50 p-3 text-xs max-w-full overflow-x-auto">
+                        <div className="font-semibold text-muted-foreground mb-1">Command Result:</div>
+                        <pre className="text-foreground/80 whitespace-pre-wrap">
+                          {JSON.stringify(message.commandResult, null, 2)}
+                        </pre>
+                      </div>
+                    )}
                     <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <span>{formatTime(message.timestamp)}</span>
+                      <span suppressHydrationWarning>{formatTime(message.timestamp)}</span>
                       {message.commandExecuted && (
                         <span className="flex items-center gap-1 text-green-600">
                           <CheckCircle className="h-3 w-3" />

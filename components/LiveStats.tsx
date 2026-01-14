@@ -18,7 +18,7 @@ export default function LiveStats() {
         }
 
         const { count, error } = await supabase
-          .from('alerts')
+          .from('poaching_events')
           .select('*', { count: 'exact', head: true });
 
         if (error) throw error;
@@ -34,6 +34,18 @@ export default function LiveStats() {
     }
 
     fetchStats();
+    
+    // Subscribe to real-time updates
+    const channel = supabase
+      .channel('live-stats')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'poaching_events' }, () => {
+        fetchStats();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   return (

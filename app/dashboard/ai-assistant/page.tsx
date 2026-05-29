@@ -35,11 +35,14 @@ export default function AIAssistantPage() {
   const [continuousMode, setContinuousMode] = useState(false)
   const [voiceActivity, setVoiceActivity] = useState(false)
   
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null)
-  const audioChunksRef = useRef<Blob[]>([])
-  const scrollAreaRef = useRef<HTMLDivElement>(null)
-  const speechSynthRef = useRef<SpeechSynthesisUtterance | null>(null)
-  const streamRef = useRef<MediaStream | null>(null)
+  const mediaRecorderRef  = useRef<MediaRecorder | null>(null)
+  const audioChunksRef    = useRef<Blob[]>([])
+  const scrollAreaRef     = useRef<HTMLDivElement>(null)
+  const speechSynthRef    = useRef<SpeechSynthesisUtterance | null>(null)
+  const streamRef         = useRef<MediaStream | null>(null)
+  // Ref mirror of isListening — safe to read inside requestAnimationFrame callbacks
+  // where the state closure would be stale.
+  const isListeningRef    = useRef(false)
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
@@ -203,7 +206,7 @@ export default function AIAssistantPage() {
       const dataArray = new Uint8Array(analyser.frequencyBinCount)
       
       const checkVoice = () => {
-        if (!isListening) return
+        if (!isListeningRef.current) return   // ref is always current, no stale closure
         analyser.getByteFrequencyData(dataArray)
         const average = dataArray.reduce((a, b) => a + b) / dataArray.length
         setVoiceActivity(average > 30)
@@ -229,6 +232,7 @@ export default function AIAssistantPage() {
       }
 
       mediaRecorder.start()
+      isListeningRef.current = true
       setIsListening(true)
     } catch (error) {
       console.error('Error starting recording:', error)
@@ -237,10 +241,11 @@ export default function AIAssistantPage() {
   }
 
   const stopRecording = () => {
-    if (mediaRecorderRef.current && isListening) {
-      mediaRecorderRef.current.stop()
+    if (mediaRecorderRef.current && isListeningRef.current) {
+      isListeningRef.current = false
       setIsListening(false)
       setVoiceActivity(false)
+      mediaRecorderRef.current.stop()
     }
   }
 

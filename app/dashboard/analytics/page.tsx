@@ -1,10 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { supabase } from "@/lib/supabase"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { 
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -16,45 +15,40 @@ import { Progress } from "@/components/ui/progress"
 import { BarChart3, PieChart, TrendingUp, Calendar, Target, AlertTriangle, CheckCircle, XCircle } from "lucide-react"
 
 interface PoachingEvent {
-  id: number
-  timestamp: string
-  event_type: string
-  confidence: number
+  id:                  number
+  timestamp:           string
+  event_type:          string
+  confidence:          number
   verification_status: string
-  severity: string
-  node_id: string
+  severity:            string
+  node_id:             string
 }
 
 interface SensorNode {
-  id: string
-  name: string
-  status: string
+  id:            string
+  name:          string
+  status:        string
   battery_level: number
-  last_seen: string
-  zone: string
+  last_seen:     string
+  zone:          string
 }
 
 interface AnalyticsData {
-  events: PoachingEvent[]
-  nodes: SensorNode[]
-  dailyCounts: Record<string, number>
-  eventTypeCounts: Record<string, number>
-  verificationStats: Record<string, number>
-  severityCounts: Record<string, number>
+  events:             PoachingEvent[]
+  nodes:              SensorNode[]
+  dailyCounts:        Record<string, number>
+  eventTypeCounts:    Record<string, number>
+  verificationStats:  Record<string, number>
+  severityCounts:     Record<string, number>
   nodeActivityCounts: Record<string, number>
 }
 
 export default function AnalyticsPage() {
   const [data, setData] = useState<AnalyticsData>({
-    events: [],
-    nodes: [],
-    dailyCounts: {},
-    eventTypeCounts: {},
-    verificationStats: {},
-    severityCounts: {},
-    nodeActivityCounts: {}
+    events: [], nodes: [], dailyCounts: {}, eventTypeCounts: {},
+    verificationStats: {}, severityCounts: {}, nodeActivityCounts: {},
   })
-  const [loading, setLoading] = useState(true)
+  const [loading,   setLoading]   = useState(true)
   const [timeRange, setTimeRange] = useState('7d')
 
   useEffect(() => {
@@ -63,96 +57,62 @@ export default function AnalyticsPage() {
 
   const fetchAnalyticsData = async () => {
     setLoading(true)
-    
-    // Calculate date range
-    const endDate = new Date()
-    const startDate = new Date()
-    switch (timeRange) {
-      case '24h': startDate.setDate(startDate.getDate() - 1); break
-      case '7d': startDate.setDate(startDate.getDate() - 7); break
-      case '30d': startDate.setDate(startDate.getDate() - 30); break
-      case '90d': startDate.setDate(startDate.getDate() - 90); break
-    }
+    try {
+      const res = await fetch(`/api/analytics?range=${timeRange}`)
+      const { events, nodes } = await res.json() as { events: PoachingEvent[]; nodes: SensorNode[] }
 
-    // Fetch events
-    const { data: events } = await supabase
-      .from('poaching_events')
-      .select('*')
-      .gte('timestamp', startDate.toISOString())
-      .lte('timestamp', endDate.toISOString())
-      .order('timestamp', { ascending: true })
-
-    // Fetch nodes
-    const { data: nodes } = await supabase
-      .from('sensor_nodes')
-      .select('*')
-
-    if (events && nodes) {
-      // Process daily counts
-      const dailyCounts: Record<string, number> = {}
-      const eventTypeCounts: Record<string, number> = {}
-      const verificationStats: Record<string, number> = {}
-      const severityCounts: Record<string, number> = {}
+      const dailyCounts:        Record<string, number> = {}
+      const eventTypeCounts:    Record<string, number> = {}
+      const verificationStats:  Record<string, number> = {}
+      const severityCounts:     Record<string, number> = {}
       const nodeActivityCounts: Record<string, number> = {}
 
-      events.forEach(event => {
-        // Daily counts
-        const day = new Date(event.timestamp).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
-        dailyCounts[day] = (dailyCounts[day] || 0) + 1
+      for (const event of events) {
+        const day = new Date(event.timestamp).toLocaleDateString('en-US', {
+          weekday: 'short', month: 'short', day: 'numeric',
+        })
+        dailyCounts[day]                              = (dailyCounts[day]                              || 0) + 1
+        eventTypeCounts[event.event_type]             = (eventTypeCounts[event.event_type]             || 0) + 1
+        verificationStats[event.verification_status]  = (verificationStats[event.verification_status]  || 0) + 1
+        severityCounts[event.severity]                = (severityCounts[event.severity]                || 0) + 1
+        nodeActivityCounts[event.node_id]             = (nodeActivityCounts[event.node_id]             || 0) + 1
+      }
 
-        // Event type counts
-        eventTypeCounts[event.event_type] = (eventTypeCounts[event.event_type] || 0) + 1
-
-        // Verification stats
-        verificationStats[event.verification_status] = (verificationStats[event.verification_status] || 0) + 1
-
-        // Severity counts
-        severityCounts[event.severity] = (severityCounts[event.severity] || 0) + 1
-
-        // Node activity
-        nodeActivityCounts[event.node_id] = (nodeActivityCounts[event.node_id] || 0) + 1
-      })
-
-      setData({
-        events,
-        nodes,
-        dailyCounts,
-        eventTypeCounts,
-        verificationStats,
-        severityCounts,
-        nodeActivityCounts
-      })
+      setData({ events, nodes, dailyCounts, eventTypeCounts, verificationStats, severityCounts, nodeActivityCounts })
+    } catch (err) {
+      console.error('Failed to fetch analytics:', err)
     }
     setLoading(false)
   }
 
   const getMaxValue = (obj: Record<string, number>) => Math.max(...Object.values(obj), 1)
 
-  const totalEvents = data.events.length
+  const totalEvents      = data.events.length
   const verifiedPoaching = data.verificationStats['verified_poaching'] || 0
-  const falsePositives = data.verificationStats['false_positive'] || 0
-  const pendingReview = data.verificationStats['pending'] || 0
+  const falsePositives   = data.verificationStats['false_positive']    || 0
+  const pendingReview    = data.verificationStats['pending']           || 0
   const falsePositiveRate = totalEvents > 0 ? ((falsePositives / totalEvents) * 100).toFixed(1) : '0'
-  const accuracyRate = totalEvents > 0 ? (((verifiedPoaching + falsePositives) / totalEvents) * 100).toFixed(1) : '0'
+  const accuracyRate      = totalEvents > 0
+    ? (((verifiedPoaching + falsePositives) / totalEvents) * 100).toFixed(1)
+    : '0'
   const onlineNodes = data.nodes.filter(n => n.status === 'online').length
-  const totalNodes = data.nodes.length
+  const totalNodes  = data.nodes.length
 
   const getEventIcon = (type: string) => {
     switch (type) {
-      case 'gunshot': return '🔫'
-      case 'chainsaw': return '🪚'
-      case 'vehicle': return '🚗'
-      case 'animal_distress': return '🦁'
-      case 'human_voice': return '🗣️'
-      case 'explosion': return '💥'
-      case 'trap_sound': return '🪤'
-      default: return '⚠️'
+      case 'gunshot':        return '🔫'
+      case 'chainsaw':       return '🪚'
+      case 'vehicle':        return '🚗'
+      case 'animal_distress':return '🦁'
+      case 'human_voice':    return '🗣️'
+      case 'explosion':      return '💥'
+      case 'trap_sound':     return '🪤'
+      default:               return '⚠️'
     }
   }
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">
@@ -181,7 +141,6 @@ export default function AnalyticsPage() {
         </div>
       ) : (
         <>
-          {/* Summary Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Card>
               <CardContent className="p-4">
@@ -239,7 +198,6 @@ export default function AnalyticsPage() {
               <TabsTrigger value="nodes">Node Performance</TabsTrigger>
             </TabsList>
 
-            {/* Daily Event Count Chart */}
             <TabsContent value="events">
               <Card>
                 <CardHeader>
@@ -255,7 +213,7 @@ export default function AnalyticsPage() {
                         <div key={day} className="flex items-center gap-3">
                           <span className="w-32 text-sm text-muted-foreground">{day}</span>
                           <div className="flex-1 h-8 bg-muted rounded-md overflow-hidden">
-                            <div 
+                            <div
                               className="h-full bg-primary transition-all duration-500"
                               style={{ width: `${(count / getMaxValue(data.dailyCounts)) * 100}%` }}
                             />
@@ -269,7 +227,6 @@ export default function AnalyticsPage() {
               </Card>
             </TabsContent>
 
-            {/* Event Types Distribution */}
             <TabsContent value="types">
               <div className="grid md:grid-cols-2 gap-4">
                 <Card>
@@ -291,9 +248,11 @@ export default function AnalyticsPage() {
                                   <span className="text-lg">{getEventIcon(type)}</span>
                                   <span className="capitalize text-sm">{type.replace('_', ' ')}</span>
                                 </span>
-                                <span className="font-mono text-sm">{count} ({Math.round((count / totalEvents) * 100)}%)</span>
+                                <span className="font-mono text-sm">
+                                  {count} ({totalEvents > 0 ? Math.round((count / totalEvents) * 100) : 0}%)
+                                </span>
                               </div>
-                              <Progress value={(count / totalEvents) * 100} className="h-2" />
+                              <Progress value={totalEvents > 0 ? (count / totalEvents) * 100 : 0} className="h-2" />
                             </div>
                           ))
                       )}
@@ -308,13 +267,13 @@ export default function AnalyticsPage() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {['critical', 'high', 'medium', 'low'].map(severity => {
+                      {(['critical','high','medium','low'] as const).map(severity => {
                         const count = data.severityCounts[severity] || 0
                         const colors: Record<string, string> = {
                           critical: 'bg-red-500',
-                          high: 'bg-orange-500',
-                          medium: 'bg-yellow-500',
-                          low: 'bg-green-500'
+                          high:     'bg-orange-500',
+                          medium:   'bg-yellow-500',
+                          low:      'bg-green-500',
                         }
                         return (
                           <div key={severity} className="space-y-2">
@@ -325,7 +284,7 @@ export default function AnalyticsPage() {
                               <span className="font-mono text-sm">{count} events</span>
                             </div>
                             <div className="h-3 bg-muted rounded-full overflow-hidden">
-                              <div 
+                              <div
                                 className={`h-full ${colors[severity]} transition-all duration-500`}
                                 style={{ width: `${totalEvents > 0 ? (count / totalEvents) * 100 : 0}%` }}
                               />
@@ -339,7 +298,6 @@ export default function AnalyticsPage() {
               </div>
             </TabsContent>
 
-            {/* Verification Statistics */}
             <TabsContent value="verification">
               <div className="grid md:grid-cols-2 gap-4">
                 <Card>
@@ -393,16 +351,16 @@ export default function AnalyticsPage() {
                       <div className="flex justify-between text-sm">
                         <span>True Positive Rate</span>
                         <span className="font-mono">
-                          {totalEvents > 0 && (verifiedPoaching + falsePositives) > 0 
-                            ? ((verifiedPoaching / (verifiedPoaching + falsePositives)) * 100).toFixed(1) 
+                          {(verifiedPoaching + falsePositives) > 0
+                            ? ((verifiedPoaching / (verifiedPoaching + falsePositives)) * 100).toFixed(1)
                             : '0'}%
                         </span>
                       </div>
-                      <Progress 
-                        value={totalEvents > 0 && (verifiedPoaching + falsePositives) > 0 
-                          ? (verifiedPoaching / (verifiedPoaching + falsePositives)) * 100 
-                          : 0} 
-                        className="h-3" 
+                      <Progress
+                        value={(verifiedPoaching + falsePositives) > 0
+                          ? (verifiedPoaching / (verifiedPoaching + falsePositives)) * 100
+                          : 0}
+                        className="h-3"
                       />
                     </div>
                     <div className="p-4 bg-muted rounded-lg">
@@ -415,7 +373,6 @@ export default function AnalyticsPage() {
               </div>
             </TabsContent>
 
-            {/* Node Performance */}
             <TabsContent value="nodes">
               <Card>
                 <CardHeader>
@@ -432,7 +389,7 @@ export default function AnalyticsPage() {
                             <div className="flex items-center gap-2 mb-1">
                               <span className="font-mono text-sm">{node.id}</span>
                               <Badge variant={
-                                node.status === 'online' ? 'default' :
+                                node.status === 'online'      ? 'default' :
                                 node.status === 'maintenance' ? 'secondary' : 'destructive'
                               }>
                                 {node.status}

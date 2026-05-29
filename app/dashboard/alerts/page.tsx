@@ -1,111 +1,74 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { supabase } from "@/lib/supabase"
+import { useState, useEffect, useCallback } from "react"
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+  Table, TableBody, TableCaption, TableCell,
+  TableHead, TableHeader, TableRow,
 } from "@/components/ui/table"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { Badge }  from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { 
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select"
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
+  Dialog, DialogContent, DialogDescription,
+  DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Play, CheckCircle, XCircle, Clock, AlertTriangle, Filter, Volume2, ExternalLink } from "lucide-react"
 
 interface PoachingEvent {
-  id: number
-  node_id: string
-  timestamp: string
-  event_type: string
-  confidence: number
-  audio_url: string
+  id:                  number
+  node_id:             string
+  timestamp:           string
+  event_type:          string
+  confidence:          number
+  audio_url?:          string
   verification_status: string
-  severity: string
-  notes: string
-  sensor_nodes?: {
-    name: string
-    zone: string
-    gps_lat: number
-    gps_lon: number
-  }
+  severity:            string
+  notes?:              string
+  node_name?:          string
+  node_zone?:          string
+  gps_lat?:            number
+  gps_lon?:            number
 }
 
 export default function AlertsPage() {
-  const [events, setEvents] = useState<PoachingEvent[]>([])
-  const [loading, setLoading] = useState(true)
+  const [events,        setEvents]        = useState<PoachingEvent[]>([])
+  const [loading,       setLoading]       = useState(true)
   const [selectedEvent, setSelectedEvent] = useState<PoachingEvent | null>(null)
-  const [filterStatus, setFilterStatus] = useState<string>('all')
-  const [filterType, setFilterType] = useState<string>('all')
-  const [dialogOpen, setDialogOpen] = useState(false)
+  const [filterStatus,  setFilterStatus]  = useState<string>('all')
+  const [filterType,    setFilterType]    = useState<string>('all')
+  const [dialogOpen,    setDialogOpen]    = useState(false)
+
+  const fetchEvents = useCallback(async () => {
+    const params = new URLSearchParams()
+    if (filterStatus !== 'all') params.set('status', filterStatus)
+    if (filterType   !== 'all') params.set('type',   filterType)
+
+    try {
+      const res  = await fetch(`/api/events?${params}`)
+      const data = await res.json() as PoachingEvent[]
+      setEvents(data)
+    } catch (err) {
+      console.error('Failed to fetch events:', err)
+    }
+    setLoading(false)
+  }, [filterStatus, filterType])
 
   useEffect(() => {
     fetchEvents()
-    
-    const channel = supabase
-      .channel('events-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'poaching_events' }, () => {
-        fetchEvents()
-      })
-      .subscribe()
-
-    return () => {
-      supabase.removeChannel(channel)
-    }
-  }, [filterStatus, filterType])
-
-  const fetchEvents = async () => {
-    let query = supabase
-      .from('poaching_events')
-      .select('*, sensor_nodes(name, zone, gps_lat, gps_lon)')
-      .order('timestamp', { ascending: false })
-    
-    if (filterStatus !== 'all') {
-      query = query.eq('verification_status', filterStatus)
-    }
-    if (filterType !== 'all') {
-      query = query.eq('event_type', filterType)
-    }
-    
-    const { data, error } = await query
-    
-    if (error) {
-      console.error('Error fetching events:', error)
-    } else {
-      setEvents(data || [])
-    }
-    setLoading(false)
-  }
+    const interval = setInterval(fetchEvents, 10000)
+    return () => clearInterval(interval)
+  }, [fetchEvents])
 
   const updateVerificationStatus = async (eventId: number, status: string) => {
-    const { error } = await supabase
-      .from('poaching_events')
-      .update({ 
-        verification_status: status,
-        verified_at: new Date().toISOString()
-      })
-      .eq('id', eventId)
-    
-    if (!error) {
+    const res = await fetch(`/api/events/${eventId}`, {
+      method:  'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ verification_status: status }),
+    })
+    if (res.ok) {
       setDialogOpen(false)
       fetchEvents()
     }
@@ -113,23 +76,23 @@ export default function AlertsPage() {
 
   const getEventIcon = (type: string) => {
     switch (type) {
-      case 'gunshot': return '🔫'
-      case 'chainsaw': return '🪚'
-      case 'vehicle': return '🚗'
-      case 'animal_distress': return '🦁'
-      case 'human_voice': return '🗣️'
-      case 'explosion': return '💥'
-      case 'trap_sound': return '🪤'
-      default: return '⚠️'
+      case 'gunshot':        return '🔫'
+      case 'chainsaw':       return '🪚'
+      case 'vehicle':        return '🚗'
+      case 'animal_distress':return '🦁'
+      case 'human_voice':    return '🗣️'
+      case 'explosion':      return '💥'
+      case 'trap_sound':     return '🪤'
+      default:               return '⚠️'
     }
   }
 
   const getSeverityBadge = (severity: string) => {
-    const variants: Record<string, "destructive" | "default" | "secondary" | "outline"> = {
+    const variants: Record<string, 'destructive' | 'default' | 'secondary' | 'outline'> = {
       critical: 'destructive',
-      high: 'default',
-      medium: 'secondary',
-      low: 'outline'
+      high:     'default',
+      medium:   'secondary',
+      low:      'outline',
     }
     return <Badge variant={variants[severity] || 'outline'}>{severity.toUpperCase()}</Badge>
   }
@@ -139,21 +102,20 @@ export default function AlertsPage() {
       case 'verified_poaching':
         return <Badge variant="destructive" className="gap-1"><CheckCircle className="h-3 w-3" />Verified</Badge>
       case 'false_positive':
-        return <Badge variant="outline" className="gap-1"><XCircle className="h-3 w-3" />False Positive</Badge>
+        return <Badge variant="outline"     className="gap-1"><XCircle className="h-3 w-3" />False Positive</Badge>
       case 'under_review':
-        return <Badge variant="secondary" className="gap-1"><Clock className="h-3 w-3" />Under Review</Badge>
+        return <Badge variant="secondary"   className="gap-1"><Clock className="h-3 w-3" />Under Review</Badge>
       default:
-        return <Badge variant="default" className="gap-1"><AlertTriangle className="h-3 w-3" />Pending</Badge>
+        return <Badge variant="default"     className="gap-1"><AlertTriangle className="h-3 w-3" />Pending</Badge>
     }
   }
-  
-  const pendingCount = events.filter(e => e.verification_status === 'pending').length
-  const verifiedCount = events.filter(e => e.verification_status === 'verified_poaching').length
+
+  const pendingCount      = events.filter(e => e.verification_status === 'pending').length
+  const verifiedCount     = events.filter(e => e.verification_status === 'verified_poaching').length
   const falsePositiveCount = events.filter(e => e.verification_status === 'false_positive').length
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-      {/* Stats Row */}
       <div className="grid grid-cols-4 gap-4">
         <Card className="bg-yellow-500/10 border-yellow-500/30">
           <CardContent className="p-4 flex items-center gap-3">
@@ -193,7 +155,6 @@ export default function AlertsPage() {
         </Card>
       </div>
 
-      {/* Filters */}
       <Card className="border-border shadow-sm">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
@@ -202,9 +163,7 @@ export default function AlertsPage() {
                 <AlertTriangle className="h-5 w-5" />
                 Poaching Events Log
               </CardTitle>
-              <CardDescription>
-                Review and verify acoustic detections from SentinelSound network
-              </CardDescription>
+              <CardDescription>Review and verify acoustic detections from SentinelSound network</CardDescription>
             </div>
             <div className="flex items-center gap-2">
               <Filter className="h-4 w-4 text-muted-foreground" />
@@ -239,7 +198,7 @@ export default function AlertsPage() {
         <CardContent>
           <div className="rounded-md border border-border">
             <Table>
-              <TableCaption>Acoustic detection events from ESP32 sensor network</TableCaption>
+              <TableCaption>Acoustic detection events from sensor network</TableCaption>
               <TableHeader>
                 <TableRow className="border-border hover:bg-muted/50">
                   <TableHead className="text-muted-foreground w-[80px]">ID</TableHead>
@@ -280,14 +239,14 @@ export default function AlertsPage() {
                       </TableCell>
                       <TableCell className="text-sm">
                         <div>
-                          <p className="font-medium">{event.sensor_nodes?.zone || 'Unknown'}</p>
+                          <p className="font-medium">{event.node_zone || 'Unknown'}</p>
                           <p className="text-xs text-muted-foreground">{event.node_id}</p>
                         </div>
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
                           <div className="w-16 h-2 bg-muted rounded-full overflow-hidden">
-                            <div 
+                            <div
                               className={`h-full ${
                                 event.confidence > 0.9 ? 'bg-red-500' :
                                 event.confidence > 0.7 ? 'bg-yellow-500' : 'bg-green-500'
@@ -307,13 +266,10 @@ export default function AlertsPage() {
                               <Play className="h-4 w-4" />
                             </Button>
                           )}
-                          <Button 
-                            variant="outline" 
+                          <Button
+                            variant="outline"
                             size="sm"
-                            onClick={() => {
-                              setSelectedEvent(event)
-                              setDialogOpen(true)
-                            }}
+                            onClick={() => { setSelectedEvent(event); setDialogOpen(true) }}
                           >
                             Review
                           </Button>
@@ -328,19 +284,18 @@ export default function AlertsPage() {
         </CardContent>
       </Card>
 
-      {/* Review Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <span className="text-2xl">{selectedEvent && getEventIcon(selectedEvent.event_type)}</span>
-              Event #{selectedEvent?.id} - {selectedEvent?.event_type.replace('_', ' ').toUpperCase()}
+              Event #{selectedEvent?.id} — {selectedEvent?.event_type.replace('_', ' ').toUpperCase()}
             </DialogTitle>
             <DialogDescription>
               Review the detection and verify the event classification
             </DialogDescription>
           </DialogHeader>
-          
+
           {selectedEvent && (
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
@@ -354,10 +309,11 @@ export default function AlertsPage() {
                 </div>
                 <div className="space-y-2">
                   <p className="text-sm text-muted-foreground">Location</p>
-                  <p className="font-medium">{selectedEvent.sensor_nodes?.zone}</p>
+                  <p className="font-medium">{selectedEvent.node_zone || 'Unknown'}</p>
                   <p className="text-xs text-muted-foreground">
-                    Node: {selectedEvent.node_id} | 
-                    GPS: {selectedEvent.sensor_nodes?.gps_lat}, {selectedEvent.sensor_nodes?.gps_lon}
+                    Node: {selectedEvent.node_id}
+                    {selectedEvent.gps_lat != null && selectedEvent.gps_lon != null &&
+                      ` | GPS: ${selectedEvent.gps_lat}, ${selectedEvent.gps_lon}`}
                   </p>
                 </div>
                 <div className="space-y-2">
@@ -385,21 +341,21 @@ export default function AlertsPage() {
           )}
 
           <DialogFooter className="gap-2 sm:gap-0">
-            <Button 
+            <Button
               variant="outline"
               onClick={() => selectedEvent && updateVerificationStatus(selectedEvent.id, 'false_positive')}
             >
               <XCircle className="h-4 w-4 mr-2" />
               False Positive
             </Button>
-            <Button 
+            <Button
               variant="secondary"
               onClick={() => selectedEvent && updateVerificationStatus(selectedEvent.id, 'under_review')}
             >
               <Clock className="h-4 w-4 mr-2" />
               Under Review
             </Button>
-            <Button 
+            <Button
               variant="destructive"
               onClick={() => selectedEvent && updateVerificationStatus(selectedEvent.id, 'verified_poaching')}
             >

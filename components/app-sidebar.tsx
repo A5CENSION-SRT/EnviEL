@@ -2,22 +2,13 @@
 
 import * as React from "react"
 import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
   Map,
-  PieChart,
-  Settings2,
-  SquareTerminal,
-  ShieldCheck,
+  Bot,
   LayoutDashboard,
   AlertTriangle,
   LogOut,
   BarChart3,
-  Radio
+  Radio,
 } from "lucide-react"
 
 import {
@@ -33,14 +24,13 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
-import { supabase } from "@/lib/supabase"
 import { useRouter } from "next/navigation"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const router = useRouter()
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut()
+    await fetch('/api/auth', { method: 'DELETE' })
     router.push('/')
   }
 
@@ -63,6 +53,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
+
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Monitoring</SidebarGroupLabel>
@@ -101,6 +92,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
+
         <SidebarGroup>
           <SidebarGroupLabel>AI Tools</SidebarGroupLabel>
           <SidebarMenu>
@@ -115,6 +107,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
+
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -125,6 +118,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
+
       <SidebarRail />
     </Sidebar>
   )

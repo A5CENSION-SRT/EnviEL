@@ -1,0 +1,58 @@
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{Abstract}{I}{Doc-Start}%
+\contentsline {chapter}{\numberline {1}Introduction to Smart Forest Sentinel}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Project Overview}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Real-Time Application and Use Cases}{2}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Real-Time Threat Response Workflow}{2}{section.1.3}%
+\contentsline {chapter}{\numberline {2}Existing System Study and its Outcome with Project Objectives}{5}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Literature Survey}{5}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Problem Definition}{6}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Outcome of the Survey}{7}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Project Objectives}{7}{section.2.4}%
+\contentsline {chapter}{\numberline {3}Project Architecture and Design}{9}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Overall System Architecture}{9}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Hardware Components}{11}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Pin Configurations}{11}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Software Tools Used}{11}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Tools and Techniques Used}{12}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}Tools}{12}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}Techniques}{13}{subsection.3.5.2}%
+\contentsline {chapter}{\numberline {4}Methodology for Smart Forest Sentinel}{14}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Methodology Overview}{14}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}System Architecture}{14}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Hardware Components}{14}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}Audio Processing}{15}{subsection.4.1.3}%
+\contentsline {subsection}{\numberline {4.1.4}Classification Approach}{15}{subsection.4.1.4}%
+\contentsline {subsection}{\numberline {4.1.5}Local Display and Data Logging}{15}{subsection.4.1.5}%
+\contentsline {subsection}{\numberline {4.1.6}Voice Assistant Interface}{15}{subsection.4.1.6}%
+\contentsline {subsection}{\numberline {4.1.7}Web Application}{15}{subsection.4.1.7}%
+\contentsline {section}{\numberline {4.2}Edge Noise Gate and Dual-Stage Waveform Capture}{15}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Acoustic Feature Extraction (MFCC)}{16}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Machine Learning Threat Classification}{18}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Local-First Database Sync and API Command Routing}{18}{section.4.5}%
+\contentsline {chapter}{\numberline {5}Results of Smart Forest Sentinel}{20}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Project Execution}{20}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Planning and Design}{20}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Implementation}{20}{subsection.5.1.2}%
+\contentsline {section}{\numberline {5.2}Prototype (Hardware/Software)}{21}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Prototype Description}{21}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Development Process}{21}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}Testing and Validation}{22}{subsection.5.2.3}%
+\contentsline {section}{\numberline {5.3}Performance and Accuracy Analysis}{22}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Results and Discussion}{22}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Final Results}{22}{subsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}Discussion}{23}{subsection.5.4.2}%
+\contentsline {section}{\numberline {5.5}System Snapshots}{23}{section.5.5}%
+\contentsline {subsection}{\numberline {5.5.1}EcoGuard Landing Page Portal}{23}{subsection.5.5.1}%
+\contentsline {subsection}{\numberline {5.5.2}Interactive GIS Sensor Map}{24}{subsection.5.5.2}%
+\contentsline {subsection}{\numberline {5.5.3}Ranger Control Dashboard}{24}{subsection.5.5.3}%
+\contentsline {subsection}{\numberline {5.5.4}Poaching Events Log}{25}{subsection.5.5.4}%
+\contentsline {subsection}{\numberline {5.5.5}AI Voice Assistant Interface}{25}{subsection.5.5.5}%
+\contentsline {section}{\numberline {5.6}README / Operations Guide}{26}{section.5.6}%
+\contentsline {subsection}{\numberline {5.6.1}Step 1: Flash Node Firmware}{26}{subsection.5.6.1}%
+\contentsline {subsection}{\numberline {5.6.2}Step 2: Start the Python Edge Gateway ML Bridge}{26}{subsection.5.6.2}%
+\contentsline {subsection}{\numberline {5.6.3}Step 3: Setup and Start the Web Dashboard}{27}{subsection.5.6.3}%
+\contentsline {section}{\numberline {5.7}Conclusion and Personal Reflection}{27}{section.5.7}%
+\contentsline {subsection}{\numberline {5.7.1}Summary}{27}{subsection.5.7.1}%
+\contentsline {subsection}{\numberline {5.7.2}Personal Reflection}{27}{subsection.5.7.2}%
+\contentsline {chapter}{Appendix}{28}{chapter*.2}%

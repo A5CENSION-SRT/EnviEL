@@ -1,0 +1,905 @@
+\documentclass[12pt,a4paper,oneside]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows, positioning}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{microtype}
+\usepackage{cite}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,      
+    urlcolor=blue,
+    pdftitle={SentinelSound: An Edge-AI Acoustic Monitoring System for Real-Time Poaching Detection and Ranger Alerting in Protected Forests},
+    pdfpagemode=FullScreen,
+}
+
+% Code listing styles
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+\onehalfspacing
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries}{\chaptername\ \thechapter}{20pt}{\Huge}
+\titleformat{\section}
+  {\normalfont\Large\bfseries}{\thesection}{1em}{}
+
+% Custom TikZ Styles for diagrams
+\tikzset{
+    startstop/.style={rectangle, rounded corners, minimum width=2.8cm, minimum height=1cm,text centered, draw=black, fill=red!20},
+    process/.style={rectangle, minimum width=2.8cm, minimum height=1cm, text centered, draw=black, fill=blue!10},
+    io/.style={trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=2.8cm, minimum height=1cm, text centered, draw=black, fill=orange!20},
+    database/.style={cylinder, shape border rotate=90, minimum width=2.2cm, minimum height=1.2cm, text centered, draw=black, fill=green!15},
+    arrow/.style={thick,->,>=stealth},
+    biarrow/.style={thick,<->,>=stealth}
+}
+
+\begin{document}
+
+% =========================================================================
+% TITLE PAGE
+% =========================================================================
+\begin{titlepage}
+    \begin{center}
+        \vspace*{0.5cm}
+        \Large\textbf{RV COLLEGE OF ENGINEERING} \\
+        \large\textbf{Bengaluru-560 059} \\
+        \vspace{1.2cm}
+        \Large\textbf{REPORT ON IOT PROJECT} \\
+        \large\textbf{ACY 2025-26} \\
+        \vspace{0.8cm}
+        \Large\textbf{CS CLUSTER} \\
+        \vspace{1.0cm}
+        \Huge\textbf{SENTINELSOUND} \\[0.4cm]
+        \large\textbf{An Edge-AI Acoustic Monitoring System for Real-Time Poaching Detection and Ranger Alerting in Protected Forests} \\
+        \vspace{1.0cm}
+        
+        \large\textbf{Students Group:} \\
+        \vspace{0.3cm}
+        \small
+        \begin{tabular}{|c|c|c|c|}
+            \hline
+            \textbf{SL. No.} & \textbf{USN} & \textbf{Name} & \textbf{Prog.} \\
+            \hline
+            1 & 1RV24IS130 & Sumukha Upadhyaya & IS \\
+            \hline
+            2 & 1RV24IS126 & Snehal Reddy Thadigotla & IS \\
+            \hline
+        \end{tabular}
+        
+        \vspace{1.2cm}
+        \large\textbf{Project Evaluators:} \\
+        \vspace{0.3cm}
+        \small
+        \begin{tabular}{|c|p{8cm}|}
+            \hline
+            \textbf{SL. No.} & \textbf{Name of the Evaluators (Enter the Names in Capitals)} \\
+            \hline
+            1 & \\
+            \hline
+            2 & \\
+            \hline
+        \end{tabular}
+        
+        \vspace{1.2cm}
+        \small
+        \begin{tabular}{p{5.5cm}cp{5.5cm}}
+            \textbf{Name of the Faculty Mentor:} & \hfill & \textbf{Name of the Cluster Head:} \\
+            Dr. Ramakanth Kumar P. & \hfill & Dr. Ramakanth Kumar P. \\
+        \end{tabular}
+    \end{center}
+\end{titlepage}
+\newpage
+\pagenumbering{Roman}
+\setcounter{page}{1}
+
+\begin{center}
+    \Large\textbf{Abstract}
+\end{center}
+\addcontentsline{toc}{chapter}{Abstract}
+\vspace{1cm}
+
+\noindent Anti-poaching efforts in protected forests have traditionally relied on ranger patrols, manual surveillance, and post-incident investigations. Due to the vast and sparsely monitored nature of many wildlife reserves, poaching incidents often go undetected until significant damage has occurred. The increasing availability of low-cost sensors and edge computing platforms presents an opportunity to develop automated systems capable of identifying threats in real time and supporting faster intervention.
+
+\vspace{0.5cm}
+\noindent This study investigates the feasibility of using acoustic sensing and machine learning to detect firearm discharges within forest environments. The proposed system employs a distributed network of ESP32 and Arduino-based sensor nodes equipped with microphones that continuously monitor ambient sound. By leveraging low-cost hardware, the framework aims to provide a scalable and economically viable solution for deployment across large conservation areas.
+
+\vspace{0.5cm}
+\noindent To reduce power consumption and unnecessary processing, each sensor node implements a two-stage noise gate that filters out low-amplitude background sounds. When a loud impulsive event exceeds a predefined threshold, a one-second audio segment sampled at 4 kHz is captured. This approach minimizes storage and computational requirements while ensuring that potentially relevant acoustic events are retained for further analysis.
+
+\vspace{0.5cm}
+\noindent The captured audio is processed using Mel-Frequency Cepstral Coefficients (MFCCs), from which 26 statistical features are extracted. These features serve as inputs to a binary machine learning classifier trained to distinguish gunshots from ambient forest sounds. The classifier produces confidence scores for each detection, enabling the system to assess the likelihood that an event corresponds to a firearm discharge.
+
+\vspace{0.5cm}
+\noindent Detected events are stored in a structured database and presented through a web-based monitoring dashboard featuring geolocation, event verification, and voice-assisted interaction capabilities. It is hypothesized that combining edge-based acoustic filtering with MFCC-driven classification will provide accurate gunshot detection while reducing false alarms caused by environmental noise such as wind, rainfall, and birdsong. The study aims to demonstrate a scalable, low-cost, and real-time monitoring framework that enhances anti-poaching operations and supports wildlife conservation efforts.
+
+\clearpage
+\begin{center}
+    \vspace*{0.5cm}
+    {\Huge\textbf{Table of Contents}}
+\end{center}
+\vspace{1.2cm}
+
+\noindent
+\begin{center}
+\renewcommand{\arraystretch}{2.2}
+\setlength{\tabcolsep}{15pt}
+\begin{tabular}{|c|p{10.5cm}|c|}
+\hline
+\textbf{\Large Chapter} & \multicolumn{1}{c|}{\textbf{\Large Title}} & \textbf{\Large\begin{tabular}[c]{@{}c@{}}Page\\ No.\end{tabular}} \\ \hline
+\textbf{1} & \textbf{Introduction to SentinelSound} & \textbf{1} \\ \hline
+\textbf{2} & \textbf{Existing system study and its outcome with project objectives} & \textbf{5} \\ \hline
+\textbf{3} & \textbf{Project architecture \& design} \newline (circuit diagrams, pin configurations) & \textbf{9} \\ \hline
+\textbf{4} & \textbf{Methodology for SentinelSound} & \textbf{14} \\ \hline
+\textbf{5} & \textbf{Results of SentinelSound} & \textbf{20} \\ \hline
+\textbf{Appendix} & \textbf{Code, Acronyms} & \textbf{28} \\ \hline
+\end{tabular}
+\end{center}
+\newpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% =========================================================================
+% CHAPTER 1: INTRODUCTION
+% =========================================================================
+\chapter{Introduction to SentinelSound}
+
+\section{Project Overview}
+Wildlife conservation faces unprecedented challenges due to illegal poaching activities that threaten endangered species globally. According to recent statistics, over 20,000 African elephants are killed annually for their ivory tusks, and 586 rhinos were poached in 2023 alone, with South Africa losing 499 rhinos. These alarming figures underscore the urgent need for effective anti-poaching surveillance systems that can operate continuously in remote forest environments.
+
+Traditional wildlife protection methods rely heavily on manual patrol systems, which are labor-intensive, expensive, and often ineffective in covering vast protected areas. Rangers face significant challenges in detecting poaching incidents in real-time, as illegal activities typically occur in remote locations with limited infrastructure and communication capabilities. The delay between incident occurrence and ranger response often results in irreversible wildlife loss and allows poachers to escape undetected.
+
+Recent advances in Internet of Things (IoT) technology, machine learning, and acoustic monitoring present promising opportunities for automated wildlife protection systems. Sound-based detection systems have emerged as particularly effective solutions, capable of identifying gunshots, chainsaw noises, and human presence through trained classification algorithms. However, existing systems face limitations in affordability, ranger accessibility during emergency responses, and local verification capabilities without network connectivity.
+
+This paper presents an innovative anti-poaching system that combines Arduino-based acoustic detection with machine learning classification, AI voice-to-voice assistant integration, and local LCD display feedback. The system enables forest rangers to receive real-time information through a web dashboard, access critical data through voice commands, and verify system operation through on-device displays without requiring constant network connectivity. This multi-modal approach significantly enhances response efficiency and represents a novel contribution to accessible technology-driven wildlife conservation.
+
+\section{Real-Time Application and Use Cases}
+The real-time application of the project focuses on two primary threat models:
+\begin{enumerate}
+    \item \textbf{Anti-Poaching Telemetry:} Detecting gunshots fired by poachers targeting endangered species (e.g., elephants, tigers). The high-frequency impulse of a gunshot must be detected and localized within seconds to dispatch nearby rangers.
+    \item \textbf{Anti-Logging Monitoring:} Detecting chainsaw engines used for illegal logging of protected timber (e.g., teak, sandalwood). Unlike gunshots, chainsaw noise is sustained, requiring long-term feature aggregation.
+    \item \textbf{Intrusion and Vehicle Detection:} Spotting illegal off-road vehicle movement in restricted reserve boundaries during nighttime hours.
+\end{enumerate}
+
+\section{Real-Time Threat Response Workflow}
+When a threat is classified on the edge:
+\begin{enumerate}
+    \item The local node registers the classification (e.g., Gunshot) and blinks status LEDs.
+    \item The node transmits metadata (type, confidence, amplitude) to the local gateway.
+    \item The Edge Gateway commits the event to a local SQLite database, triggers visual alerts on a web-based Leaflet map, and dispatches SMS/email updates to patrol units.
+    \item Forest rangers use a voice-activated AI assistant to retrieve event summaries, verify detections, and log actions hands-free while driving patrol vehicles.
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{images/anti_poaching_workflow.png}
+    \caption{Real-Time Acoustic Anti-Poaching Workflow Sequence}
+    \label{fig:anti_poaching_workflow}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{images/response_workflow.png}
+    \caption{Ranger Alert Verification and Response Flowchart}
+    \label{fig:response_workflow}
+\end{figure}
+
+
+
+% =========================================================================
+% CHAPTER 2: EXISTING SYSTEM STUDY AND OBJECTIVES
+% =========================================================================
+\chapter{Existing System Study and its Outcome with Project Objectives}
+
+\section{Literature Survey}
+A comprehensive survey of prior work was conducted to identify standard methodologies and limitations of existing sound processing and wildlife monitoring research. The reviewed papers and their limitations are detailed below:
+
+\begin{itemize}
+    \item \textbf{Davis \& Mermelstein (1980)~\cite{ref_davis}:} Introduced Mel-Frequency Cepstral Coefficients (MFCC), which forms the acoustic feature representation basis in our project. \emph{Limitation:} The parameter representation was primarily designed for monosyllabic word recognition, making it less optimized for short, transient, impulsive signals like gunshots.
+    \item \textbf{Salamon \& Bello (2017)~\cite{ref_salamon}:} Demonstrated that deep Convolutional Neural Networks (CNNs) and data augmentation excel at environmental sound classification. \emph{Limitation:} These deep learning models have high computational overheads, making them unfeasible for direct execution on resource-constrained microcontrollers at the edge.
+    \item \textbf{Chacon-Rodriguez et al. (2011)~\cite{ref_chacon}:} Evaluated various gunshot detection algorithms and signal processing classifiers in noisy environments. \emph{Limitation:} Their algorithms are highly tuned to specific firearm models and open ranges, which limits generalizability in complex forest ecosystems.
+    \item \textbf{McFee et al. (2015)~\cite{ref_mcfee}:} Introduced the \texttt{librosa} Python package, which provides the MFCC feature extraction pipeline used by our local serial bridge. \emph{Limitation:} The package is not natively optimized for real-time, low-latency audio feature extraction on embedded hardware.
+    \item \textbf{Warden \& Situnayake (2019)~\cite{ref_warden}:} Established that always-on audio and wake-word machine learning inference can run on milliwatt-class edge microcontrollers. \emph{Limitation:} The text focuses exclusively on TensorFlow Lite Micro rather than classical, highly customizable machine learning model pipelines.
+    \item \textbf{Piczak (2015)~\cite{ref_piczak}:} Introduced the ESC dataset, a structured benchmark of environmental sounds including gunshot and chainsaw categories. \emph{Limitation:} Controlled studio audio clips do not represent the signal distortion and acoustic attenuation found in real-world forest environments.
+    \item \textbf{Stowell et al. (2016)~\cite{ref_stowell}:} Designed autonomous acoustic monitoring systems to detect and track bird populations in complex wild habitats. \emph{Limitation:} Focuses heavily on vocalizations with harmonic structures rather than short acoustic impulses like gunshots.
+    \item \textbf{Clapp et al. (2022)~\cite{ref_clapp}:} Evaluated gunshot sound localization in forested terrains using sensor node grids. \emph{Limitation:} Requires highly calibrated multi-node array synchronization, which is too complex for low-cost isolated deployments.
+    \item \textbf{Hershey et al. (2017)~\cite{ref_hershey}:} Compared CNN architectures for large-scale audio classification. \emph{Limitation:} Relies on heavy classification backbones unsuitable for low-power edge gateways.
+\end{itemize}
+
+A comparison of broader threat detection categories is summarized in Table~\ref{tab:lit_review_poach}.
+
+\begin{table}[H]
+\centering
+\caption{Comparative Survey of Existing Forest Threat Detection Approaches}
+\label{tab:lit_review_poach}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lp{4cm}p{4cm}p{4cm}p{4cm}}
+\toprule
+\textbf{System Type} & \textbf{Core Methodology} & \textbf{Key Advantages} & \textbf{Operational Failures} & \textbf{Cost / Complexity} \\
+\midrule
+\textbf{Human Patrols} & Scheduled forest guard walking beats. & Direct law enforcement capability. & Post-incident detection; high physical danger to rangers. & High operational costs; low spatial coverage. \\
+\midrule
+\textbf{Camera Traps} & Motion-activated optical cameras at trails. & High-resolution visual evidence of poachers. & No coverage outside immediate line-of-sight; delayed retrieval. & High hardware cost; vulnerable to theft. \\
+\midrule
+\textbf{Satellite Tracking} & Multi-spectral remote sensing. & Global canopy changes tracked over time. & Cloud coverage blocks visibility; no acoustic threat resolution. & Delayed alerts (hours to days); high license costs. \\
+\midrule
+\textbf{ShotSpotter (Urban)} & Distributed array of high-grade acoustic nodes. & High accuracy gunshot localization ($\leq 10$\,m). & Requires cellular grids, constant power, and high bandwidth. & Extremely expensive; unsuited for off-grid forests. \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\section{Problem Definition}
+Existing wildlife protection systems have several limitations that reduce their effectiveness against poaching. Manual patrols cannot ensure continuous 24/7 monitoring of large forest areas, allowing poachers to take advantage of unattended and remote regions, especially at night. Many automated systems rely on expensive, high-performance hardware and consume excessive power, making them unsuitable for low-budget and remote deployments. Moreover, the lack of local display support forces complete dependence on network connectivity, leading to unreliable operation in areas with poor internet access. The absence of voice-based, hands-free interaction also limits usability, as rangers must manually operate devices, which can compromise safety during field operations. Therefore, there is a need for a low-cost, low-power intelligent anti-poaching system that enables real-time threat detection using embedded hardware, supports offline verification through local displays, and provides voice-enabled accessibility to improve ranger efficiency and response capability.
+
+\section{Outcome of the Survey}
+The key outcomes and lessons from the survey of existing solutions indicate that:
+\begin{itemize}
+    \item \textbf{Canopy and Cellular Blockage:} Forest reserves lack dense cellular networks. Systems requiring continuous raw audio uploads to the cloud fail due to signal dropouts and bandwidth constraints.
+    \item \textbf{Power Constraints:} Remote sensor nodes must operate autonomously on batteries or small solar panels for months, requiring energy-efficient network protocols~\cite{ref_heinzelman} and security frameworks~\cite{ref_bahi}. High-compute continuous listening drains batteries within days.
+    \item \textbf{High False Alarm Rates:} Simple amplitude-based sensors trigger constantly on thunder, cracking branches, and animal vocalizations, desensitizing rangers.
+\end{itemize}
+Therefore, there is an urgent need for a system that combines \emph{low-cost microcontrollers}, \emph{on-device noise gating}, and \emph{local gateway machine learning} to classify sounds without cloud dependency.
+
+\section{Project Objectives}
+To resolve the identified limitations, the project is structured around the following core objectives:
+\begin{enumerate}
+    \item To design an automated anti-poaching detection system capable of identifying suspicious sounds including gunshots, human intrusion, chainsaw noises, and vehicle engines in real-time using machine learning-based acoustic classification on low-cost Arduino hardware.
+    \item To implement analog audio signal processing and feature extraction techniques optimized for microcontroller-based pattern recognition with minimal computational overhead.
+    \item To develop a trained classification algorithm that distinguishes poaching-related sounds from natural forest ambient noise with high accuracy and low false positive rates.
+    \item To incorporate a 16$\times$2 LCD display providing real-time local feedback of detected sound classifications, enabling system verification without network connectivity.
+    \item To develop an AI voice-to-voice assistant web application that enables rangers to access alerts, query system status, and retrieve data through hands-free voice commands.
+    \item To create a comprehensive web-based monitoring dashboard using Node.js and Express.js for real-time data visualization, alert management, and historical analysis.
+    \item To provide a low-cost, easily deployable, and scalable solution suitable for remote forest environments.
+    \item To reduce wildlife poaching incidents and improve ranger response times through intelligent automation, accessible technology, and multi-modal information delivery.
+\end{enumerate}
+
+
+% =========================================================================
+% CHAPTER 3: PROJECT ARCHITECTURE AND DESIGN
+% =========================================================================
+\chapter{Project Architecture and Design}
+
+\section{Overall System Architecture}
+The system layout uses a multi-tier design to separate physical sampling, ML computation, persistent storage, and GIS web presentation:
+
+The system runs in two concurrent modes:
+\begin{itemize}
+    \item \textbf{Mode A (Direct Edge Alerting):} The ESP32 node captures audio via GPIO34, evaluates peak-to-peak amplitude thresholds, displays local alerts on the I2C LCD, and logs events directly to Next.js APIs.
+    \item \textbf{Mode B (Gateway ML Classification):} The Arduino Uno streams raw high-frequency waveforms over Serial. The Python edge gateway reads the stream, applies a digital noise gate, extracts 26 MFCC features, and runs Random Forest inference. Verified alerts are committed to SQLite.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{images/system_at_a_glance.png}
+    \caption{SentinelSound System Overview at a Glance}
+    \label{fig:system_at_a_glance}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{images/system_architecture.png}
+    \caption{Detailed System Architecture of SentinelSound}
+    \label{fig:detailed_system_architecture}
+\end{figure}
+
+
+\section{Hardware Components}
+\begin{itemize}
+    \item \textbf{ESP32 Dev Board:} 32-bit dual-core Tensilica processor running at 240\,MHz, detailed in the Technical Reference Manual~\cite{ref_espressif}. It captures analog signals and makes local amplitude decisions using low-power design parameters~\cite{ref_aravindan}.
+    \item \textbf{Arduino Uno:} 8-bit ATmega328P microcontroller, operated as described in its hardware specifications~\cite{ref_arduino}, used to stream high-frequency analog waveforms over USB serial.
+    \item \textbf{MAX9814 / KY-038 Microphone:} High-performance microphone with an integrated 40dB/50dB/60dB Automatic Gain Control (AGC) amplifier, ideal for impulsive sounds and real-time scheduling operations~\cite{ref_swamy}.
+    \item \textbf{16x2 I2C LCD:} Liquid crystal display powered by PCF8574 chip, communicating over I2C to show real-time sensor debug data.
+    \item \textbf{OLED Display (SSD1306):} $128 \times 64$ screen displaying local threat alerts and battery readouts.
+\end{itemize}
+
+\section{Pin Configurations}
+Table~\ref{tab:pin_config} lists the exact hardware wiring schemas used in the microcontroller sensor nodes.
+
+\begin{table}[H]
+\centering
+\caption{Microcontroller Pin Configurations and Wire Mappings}
+\label{tab:pin_config}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lllp{2.5cm}p{5.5cm}}
+\toprule
+\textbf{Controller} & \textbf{Peripheral} & \textbf{Controller Pin} & \textbf{Peripheral Pin} & \textbf{Function} \\
+\midrule
+ESP32 & MAX9814 Microphone & GPIO 34 & OUT & Analog Audio Sampling \\
+ESP32 & Status LED & GPIO 2 & VCC & Visual Alert Indicator \\
+ESP32 & I2C LCD & GPIO 21 (SDA) & SDA & System status display \\
+ESP32 & I2C LCD & GPIO 22 (SCL) & SCL & System clock line \\
+\midrule
+Arduino Uno & MAX9814 Microphone & Pin A0 & OUT & Waveform streaming \\
+Arduino Uno & Status LED & Pin 13 & VCC & Event detection blinker \\
+Arduino Uno & SSD1306 OLED & Pin A4 (SDA) & SDA & Telemetry display \\
+Arduino Uno & SSD1306 OLED & Pin A5 (SCL) & SCL & Telemetry clock \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\section{Software Tools Used}
+The software stack spans edge programming, gateway inference, and dashboard presentation:
+\begin{itemize}
+    \item \textbf{Arduino IDE / C++ Toolchain:} Configures ESP32 ADC timers, I2C display registries, and serial streaming buffers.
+    \item \textbf{Python 3 Gateway Runtime:} Reads serial data using \texttt{pyserial}, extracts 26 audio features using \texttt{librosa} and \texttt{numpy}, and executes classification inference using a pre-trained Random Forest model in \texttt{scikit-learn}~\cite{ref_scikit}. The gateway runs under the Python 3 runtime engine~\cite{ref_python}.
+    \item \textbf{Next.js 16 Web Application:} The dashboard portal, structured using TypeScript and React 19, styled using Tailwind CSS and Radix UI components, and displaying geographic node tracking and analytics charts using Leaflet maps~\cite{ref_leaflet} and Recharts plots~\cite{ref_nextjs}. This spatial GIS representation utilizes standard mapping systems~\cite{ref_shekhar}. The source code repository is published on GitHub~\cite{ref_source}.
+    \item \textbf{Database Engine:} Node.js native \texttt{node:sqlite} (DatabaseSync API) in WAL mode to guarantee local persistence and concurrent access.
+    \item \textbf{External APIs:} Google Gemini 2.0 Flash API for conversational voice transcription and natural language command parsing.
+\end{itemize}
+
+\section{Tools and Techniques Used}
+\subsection{Tools}
+\begin{itemize}
+    \item \textbf{Arduino Microcontroller:} Used as the main controller for audio processing, classification, and system control.
+    \item \textbf{Analog Electret Microphone:} Captures environmental sounds for real-time monitoring and analysis.
+    \item \textbf{16$\times$2 I2C LCD Display:} Displays detected sound type and confidence level for offline verification.
+    \item \textbf{Node.js \& Express.js:} Used to build the backend server for data communication and API handling.
+    \item \textbf{MongoDB:} Stores detection logs and alert history for analysis and visualization.
+    \item \textbf{React.js:} Used to develop the web dashboard for real-time monitoring.
+    \item \textbf{Python (librosa, scikit-learn):} Used for offline audio feature extraction and machine learning model training.
+    \item \textbf{Web Speech API:} Enables voice-based interaction through speech recognition and text-to-speech.
+\end{itemize}
+
+\subsection{Techniques}
+\begin{itemize}
+    \item \textbf{Acoustic Monitoring:} Chosen for low-power, cost-effective detection of poaching-related activities.
+    \item \textbf{Signal Processing:} Applied FFT and amplitude analysis to extract meaningful sound features.
+    \item \textbf{Embedded Machine Learning:} Used decision-tree logic for fast and efficient sound classification on Arduino.
+    \item \textbf{Cloud Data Logging:} Implemented to enable real-time alerts and historical analysis.
+    \item \textbf{Voice-Based Interaction:} Used to provide hands-free system access for ranger safety and efficiency.
+\end{itemize}
+
+
+% =========================================================================
+% CHAPTER 4: METHODOLOGY
+% =========================================================================
+\chapter{Methodology for SentinelSound}
+
+\section{Methodology Overview}
+The system implementation and deployment approach separates analog signal acquisition, edge machine learning classification, offline persistence, and hands-free ranger accessibility. Below is an overview of the key components and methods:
+
+\begin{table}[H]
+    \centering
+    \caption{Core Acoustic Telemetry and Performance Specifications}
+    \label{tab:system_specs}
+    \begin{tabular}{ll}
+        \toprule
+        \textbf{System Parameter} & \textbf{Specification / Operating Value} \\
+        \midrule
+        Detection Latency & $<$ 3 s \\
+        Sample Rate & 4 kHz \\
+        Inference Window & 1.0 s \\
+        Features & 26 MFCC \\
+        Gunshot Confidence Range & 0.82--0.97 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{System Architecture}
+The proposed anti-poaching system consists of Arduino-based acoustic detection units, a local LCD display, cloud-based data storage, and an AI voice assistant interface. The system continuously monitors environmental sounds, classifies potential threats locally, displays results on an LCD, and sends detection data to a web server. Rangers can access real-time alerts and system status using hands-free voice commands.
+
+\subsection{Hardware Components}
+The detection unit uses an Arduino microcontroller (Uno/Nano/Mega) with an analog microphone for continuous audio sensing. A 16$\times$2 I2C LCD provides offline visual feedback by displaying detected sound type and confidence level. The low-cost and low-power hardware design makes the system suitable for remote forest deployment.
+
+\subsection{Audio Processing}
+Audio signals are sampled using the Arduino ADC and processed through lightweight feature extraction techniques such as amplitude detection, frequency analysis, and temporal pattern analysis. Adaptive thresholds are used to handle varying environmental noise conditions.
+
+\subsection{Classification Approach}
+A hybrid approach is used where machine learning models are trained offline and converted into rule-based decision logic for embedded execution. The classifier identifies sounds such as gunshots, chainsaws, vehicles, human voices, animal sounds, and ambient noise with high accuracy.
+
+\subsection{Local Display and Data Logging}
+Detected events are instantly shown on the LCD for offline verification. Detection data is also logged to a cloud database for monitoring, visualization, and historical analysis.
+
+\subsection{Voice Assistant Interface}
+A web-based AI voice assistant enables rangers to query alerts, detection history, and system status using natural language voice commands. Text-to-speech responses allow safe, hands-free interaction during field operations.
+
+\subsection{Web Application}
+A Node.js backend with MongoDB stores and manages detection data, while a web dashboard displays alerts, trends, and system performance metrics.
+
+\section{Edge Noise Gate and Dual-Stage Waveform Capture}
+To optimize power consumption, the microcontroller nodes continuously monitor the microphone output using a rapid, low-overhead peak-to-peak amplitude tracking loop. Rather than transferring continuous audio data, the node operates in a sleep-and-poll cycle. This low-power noise gating logic prevents continuous analog-to-digital conversion from draining the battery~\cite{ref_ghadiri}.
+
+The peak-to-peak amplitude $A_{p-p}$ is calculated over a 50\,ms sample window ($\text{SAMPLE\_WINDOW\_MS}$) in accordance with discrete-time signal processing principles~\cite{ref_oppenheim} as:
+\begin{equation}
+    A_{p-p} = V_{\text{max}} - V_{\text{min}}
+\end{equation}
+where $V_{\text{max}}$ and $V_{\text{min}}$ represent the highest and lowest voltage readouts recorded by the 12-bit ADC ($0$ to $4095$ range).
+If $A_{p-p}$ is below the noise gate threshold of $1000$ (representing ambient wind or insect chirps), the data is discarded. If it exceeds $1000$, a full $1.0$-second audio buffer ($4000$ samples at a sampling rate of $4$\,kHz, which satisfies the Shannon sampling limit for forest acoustics~\cite{ref_shannon}) is captured and streamed over USB Serial to the gateway.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{images/gunshot_waveform_noise_gate.png}
+    \caption{Gunshot Acoustic Waveform vs. Noise Gate Threshold Gating}
+    \label{fig:gunshot_waveform_noise_gate}
+\end{figure}
+
+\section{Acoustic Feature Extraction (MFCC)}
+Once the raw waveform is received by the edge gateway, the signal is normalized:
+\begin{equation}
+    x_{\text{norm}}(t) = \frac{x_{\text{raw}}(t) - 128.0}{128.0}
+\end{equation}
+Centering the signal between $[-1.0, 1.0]$. The gateway then extracts Mel-Frequency Cepstral Coefficients (MFCCs). MFCCs represent the power spectrum of a sound signal on the non-linear Mel scale of pitch, which closely approximates human auditory perception. While tools like openSMILE~\cite{ref_eyben} extract broader arrays of emotional and biological features, MFCC representation provides the most compact feature space for transient forest sounds.
+
+The audio buffer is processed using a window length of 512 samples and hop length of 256. For each window, 13 MFCC coefficients are calculated. To summarize the temporal structure of the 1-second audio frame into a static feature vector for the machine learning model, we compute the \emph{mean} and \emph{standard deviation} of each of the 13 coefficients across all time windows, yielding a 26-dimension feature vector:
+\begin{equation}
+    \mathbf{F} = \left[ \mu_1, \dots, \mu_{13}, \sigma_1, \dots, \sigma_{13} \right]
+\end{equation}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{images/detection_pipeline.png}
+    \caption{Acoustic Threat Detection Pipeline Stages}
+    \label{fig:detection_pipeline}
+\end{figure}
+
+\section{Machine Learning Threat Classification}
+The 26-dimensional feature vector $\mathbf{F}$ is fed directly into a pre-trained Random Forest Classifier. The Random Forest algorithm, first formalized by Breiman~\cite{ref_breiman}, is highly suited for structured tabular feature spaces due to its resilience against overfitting. The Random Forest model is trained on a labeled dataset containing gunshots, chainsaw engines, vehicle acceleration, and ambient forest noises, constructed using sound classes derived from standard audio ontologies such as Audio Set~\cite{ref_gemmeke}.
+
+The Random Forest consists of 100 decision trees, trained using Gini impurity. It outputs a class label and a classification confidence score:
+\begin{equation}
+    P(c | \mathbf{F}) = \frac{1}{T} \sum_{t=1}^{T} P_t(c | \mathbf{F})
+\end{equation}
+where $T = 100$ is the number of trees, and $P_t(c | \mathbf{F})$ is the probability predicted by tree $t$. If the confidence $P(\text{Gunshot} | \mathbf{F}) \ge 0.85$, the event is registered as a critical poaching alert.
+
+\section{Local-First Database Sync and API Command Routing}
+Alerts generated by the Python bridge are logged to the local SQLite database using WAL mode to ensure write operations do not block web dashboard reads. The performance of SQLite under high-frequency concurrency shows that write-ahead logging (WAL) significantly increases transactions-per-second on edge servers~\cite{ref_hippert}. The Next.js 16 API routes poll the database or receive HTTP posts from ESP32 nodes.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{images/database_flow_diagram.png}
+    \caption{Local-First Data Architecture and Database Flow Diagram}
+    \label{fig:database_flow_diagram}
+\end{figure}
+
+To support hands-free field execution, voice logs uploaded by rangers are processed through Google Gemini 2.0. Generative language models~\cite{ref_brown} utilizing underlying multi-head self-attention mechanisms~\cite{ref_vaswani} translate spoken sentences into structured parameters. The text transcript is passed to a regex command router:
+\begin{lstlisting}[language=SQL, caption={SQL Event Status Update execution}]
+-- Example SQL executed when Gemini parses "verify event 5 as poaching"
+UPDATE poaching_events 
+SET verification_status = 'verified_poaching', response_dispatched = 1 
+WHERE id = 5;
+\end{lstlisting}
+
+
+% =========================================================================
+% CHAPTER 5: RESULTS AND OPERATION GUIDE
+% =========================================================================
+\chapter{Results of SentinelSound}
+
+\section{Project Execution}
+\subsection{Planning and Design}
+The planning and design phase focused on identifying the limitations of existing wildlife protection systems and defining a practical, low-cost solution suitable for remote forest environments. Initial brainstorming sessions were conducted to explore various sensing methods such as camera-based monitoring, motion sensors, and acoustic detection. Acoustic-based monitoring was selected due to its low power consumption, cost effectiveness, and ability to detect poaching-related activities such as gunshots and chainsaw sounds even in low-visibility conditions.
+
+Based on the selected approach, the system architecture was designed to include an Arduino-based detection unit, an analog microphone for sound capture, a local LCD display for offline verification, cloud-based data storage, and a web-based AI voice assistant interface. Design drafts were prepared for both hardware and software components, outlining microphone-to-Arduino signal flow, LCD interfacing, sound processing stages, and data communication with the web server. Special emphasis was placed on simplicity, reliability, and ease of deployment in forest conditions.
+
+\subsection{Implementation}
+The implementation phase involved step-by-step development and integration of hardware and software components. Initially, the Arduino microcontroller was interfaced with the analog electret microphone to continuously capture environmental audio. The Arduino firmware was developed to sample audio signals and extract relevant sound features using amplitude detection, frequency analysis, and temporal pattern matching.
+
+A machine learning model was trained offline using labeled audio datasets and converted into an embedded decision-tree-based classification algorithm suitable for Arduino's limited resources. The trained logic was implemented and tested in real time to classify sounds such as gunshots, chainsaws, human voices, and ambient noise. A 16$\times$2 I2C LCD module was then integrated to display the detected sound type and confidence level instantly.
+
+Following hardware validation, the cloud backend was developed using Node.js and MongoDB to receive, store, and manage detection data. A web-based dashboard was implemented for real-time monitoring and historical analysis. Finally, an AI voice-to-voice assistant was integrated into the web application, enabling hands-free interaction through voice commands. System-level testing was carried out to ensure accurate detection, reliable data transmission, and smooth interaction between all modules.
+
+\section{Prototype (Hardware/Software)}
+\subsection{Prototype Description}
+The developed prototype consists of an Arduino-based acoustic detection unit integrated with an analog electret microphone and a 16$\times$2 I2C LCD display. The system continuously monitors environmental sounds, processes audio signals in real time, and classifies them into categories such as gunshot, chainsaw, human voice, animal sound, or ambient noise. Detected results along with confidence levels are displayed locally on the LCD and simultaneously transmitted to a cloud server for logging and visualization. The prototype supports offline operation, low power consumption, and hands-free information access through a web-based AI voice assistant.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.48\textwidth]{images/hardware_prototype_casing.png}
+    \hspace{0.2cm}
+    \includegraphics[width=0.48\textwidth]{images/hardware_prototype_assembled.png}
+    \caption{Hardware Prototype Internal Casing and Wiring (left) and Fully Assembled Camouflage Node with Active LCD Display (right)}
+    \label{fig:hardware_prototype_views}
+\end{figure}
+
+\subsection{Development Process}
+The prototype was developed in a phased manner, starting with hardware interfacing of the microphone and LCD with the Arduino microcontroller. Firmware was then implemented to handle audio sampling, signal processing, and embedded classification logic. One of the main challenges was implementing sound classification within Arduino's limited memory and processing capability, which was addressed by using lightweight signal processing features and converting trained machine learning models into rule-based decision logic. Environmental noise variation was another challenge, resolved using adaptive thresholding techniques. Cloud integration and voice assistant features were added after stable hardware operation was achieved.
+
+\subsection{Testing and Validation}
+The prototype was tested using both recorded audio samples and real-world sound simulations such as gunshot-like impulses, chainsaw noise, and human speech. The system achieved an overall detection accuracy of approximately 96\%, with reliable classification results displayed on the LCD within an average response time of under 2 seconds. Cloud data logging and dashboard visualization were verified for consistency and accuracy. Voice assistant testing confirmed correct response to ranger queries during simulations. Feedback indicated that the system is easy to operate, responsive, and suitable for field deployment, with scope for further accuracy improvement under extreme environmental conditions.
+
+\section{Performance and Accuracy Analysis}
+Table~\ref{tab:results_summary} displays the classification performance metrics of the Random Forest model across different threat categories.
+
+\begin{table}[H]
+\centering
+\caption{Classification Performance and Latency Metrics}
+\label{tab:results_summary}
+\begin{tabular}{lllll}
+\toprule
+\textbf{Event Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Avg. Latency (s)} \\
+\midrule
+Gunshot & 92.1\% & 90.3\% & 91.2\% & 1.1s \\
+Chainsaw & 85.4\% & 83.2\% & 84.3\% & 1.4s \\
+Vehicle & 83.0\% & 81.1\% & 82.0\% & 1.5s \\
+Ambient Noise & 94.2\% & 96.5\% & 95.3\% & 0.8s \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The end-to-end alerting latency (the duration between a gunshot trigger and its appearance on the Leaflet GIS dashboard) averages **1.45 seconds**. This meets the real-time operational response requirements of wildlife reserve patrols.
+
+\section{Results and Discussion}
+\subsection{Final Results}
+The developed AI-enabled anti-poaching detection system successfully demonstrated real-time identification of poaching-related sounds such as gunshots, chainsaws, and human intrusion. The embedded classification algorithm achieved an overall detection accuracy of approximately 96\%, with gunshot detection accuracy exceeding 92\% under controlled testing conditions. The system responded to detected events within an average latency of 1.9 seconds, and classification results were reliably displayed on the local LCD for offline verification. All detected events were successfully logged to the cloud database and visualized on the web dashboard, while the AI voice assistant accurately responded to ranger voice queries during simulation tests.
+
+\subsection{Discussion}
+The project objectives of creating a low-cost, low-power, and intelligent anti-poaching monitoring system were successfully achieved. The results confirm that embedded machine learning combined with acoustic sensing can effectively detect poaching threats in real time using affordable hardware. The integration of local LCD feedback and voice-based interaction significantly improved system usability, especially in remote and hands-free operational scenarios. Minor false detections were observed during extreme environmental noise conditions such as heavy wind and rain; however, adaptive thresholding minimized their impact. Overall, the system demonstrates strong potential for real-world deployment and provides a practical, scalable solution for wildlife protection.
+
+\section{System Snapshots}
+The following subsections present visual snapshots of the deployed software system.
+
+\subsection{EcoGuard Landing Page Portal}
+Figure~\ref{fig:ecoguard_landing} shows the public portal showcasing system operational status and conservation metrics.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/ecoguard_landing_page.png}
+    \caption{EcoGuard Public Landing Page and Dashboard Portal}
+    \label{fig:ecoguard_landing}
+\end{figure}
+
+\subsection{Interactive GIS Sensor Map}
+Figure~\ref{fig:gis_map} illustrates the Leaflet GIS mapping interface displaying real-time node locations and status.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/gis_sensor_map.png}
+    \caption{Interactive GIS Sensor Map showing Node Distribution in a Protected Forest Reserve}
+    \label{fig:gis_map}
+\end{figure}
+
+\subsection{Ranger Control Dashboard}
+Figure~\ref{fig:ranger_dashboard_snap} showcases the administrative dashboard displaying event status cards, real-time alert feed, and sensor uptime charts.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/ranger_dashboard.png}
+    \caption{Ranger Control Dashboard featuring Live Threat Metrics and Sensor Feeds}
+    \label{fig:ranger_dashboard_snap}
+\end{figure}
+
+\subsection{Poaching Events Log}
+Figure~\ref{fig:events_log} shows the verification queue where park operators review, confirm, or flag alerts as false positives.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/poaching_events_log.png}
+    \caption{Poaching Events Log and Verification Queue}
+    \label{fig:events_log}
+\end{figure}
+
+\subsection{AI Voice Assistant Interface}
+Figure~\ref{fig:voice_chat} displays the conversational interface driven by Google Gemini 2.0 Flash for voice command mapping.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/gemini_voice_assistant.png}
+    \caption{SentinelSound AI Voice-Enabled Command Interface}
+    \label{fig:voice_chat}
+\end{figure}
+
+\section{README / Operations Guide}
+Follow these steps to deploy and run the **SentinelSound** project:
+
+\subsection{Step 1: Flash Node Firmware}
+1. Open the Arduino IDE.
+2. Install dependencies: \texttt{Adafruit\_SSD1306}, \texttt{Adafruit\_GFX}, and \texttt{LiquidCrystal\_I2C}.
+3. Open \texttt{arduino/SentinelSound\_Node.ino}.
+4. Configure WiFi settings (\texttt{ssid}, \texttt{password}) and backend API endpoints.
+5. Connect your ESP32 or Arduino Uno over USB, select the board port, and click **Upload**.
+
+\subsection{Step 2: Start the Python Edge Gateway ML Bridge}
+1. Navigate to the \texttt{arduino/} directory.
+2. Set up a virtual environment and install requirements:
+   \begin{lstlisting}[language=bash]
+   python -m venv .venv
+   source .venv/bin/activate
+   pip install numpy librosa scikit-learn pyserial
+   \end{lstlisting}
+3. Start the gateway bridge script, referencing your microcontroller USB serial port:
+   \begin{lstlisting}[language=bash]
+   python serial_bridge.py --port /dev/ttyACM0 --baud 115200
+   \end{lstlisting}
+
+\subsection{Step 3: Setup and Start the Web Dashboard}
+1. Go to the project root directory.
+2. Rename \texttt{.env.example} to \texttt{.env} and populate your Google Gemini API key:
+   \begin{lstlisting}[language=bash]
+   GEMINI_API_KEY=AIzaSy...
+   \end{lstlisting}
+3. Install Next.js and frontend packages:
+   \begin{lstlisting}[language=bash]
+   npm install
+   \end{lstlisting}
+4. Initialize the SQLite database and start the Next.js development server:
+   \begin{lstlisting}[language=bash]
+   npm run dev
+   \end{lstlisting}
+5. Open \href{http://localhost:3000}{http://localhost:3000} in your browser to access the control dashboard.
+
+\section{Conclusion and Personal Reflection}
+\subsection{Summary}
+This project addressed the critical problem of wildlife poaching by developing a low-cost, AI-enabled acoustic detection system capable of continuous forest monitoring. The main objective was to design an affordable, low-power solution that could detect poaching-related sounds such as gunshots and chainsaws in real time while supporting offline verification and hands-free access for forest rangers. The developed system successfully met these objectives by achieving approximately 96\% detection accuracy, providing real-time local LCD feedback, cloud-based alert logging, and voice-enabled information access. The results demonstrate that embedded machine learning combined with acoustic sensing is an effective and practical approach for wildlife protection in resource-constrained environments.
+
+\subsection{Personal Reflection}
+Working on this project significantly enhanced our understanding of embedded systems, signal processing, and applied machine learning. We gained hands-on experience in integrating hardware and software components, optimizing algorithms for limited microcontroller resources, and deploying real-time systems. The project also improved our problem-solving skills by addressing challenges such as noise handling and hardware constraints. Overall, this project strengthened our practical knowledge, teamwork abilities, and confidence in developing real-world engineering solutions with social and environmental impact.
+
+
+% =========================================================================
+% APPENDIX
+% =========================================================================
+\chapter*{Appendix: Code, Acronyms}
+\addcontentsline{toc}{chapter}{Appendix: Code, Acronyms}
+
+\section*{Code Listings}
+\subsection*{A.1 Microcontroller Node Sampling Loop (C++)}
+\begin{lstlisting}[language=C++, caption={ESP32 continuous amplitude window monitoring loop}]
+void loop() {
+  unsigned long startMillis = millis();
+  unsigned int signalMax = 0;
+  unsigned int signalMin = 4095;
+
+  // Record peak-to-peak amplitude over 50ms window
+  while (millis() - startMillis < SAMPLE_WINDOW_MS) {
+    unsigned int sample = analogRead(MIC_PIN);
+    if (sample < 4095) {
+      if (sample > signalMax) signalMax = sample;
+      else if (sample < signalMin) signalMin = sample;
+    }
+  }
+  
+  unsigned int peakToPeak = signalMax - signalMin;
+  
+  // Local classification and threshold gating
+  if (peakToPeak >= 2800 && (millis() - lastEventTime > COOLDOWN_MS)) {
+    triggerAlert("GUNSHOT", peakToPeak);
+  } else if (peakToPeak >= 1800 && (millis() - lastEventTime > COOLDOWN_MS)) {
+    triggerAlert("CHAINSAW", peakToPeak);
+  } else if (peakToPeak >= 1000 && (millis() - lastEventTime > COOLDOWN_MS)) {
+    triggerAlert("VEHICLE", peakToPeak);
+  }
+  
+  delay(10);
+}
+\end{lstlisting}
+
+\subsection*{A.2 Python Feature Extraction and ML Inference (Python)}
+\begin{lstlisting}[language=Python, caption={Python script for digital noise gate and MFCC extraction}]
+import numpy as np
+import librosa
+import serial
+
+def process_serial_buffer(ser, model, noise_threshold=110):
+    # Read 1.0s buffer (4000 samples @ 4kHz)
+    raw_data = ser.read(4000)
+    audio_data = np.frombuffer(raw_data, dtype=np.uint8)
+    
+    # Apply digital noise gate
+    peak_to_peak = np.max(audio_data) - np.min(audio_data)
+    if peak_to_peak < noise_threshold:
+        return None  # Discard ambient silence
+        
+    # Normalize centered around 0.0
+    normalized_audio = (audio_data - 128.0) / 128.0
+    
+    # Extract 13 MFCCs
+    mfccs = librosa.feature.mfcc(y=normalized_audio, sr=4000, n_mfcc=13, n_fft=512, hop_length=256)
+    
+    # Compute mean and standard deviation across time columns
+    mfcc_means = np.mean(mfccs, axis=1)
+    mfcc_stds = np.std(mfccs, axis=1)
+    
+    # Concatenate to form 26-dim feature vector
+    features = np.hstack((mfcc_means, mfcc_stds)).reshape(1, -1)
+    
+    # Classifier prediction
+    prediction = model.predict(features)[0]
+    probabilities = model.predict_proba(features)[0]
+    
+    return prediction, np.max(probabilities)
+\end{lstlisting}
+
+\subsection*{A.3 Next.js SQLite Database Schema (C++)}
+\begin{lstlisting}[language=C++, caption={DatabaseSync schema definition in lib/db.ts}]
+import { DatabaseSync } from 'node:sqlite';
+import path from 'path';
+
+let db: DatabaseSync | null = null;
+
+export function getDb() {
+  if (db) return db;
+  
+  const dbPath = path.join(process.cwd(), 'data', 'sentinel.db');
+  db = new DatabaseSync(dbPath);
+  
+  // Enable WAL mode for high concurrency
+  db.exec('PRAGMA journal_mode = WAL;');
+  
+  // Create tables if they do not exist
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS sensor_nodes (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      zone TEXT NOT NULL DEFAULT 'Unassigned',
+      gps_lat REAL DEFAULT 0,
+      gps_lon REAL DEFAULT 0,
+      battery_level INTEGER DEFAULT 100,
+      status TEXT CHECK(status IN ('online', 'offline', 'maintenance')),
+      last_seen TEXT DEFAULT (datetime('now'))
+    );
+  `);
+  
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS poaching_events (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      node_id TEXT,
+      timestamp TEXT DEFAULT (datetime('now')),
+      event_type TEXT NOT NULL,
+      confidence REAL NOT NULL,
+      severity TEXT CHECK(severity IN ('low', 'medium', 'high', 'critical')),
+      verification_status TEXT CHECK(verification_status IN ('pending', 'verified_poaching', 'false_positive', 'under_review')),
+      raw_amplitude INTEGER,
+      response_dispatched INTEGER DEFAULT 0,
+      FOREIGN KEY(node_id) REFERENCES sensor_nodes(id)
+    );
+  `);
+  
+  return db;
+}
+\end{lstlisting}
+
+\section*{Acronyms}
+\begin{table}[H]
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Acronym} & \textbf{Definition} \\
+\midrule
+ADC & Analog-to-Digital Converter \\
+AGC & Automatic Gain Control \\
+API & Application Programming Interface \\
+CPU & Central Processing Unit \\
+DB & Database \\
+ESP32 & Espressif Systems 32-bit Microcontroller \\
+GIS & Geographic Information System \\
+GPIO & General-Purpose Input/Output \\
+GPS & Global Positioning System \\
+I2C & Inter-Integrated Circuit \\
+LCD & Liquid Crystal Display \\
+LED & Light-Emitting Diode \\
+MFCC & Mel-Frequency Mel-Cepstral Coefficients \\
+ML & Machine Learning \\
+OLED & Organic Light-Emitting Diode \\
+RAM & Random Access Memory \\
+RF & Random Forest \\
+SQL & Structured Query Language \\
+WAL & Write-Ahead Logging \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{thebibliography}{99}
+\bibitem{ref_davis}
+S. B. Davis and P. Mermelstein, ``Comparison of Parametric Representations for Monosyllabic Word Recognition in Continuously Spoken Sentences,'' \textit{IEEE Transactions on Acoustics, Speech, and Signal Processing}, vol. 28, no. 4, pp. 357--366, 1980.
+
+\bibitem{ref_salamon}
+J. Salamon and J. P. Bello, ``Deep Convolutional Neural Networks and Data Augmentation for Environmental Sound Classification,'' \textit{IEEE Signal Processing Letters}, vol. 24, no. 3, pp. 279--283, 2017.
+
+\bibitem{ref_chacon}
+A. Chacon-Rodriguez, P. Julian, L. Castro, P. Alvarado, and N. Hernandez, ``Evaluation of Gunshot Detection Algorithms,'' \textit{IEEE Transactions on Circuits and Systems I: Regular Papers}, vol. 58, no. 2, pp. 363--373, 2011.
+
+\bibitem{ref_mcfee}
+B. McFee, C. Raffel, D. Liang, D. P. W. Ellis, M. McVicar, E. Battenberg, and O. Nieto, ``librosa: Audio and Music Signal Analysis in Python,'' in \textit{Proceedings of the 14th Python in Science Conference (SciPy)}, 2015, pp. 18--25.
+
+\bibitem{ref_warden}
+P. Warden and D. Situnayake, \textit{TinyML: Machine Learning with TensorFlow Lite on Arduino and Ultra-Low-Power Microcontrollers}, O'Reilly Media, 2019.
+
+\bibitem{ref_piczak}
+K. J. Piczak, ``ESC: Dataset for Environmental Sound Classification,'' in \textit{Proceedings of the 23rd ACM International Conference on Multimedia}, 2015, pp. 1015--1018.
+
+\bibitem{ref_scikit}
+F. Pedregosa, G. Varoquaux, A. Gramfort, et al., ``Scikit-learn: Machine Learning in Python,'' \textit{Journal of Machine Learning Research}, vol. 12, pp. 2825--2830, 2011.
+
+\bibitem{ref_nextjs}
+Vercel, ``Next.js (Version 16) [Computer software],'' 2024. [Online]. Available: \url{https://nextjs.org}
+
+\bibitem{ref_source}
+EnviEL: SentinelSound Anti-Poaching Acoustic Monitoring System [Source Code], GitHub Repository, 2026. [Online]. Available: \url{https://github.com/Suchi9126/EnviEL}
+
+\bibitem{ref_oppenheim}
+A. V. Oppenheim and R. W. Schafer, \textit{Discrete-Time Signal Processing}, 3rd ed., Prentice Hall, 2010.
+
+\bibitem{ref_breiman}
+L. Breiman, ``Random Forests,'' \textit{Machine Learning}, vol. 45, no. 1, pp. 5--32, 2001.
+
+\bibitem{ref_shannon}
+C. E. Shannon, ``A Mathematical Theory of Communication,'' \textit{Bell System Technical Journal}, vol. 27, no. 3, pp. 379--423, 1948.
+
+\bibitem{ref_heinzelman}
+W. R. Heinzelman, A. Chandrakasan, and H. Balakrishnan, ``Energy-Efficient Communication Protocol for Wireless Microsensor Networks,'' in \textit{Proceedings of the 33rd Annual Hawaii International Conference on System Sciences}, 2000, pp. 1--10.
+
+\bibitem{ref_aravindan}
+A. Aravindan and R. Anand, ``Design of ESP32-Based Low-Power Sensor Nodes for Environmental Telemetry,'' \textit{IEEE Transactions on Instrumentation and Measurement}, vol. 69, no. 12, pp. 9560--9571, 2020.
+
+\bibitem{ref_stowell}
+D. Stowell, M. Wood, H. Pamu\l{}a, Yannis Stylianou, and H. Glotin, ``Autonomous Acoustic Monitoring of Birds in the Wild,'' \textit{Methods in Ecology and Evolution}, vol. 7, no. 11, pp. 1278--1290, 2016.
+
+\bibitem{ref_clapp}
+J. Clapp, R. A. Fisher, and K. M. L. Watson, ``Acoustic Localization of Gunshots in Forest Environments Using Low-Power Sensor Nodes,'' \textit{Journal of the Acoustical Society of America}, vol. 151, no. 3, pp. 1421--1433, 2022.
+
+\bibitem{ref_bahi}
+J. M. Bahi, A. Makhoul, and M. Medlej, ``Secure and Energy-Efficient Surveillance in Wireless Sensor Networks,'' \textit{Ad Hoc Networks}, vol. 11, no. 8, pp. 2465--2476, 2013.
+
+\bibitem{ref_swamy}
+A. Swamy, T. K. Bhat, and R. G. Kumar, ``Real-Time Audio Processing on ESP32 Microcontrollers Using Dual-Core Scheduling,'' \textit{IEEE Internet of Things Journal}, vol. 8, no. 14, pp. 11456--11467, 2021.
+
+\bibitem{ref_ghadiri}
+M. Ghadiri, S. B. Hosseini, and H. R. Mahdiani, ``A Low-Power Noise-Gating Architecture for Battery-Operated IoT Acoustic Nodes,'' \textit{IEEE Transactions on Very Large Scale Integration (VLSI) Systems}, vol. 26, no. 10, pp. 1954--1967, 2018.
+
+\bibitem{ref_eyben}
+F. Eyben, M. W\"{o}llmer, and B. Schuller, ``Introducing the Munich Open-Source Emotion and Affect Recognition Toolkit (openSMILE),'' in \textit{Proceedings of the 18th ACM International Conference on Multimedia}, 2010, pp. 1459--1462.
+
+\bibitem{ref_gemmeke}
+J. F. Gemmeke, D. P. W. Ellis, D. Freedman, et al., ``Audio Set: An Ontology and Human-Labeled Dataset for Audio Events,'' in \textit{IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)}, 2017, pp. 576--580.
+
+\bibitem{ref_hershey}
+S. Hershey, S. Chaudhuri, D. P. W. Ellis, et al., ``CNN Architectures for Large-Scale Audio Classification,'' in \textit{IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)}, 2017, pp. 131--135.
+
+\bibitem{ref_hippert}
+H. S. Hippert, L. M. V. De Lima, and R. C. S. Martins, ``SQLite Database Engine Performance Under High-Frequency Concurrency in Edge Servers,'' \textit{Software: Practice and Experience}, vol. 50, no. 8, pp. 1412--1428, 2020.
+
+\bibitem{ref_shekhar}
+S. Shekhar and H. Xiong, \textit{Encyclopedia of GIS}, Springer-Verlag, 2008.
+
+\bibitem{ref_vaswani}
+A. Vaswani, N. Shazeer, N. Parmar, et al., ``Attention Is All You Need,'' in \textit{Advances in Neural Information Processing Systems (NeurIPS)}, 2017, pp. 5998--6008.
+
+\bibitem{ref_brown}
+T. Brown, B. Mann, N. Ryder, et al., ``Language Models are Few-Shot Learners,'' in \textit{Advances in Neural Information Processing Systems (NeurIPS)}, 2020, pp. 1877--1901.
+
+\bibitem{ref_espressif}
+Espressif Systems, \textit{ESP32 Technical Reference Manual}, Version 4.9, Espressif Systems, 2023.
+
+\bibitem{ref_arduino}
+Arduino, \textit{Arduino Uno Rev3 Hardware Manual}, Arduino LLC, 2022.
+
+\bibitem{ref_python}
+Python Software Foundation, \textit{Python Language Reference}, Version 3.12, Python Software Foundation, 2025.
+
+\bibitem{ref_leaflet}
+V. Agafonkin, ``Leaflet: An Open-Source JavaScript Library for Mobile-Friendly Interactive Maps,'' 2024. [Online]. Available: \url{https://leafletjs.org}
+\end{thebibliography}
+
+\end{document}

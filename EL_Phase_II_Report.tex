@@ -1,4 +1,4 @@
-\documentclass[12pt,a4paper,oneside]{report}
+\documentclass[11pt,a4paper,oneside]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{amsmath,amssymb,amsfonts}
@@ -53,7 +53,7 @@
 }
 \lstset{style=mystyle}
 
-\onehalfspacing
+\setstretch{1.1}
 \titleformat{\chapter}[display]
   {\normalfont\huge\bfseries}{\chaptername\ \thechapter}{20pt}{\Huge}
 \titleformat{\section}
@@ -206,17 +206,19 @@ When a threat is classified on the edge:
 \end{enumerate}
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{images/anti_poaching_workflow.png}
-    \caption{Real-Time Acoustic Anti-Poaching Workflow Sequence}
-    \label{fig:anti_poaching_workflow}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{images/response_workflow.png}
-    \caption{Ranger Alert Verification and Response Flowchart}
-    \label{fig:response_workflow}
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/anti_poaching_workflow.png}
+        \caption{Acoustic Anti-Poaching Sequence Workflow}
+        \label{fig:anti_poaching_workflow}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/response_workflow.png}
+        \caption{Ranger Response Flowchart}
+        \label{fig:response_workflow}
+    \end{minipage}
 \end{figure}
 
 
@@ -305,17 +307,19 @@ The system runs in two concurrent modes:
 \end{itemize}
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{images/system_at_a_glance.png}
-    \caption{SentinelSound System Overview at a Glance}
-    \label{fig:system_at_a_glance}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{images/system_architecture.png}
-    \caption{Detailed System Architecture of SentinelSound}
-    \label{fig:detailed_system_architecture}
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/system_at_a_glance.png}
+        \caption{SentinelSound System Overview at a Glance}
+        \label{fig:system_at_a_glance}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/system_architecture.png}
+        \caption{Detailed System Architecture of SentinelSound}
+        \label{fig:detailed_system_architecture}
+    \end{minipage}
 \end{figure}
 
 
@@ -444,11 +448,26 @@ where $V_{\text{max}}$ and $V_{\text{min}}$ represent the highest and lowest vol
 If $A_{p-p}$ is below the noise gate threshold of $1000$ (representing ambient wind or insect chirps), the data is discarded. If it exceeds $1000$, a full $1.0$-second audio buffer ($4000$ samples at a sampling rate of $4$\,kHz, which satisfies the Shannon sampling limit for forest acoustics~\cite{ref_shannon}) is captured and streamed over USB Serial to the gateway.
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{images/gunshot_waveform_noise_gate.png}
-    \caption{Gunshot Acoustic Waveform vs. Noise Gate Threshold Gating}
-    \label{fig:gunshot_waveform_noise_gate}
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/gunshot_waveform_noise_gate.png}
+        \caption{Waveform vs. Noise Gate Threshold}
+        \label{fig:gunshot_waveform_noise_gate}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/noise_gate_detailed.png}
+        \caption{Detailed Two-Stage Noise Gating Mechanism}
+        \label{fig:detailed_noise_gate}
+    \end{minipage}
 \end{figure}
+
+The detailed two-stage noise gating mechanism depicted in Figure~\ref{fig:detailed_noise_gate} functions as a power-efficiency and precision filter. In the first stage, the ESP32 or Arduino Uno microcontroller performs low-level peak-to-peak amplitude $A_{p-p}$ evaluation in hardware. In the second stage, if the amplitude threshold is breached, the raw waveform data is streamed to the gateway where a digital noise gate threshold (defined as $NOISE\_GATE\_AMPLITUDE = 110$ in the python script) is checked:
+\begin{equation}
+    \text{Gate Pass} = \begin{cases} \text{True} & \text{if } A_{p-p} \ge T_{\text{gate}} \\ \text{False} & \text{otherwise} \end{cases}
+\end{equation}
+where $T_{\text{gate}}$ is the amplitude threshold. This dual-stage configuration ensures that only high-amplitude acoustic events trigger ML inference, preventing continuous operation from draining resources. For more details on the exact threshold variables and serial polling loops, please refer to the project repository.
 
 \section{Acoustic Feature Extraction (MFCC)}
 Once the raw waveform is received by the edge gateway, the signal is normalized:
@@ -463,11 +482,26 @@ The audio buffer is processed using a window length of 512 samples and hop lengt
 \end{equation}
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{images/detection_pipeline.png}
-    \caption{Acoustic Threat Detection Pipeline Stages}
-    \label{fig:detection_pipeline}
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/detection_pipeline.png}
+        \caption{Acoustic Threat Detection Pipeline Stages}
+        \label{fig:detection_pipeline}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/mfcc_pipeline_detailed.png}
+        \caption{MFCC Feature Extraction Pipeline}
+        \label{fig:mfcc_pipeline_details}
+    \end{minipage}
 \end{figure}
+
+The acoustic feature extraction pipeline, detailed in Figure~\ref{fig:mfcc_pipeline_details}, maps the normalized time-domain signal to the non-linear Mel scale to mimic human auditory perception. In our codebase, rather than manually implementing windowing, FFT, filter banks, and discrete cosine transforms (which are computed internally by Librosa's backend library), the feature vector components are aggregated directly from the extracted coefficient windows:
+\begin{equation}
+    \mu_i = \frac{1}{T} \sum_{t=1}^{T} c_i[t], \quad \sigma_i = \sqrt{\frac{1}{T} \sum_{t=1}^{T} (c_i[t] - \mu_i)^2}
+\end{equation}
+where $c_i[t]$ represents the $i$-th MFCC coefficient at time frame $t$. This statistical representation condenses temporal dynamics into a 26-dimensional vector $\mathbf{F}$, which is logged into a database for model classification. For the in-depth codebase implementation of this pipeline, refer to the repository's \texttt{serial\_bridge.py} script.
 
 \section{Machine Learning Threat Classification}
 The 26-dimensional feature vector $\mathbf{F}$ is fed directly into a pre-trained Random Forest Classifier. The Random Forest algorithm, first formalized by Breiman~\cite{ref_breiman}, is highly suited for structured tabular feature spaces due to its resilience against overfitting. The Random Forest model is trained on a labeled dataset containing gunshots, chainsaw engines, vehicle acceleration, and ambient forest noises, constructed using sound classes derived from standard audio ontologies such as Audio Set~\cite{ref_gemmeke}.
@@ -483,7 +517,7 @@ Alerts generated by the Python bridge are logged to the local SQLite database us
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{images/database_flow_diagram.png}
+    \includegraphics[width=0.55\textwidth]{images/database_flow_diagram.png}
     \caption{Local-First Data Architecture and Database Flow Diagram}
     \label{fig:database_flow_diagram}
 \end{figure}
@@ -565,47 +599,47 @@ The project objectives of creating a low-cost, low-power, and intelligent anti-p
 \section{System Snapshots}
 The following subsections present visual snapshots of the deployed software system.
 
-\subsection{EcoGuard Landing Page Portal}
-Figure~\ref{fig:ecoguard_landing} shows the public portal showcasing system operational status and conservation metrics.
+\subsection{EcoGuard Landing Page \& GIS Sensor Map}
+Figures \ref{fig:ecoguard_landing} and \ref{fig:gis_map} present the public interface and the interactive geographic information system (GIS) mapping application:
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.85\textwidth]{images/ecoguard_landing_page.png}
-    \caption{EcoGuard Public Landing Page and Dashboard Portal}
-    \label{fig:ecoguard_landing}
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/ecoguard_landing_page.png}
+        \caption{EcoGuard Public Landing Page Portal}
+        \label{fig:ecoguard_landing}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/gis_sensor_map.png}
+        \caption{Interactive GIS Sensor Map and Geolocation}
+        \label{fig:gis_map}
+    \end{minipage}
 \end{figure}
 
-\subsection{Interactive GIS Sensor Map}
-Figure~\ref{fig:gis_map} illustrates the Leaflet GIS mapping interface displaying real-time node locations and status.
+\subsection{Ranger Control Dashboard \& Poaching Events Log}
+Figures \ref{fig:ranger_dashboard_snap} and \ref{fig:events_log} illustrate the operator metrics panel and the corresponding verification database logs:
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.85\textwidth]{images/gis_sensor_map.png}
-    \caption{Interactive GIS Sensor Map showing Node Distribution in a Protected Forest Reserve}
-    \label{fig:gis_map}
-\end{figure}
-
-\subsection{Ranger Control Dashboard}
-Figure~\ref{fig:ranger_dashboard_snap} showcases the administrative dashboard displaying event status cards, real-time alert feed, and sensor uptime charts.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.85\textwidth]{images/ranger_dashboard.png}
-    \caption{Ranger Control Dashboard featuring Live Threat Metrics and Sensor Feeds}
-    \label{fig:ranger_dashboard_snap}
-\end{figure}
-
-\subsection{Poaching Events Log}
-Figure~\ref{fig:events_log} shows the verification queue where park operators review, confirm, or flag alerts as false positives.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.85\textwidth]{images/poaching_events_log.png}
-    \caption{Poaching Events Log and Verification Queue}
-    \label{fig:events_log}
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/ranger_dashboard.png}
+        \caption{Ranger Control Dashboard Live Feeds}
+        \label{fig:ranger_dashboard_snap}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/poaching_events_log.png}
+        \caption{Poaching Events Log and Verification Queue}
+        \label{fig:events_log}
+    \end{minipage}
 \end{figure}
 
 \subsection{AI Voice Assistant Interface}
-Figure~\ref{fig:voice_chat} displays the conversational interface driven by Google Gemini 2.0 Flash for voice command mapping.
+Figure~\ref{fig:voice_chat} displays the conversational query interface driven by Google Gemini 2.0 Flash for ranger hands-free operation:
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\textwidth]{images/gemini_voice_assistant.png}
+    \includegraphics[width=0.55\textwidth]{images/gemini_voice_assistant.png}
     \caption{SentinelSound AI Voice-Enabled Command Interface}
     \label{fig:voice_chat}
 \end{figure}

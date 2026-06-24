@@ -1,0 +1,501 @@
+26#/,,%'%/&%.').%%2).'
+"ENGALURU
+
+
+
+2EPORT/.
+)/402/*%#4
+!#9
+
+#,534%2
+#3#,534%2
+
+4ITLEOFTHE0ROJECT
+3-!2|4&/2%343%.4).%,
+
+3TUDENTS'ROUP
+3,.O
+
+53.
+
+.AME
+
+0ROG
+
+
+
+26)3
+
+3UMUKHA5PADHYAYA
+
+)3
+
+
+
+26)3
+
+3NEHAL2EDDY4HADIGOTLA
+
+)3
+
+
+
+0ROJECT%VALUATORS
+3,.O
+|
+|
+|
+|
+
+✁
+
+.AMEOFTHE%VALUATORS|%NTERTHE.AMESIN#APITALS|
+
+
+
+
+
+
+
+
+
+
+
+
+.AMEOFTHE&ACULTY-ENTOR
+
+.AMEOFTHE#LUSTER(EAD
+
+[✁:U+2701] [✂:U+2702][✄:U+2704][☎:U+260E][✆:U+2706][✝:U+271D][✞:U+271E][✟:U+271F][✠:U+2720][☎:U+260E]2[✝:U+271D][✄:U+2704]
+wildlife conservation faces unprecedented challenges due to illegal poaching activities that threaten
+endangered species globallyA [✥:U+2725]ccording to recent statisticsH over ,[★:U+2605]H[★:U+2605][★:U+2605][★:U+2605] [✥:U+2725]frican elephants are [✩:U+2729]illed
+annually for their ivory tus[✩:U+2729]sH and 156 rhinos Were poached in ,[★:U+2605],S aloneH With 8outh [✥:U+2725]frica losing R..
+rhinosA These alarming figures underscore the urgent need for effective antiEpoaching surveillance
+systems that can operate continuously in remote forest environmentsA
+Traditional Wildlife protection methods rely heavily on manual patrol systemsH Which are
+laborEintensiveH expensiveH and often ineffective in covering vast protected areasA [✶:U+2736]angers face
+significant challenges in detecting poaching incidents in realEtimeH as illegal activities typically occur in
+remote locations With limited infrastructure and communication capabilitiesA The delay betWeen incident
+occurrence and ranger response often results in irreversible Wildlife loss and alloWs poachers to escape
+undetectedA
+[✶:U+2736]ecent advances in [✷:U+2737]nternet of Things [✸:U+2738][✷:U+2737]oT[✹:U+2739] technologyH machine learningH and acoustic monitoring
+present promising opportunities for automated Wildlife protection systemsA 8oundEbased detection
+systems have emerged as particularly effective solutionsH capable of identifying gunshotsH chainsaW
+noisesH and human presence through trained classification algorithmsA [✺:U+273A]oWeverH existing systems face
+limitations in affordabilityH ranger accessibility during emergency responsesH and local verification
+capabilities Without netWor[✩:U+2729] connectivityA
+This paper presents an innovative antiEpoaching system that combines [✥:U+2725]rduinoEbased acoustic
+detection With machine learning classificationH [✥:U+2725][✷:U+2737] voiceEtoEvoice assistant integrationH and local [✻:U+273B][✼:U+273C][✽:U+273D]
+display feedbac[✩:U+2729]A The system enables forest rangers to receive realEtime information through a Web
+dashboardH access critical data through voice commandsH and verify system operation through onEdevice
+displays Without requiring constant netWor[✩:U+2729] connectivityA This multiEmodal approach significantly
+enhances response efficiency and represents a novel contribution to accessible technologyEdriven
+Wildlife conservationA
+
+[✿:U+273F]age , [❀:U+2740] [❁:U+2741][❁:U+2741]
+
+✁
+
+[✁:U+2701][✆:U+2706][✝:U+271D][✂:U+2702][✄:U+2704][☎:U+260E][✆:U+2706] [✝:U+271D][☎:U+260E][✞:U+271E]2[✄:U+2704]2[☎:U+260E]2[✝:U+271D][✄:U+2704]
+[✟:U+271F]xisting Wildlife protection systems have several limitations that reduce their effectiveness against
+poachingA [✠:U+2720]anual patrols cannot ensure continuous ,R2w monitoring of large forest areasH alloWing
+poachers to ta[✩:U+2729]e advantage of unattended and remote regionsH especially at nightA [✠:U+2720]any automated
+systems rely on expensiveH highEperformance hardWare and consume excessive poWerH ma[✩:U+2729]ing them
+unsuitable for loWEbudget and remote deploymentsA
+
+[✠:U+2720]oreoverH the lac[✩:U+2729] of local display support forces
+
+complete dependence on netWor[✩:U+2729] connectivityH leading to unreliable operation in areas With poor
+internet accessA The absence of voiceEbasedH handsEfree interaction also limits usabilityH as rangers must
+manually operate devicesH Which can compromise safety during field operationsA ThereforeH there is a
+need for a loWEcostH loWEpoWer intelligent antiEpoaching system that enables realEtime threat detection
+using
+
+embedded
+
+hardWareH
+
+supports
+
+offline
+
+verification
+
+through
+
+local
+
+displaysH
+
+and
+
+provides
+
+voiceEenabled accessibility to improve ranger efficiency and response capabilityA
+
+i[✁:U+2701] l[✂:U+2702]d[☎:U+260E][✠:U+2720][☎:U+260E]2f[☎:U+260E]e
+✑
+
+To design an automated antiEpoaching detection system capable of identifying suspicious sounds
+including gunshotsH human intrusionH chainsaW noisesH and vehicle engines in realEtime using machine
+learningEbased acoustic classification on loWEcost [✥:U+2725]rduino hardWare
+
+✑
+
+✲✒
+
+implement
+
+analog
+
+audio
+
+signal
+
+processing
+
+and
+
+feature
+
+extraction
+
+techniques
+
+✒
+
+optimi ed
+
+for
+
+microcontrollerEbased pattern recognition With minimal computational overhead
+
+✑
+
+To develop a trained classification algorithm that distinguishes poachingErelated sounds from natural
+forest ambient noise With high accuracy and loW false positive rates
+
+✑
+
+✲✒
+
+incorporate
+
+✗
+
+✓
+
+[❁:U+2741]6 ,
+
+[✻:U+273B][✼:U+273C][✽:U+273D]
+
+display
+
+providing
+
+realEtime
+
+local
+
+feedbac[✩:U+2729]
+
+✒✎
+
+detected
+
+sound
+
+classificationsH enabling system verification Without netWor[✩:U+2729] connectivity
+
+✑
+
+To develop an [✥:U+2725][✷:U+2737] voiceEtoEvoice assistant Web application that enables rangers to access alertsH query
+system statusH and retrieve data through handsEfree voice commands
+
+✑
+
+To create a comprehensive WebEbased monitoring dashboard using
+
+sodeArs and [✟:U+271F]xpressArs for realEtime
+
+✒
+
+data visuali ationH alert managementH and historical analysis
+
+✑
+
+To provide a loWEcostH easily deployableH and scalable solution suitable for remote forest environments
+
+✑
+
+✲✒
+
+reduce
+
+Wildlife
+
+poaching
+
+incidents
+
+and
+
+improve
+
+ranger
+
+response
+
+times
+
+through
+
+intelligent
+
+automationH accessible technologyH and multiEmodal information delivery
+
+[✿:U+273F]age S [❀:U+2740] [❁:U+2741][❁:U+2741]
+
+✁
+
+✑
+
+[✁:U+2701][☎:U+260E][☎:U+260E][✂:U+2702][✝:U+271D][✞:U+271E][✝:U+271D][✄:U+2704][✝:U+271D][✄:U+2704][☎:U+260E]
+
+[✆:U+2706][✝:U+271D][✞:U+271E][✟:U+271F][✠:U+2720]2 wildf[✟:U+271F][✠:U+2720]l[✟:U+271F]ei[✠:U+2720]
+The proposed antiEpoaching system consists of [✥:U+2725]rduinoEbased acoustic detection unitsH a
+local [✻:U+273B][✼:U+273C][✽:U+273D] displayH cloudEbased data storageH and an [✥:U+2725][✷:U+2737] voice assistant interfaceA The system
+continuously monitors environmental soundsH classifies potential threats locallyH displays results on
+an [✻:U+273B][✼:U+273C][✽:U+273D]H and sends detection data to a Web serverA [✶:U+2736]angers can access realEtime alerts and system
+status using handsEfree voice commands
+
+c onisrni[✠:U+2720] va2tau[✠:U+2720]u[✟:U+271F][✞:U+271E]
+The detection unit uses an [✥:U+2725]rduino microcontroller [✸:U+2738]
+
+pno2sano2[✠:U+2720]ega[✹:U+2739] With an analog
+
+microphone for continuous audio sensingA [✥:U+2725] [❁:U+2741]6n, [✷:U+2737],[✼:U+273C] [✻:U+273B][✼:U+273C][✽:U+273D] provides offline visual feedbac[✩:U+2729] by
+displaying detected sound type and confidence levelA The loWEcost and loWEpoWer hardWare
+design ma[✩:U+2729]es the system suitable for remote forest deploymentA
+
+c wesfa hial[✠:U+2720][✞:U+271E][✞:U+271E]fug
+[✥:U+2725]udio signals are sampled using the [✥:U+2725]rduino [✥:U+2725][✽:U+273D][✼:U+273C] and processed through lightWeight feature
+extraction
+
+techniques
+
+such
+
+✗✔
+
+amplitude
+
+detectionH
+
+frequency analysisH and temporal pattern
+
+analysisA [✥:U+2725]daptive thresholds are used to handle varying environmental noise conditionsA
+
+c vbn[✞:U+271E][✞:U+271E]fyfln[✟:U+271F]fau wttianld
+[✥:U+2725] hybrid approach is used Where machine learning models are trained offline and converted
+into ruleEbased decision logic for embedded executionA The classifier identifies sounds such as
+gunshotsH chainsaWsH vehiclesH human voicesH animal soundsH and ambient noise With high accuracyA
+
+c Aalnb [✥:U+2725]f[✞:U+271E]tbn[✝:U+271D] nus [✥:U+2725]n[✟:U+271F]n Aaggfug
+[✽:U+273D]etected events are instantly shoWn on the [✻:U+273B][✼:U+273C][✽:U+273D] for offline verificationA [✽:U+273D]etection data is also
+logged to a cloud database for monitoringH visualioationH and historical analysisA
+
+c Hafl[✠:U+2720] w[✞:U+271E][✞:U+271E]f[✞:U+271E][✟:U+271F]nu[✟:U+271F] ,u[✟:U+271F][✠:U+2720]iynl[✠:U+2720]
+[✥:U+2725] WebEbased [✥:U+2725][✷:U+2737] voice assistant enables rangers to query alertsH detection historyH and system
+status using natural language voice commandsA TextEtoEspeech responses alloW safeH handsEfree
+interaction during field operationsA
+
+c [★:U+2605][✠:U+2720][✩:U+2729] wttbfln[✟:U+271F]fau
+✥
+
+sodeArs bac[✩:U+2729]end With [✠:U+2720]ongo[✽:U+273D]
+
+1 stores and manages detection dataH While a Web
+
+dashboard displays alertsH trendsH and system performance metricsA
+
+[✿:U+273F]age R [❀:U+2740] [❁:U+2741][❁:U+2741]
+
+[✁:U+2701] [✁:U+2701][✆:U+2706][✝:U+271D]d[☎:U+260E][✠:U+2720][☎:U+260E] [✁:U+2701][✂:U+2702][☎:U+260E][✠:U+2720][✟:U+271F][☎:U+260E]2[✝:U+271D][✄:U+2704]
+✁|✁
+
+[✁:U+2701][✄:U+2704][✄:U+2704][✄:U+2704][✄:U+2704]2[✄:U+2704][✄:U+2704] [✄:U+2704][✄:U+2704][✞:U+271E] [✝:U+271D][☎:U+260E]e2[✄:U+2704][✄:U+2704]
+
+The planning and design phase focused on identifying the limitations of existing Wildlife
+protection systems and defining a practicalH loWEcost solution suitable for remote forest
+environmentsA [✷:U+2737]nitial brainstorming sessions Were conducted to explore various sensing methods
+such as cameraEbased monitoringH motion sensorsH and acoustic detectionA [✥:U+2725]cousticEbased
+monitoring Was selected due to its loW poWer consumptionH cost effectivenessH and ability to detect
+poachingErelated activities such as gunshots and chainsaW sounds even in loWEvisibility conditionsA
+1ased on the selected approachH the system architecture Was designed to include an
+[✥:U+2725]rduinoEbased detection unitH an analog microphone for sound captureH a local [✻:U+273B][✼:U+273C][✽:U+273D] display for
+offline verificationH cloudEbased data storageH and a WebEbased [✥:U+2725][✷:U+2737] voice assistant interfaceA [✽:U+273D]esign
+drafts Were prepared for both hardWare and softWare componentsH outlining microphoneEtoE[✥:U+2725]rduino
+signal floWH [✻:U+273B][✼:U+273C][✽:U+273D] interfacingH sound processing stagesH and data communication With the Web
+serverA 8pecial emphasis Was placed on simplicityH reliabilityH and ease of deployment in forest
+conditions[☎:U+260E]
+✁|✁
+
+[✂:U+2702][✆:U+2706][✆:U+2706][✄:U+2704][☎:U+260E][✆:U+2706][☎:U+260E][✄:U+2704][☎:U+260E][✄:U+2704][☎:U+260E]2[✝:U+271D][✄:U+2704]
+
+[✝:U+271D][✞:U+271E][✟:U+271F] [✠:U+2720]2wi[✟:U+271F]2[✟:U+271F]ldfd[✠:U+2720]el w[✞:U+271E]fc[✟:U+271F] [✠:U+2720]loeio[✟:U+271F]n cd[✟:U+271F]wsrvscd[✟:U+271F]w n[✟:U+271F]o[✟:U+271F]iew2[✟:U+271F]ld fln [✠:U+2720]ld[✟:U+271F]atfd[✠:U+2720]el eu [✞:U+271E]ftnpft[✟:U+271F] fln
+ceudpft[✟:U+271F] he2wel[✟:U+271F]ldc[☎:U+260E] gl[✠:U+2720]d[✠:U+2720]fiivb d[✞:U+271E][✟:U+271F] ytnA[✠:U+2720]le 2[✠:U+2720]hteheldteii[✟:U+271F]t pfc [✠:U+2720]ld[✟:U+271F]tufh[✟:U+271F]n p[✠:U+2720]d[✞:U+271E] d[✞:U+271E][✟:U+271F] flfiea [✟:U+271F]i[✟:U+271F]hdt[✟:U+271F]d
+2[✠:U+2720]htew[✞:U+271E]el[✟:U+271F] de held[✠:U+2720]lAeAciv hfwdAt[✟:U+271F] [✟:U+271F]lo[✠:U+2720]tel2[✟:U+271F]ldfi fAn[✠:U+2720]e[☎:U+260E] [✝:U+271D][✞:U+271E][✟:U+271F] ytnA[✠:U+2720]le u[✠:U+2720]t2pft[✟:U+271F] pfc n[✟:U+271F]o[✟:U+271F]iew[✟:U+271F]n de cf2wi[✟:U+271F]
+fAn[✠:U+2720]e c[✠:U+2720]alfic fln [✟:U+271F][✥:U+2725]dtfhd t[✟:U+271F]i[✟:U+271F]ofld ceAln u[✟:U+271F]fdAt[✟:U+271F]c Ac[✠:U+2720]la f2wi[✠:U+2720]dAn[✟:U+271F] n[✟:U+271F]d[✟:U+271F]hd[✠:U+2720]elb ut[✟:U+271F]HA[✟:U+271F]lhv flfivc[✠:U+2720]cb fln d[✟:U+271F]2wetfi
+wfdd[✟:U+271F]tl 2fdh[✞:U+271E][✠:U+2720]la[☎:U+260E]
+y 2fh[✞:U+271E][✠:U+2720]l[✟:U+271F] i[✟:U+271F]ftl[✠:U+2720]la 2en[✟:U+271F]i pfc dtf[✠:U+2720]l[✟:U+271F]n euui[✠:U+2720]l[✟:U+271F] Ac[✠:U+2720]la ifr[✟:U+271F]i[✟:U+271F]n fAn[✠:U+2720]e nfdfc[✟:U+271F]dc fln helo[✟:U+271F]td[✟:U+271F]n [✠:U+2720]lde fl
+[✟:U+271F]2r[✟:U+271F]nn[✟:U+271F]n n[✟:U+271F]h[✠:U+2720]c[✠:U+2720]elsdt[✟:U+271F][✟:U+271F]srfc[✟:U+271F]n hifcc[✠:U+2720]u[✠:U+2720]hfd[✠:U+2720]el fiaet[✠:U+2720]d[✞:U+271E]2 cA[✠:U+2720]dfri[✟:U+271F] uet ytnA[✠:U+2720]le,c i[✠:U+2720]2[✠:U+2720]d[✟:U+271F]n t[✟:U+271F]ceAth[✟:U+271F]c[☎:U+260E] [✝:U+271D][✞:U+271E][✟:U+271F] dtf[✠:U+2720]l[✟:U+271F]n
+iea[✠:U+2720]h pfc [✠:U+2720]2wi[✟:U+271F]2[✟:U+271F]ld[✟:U+271F]n fln d[✟:U+271F]cd[✟:U+271F]n [✠:U+2720]l t[✟:U+271F]fi d[✠:U+2720]2[✟:U+271F] de hifcc[✠:U+2720]uv ceAlnc cAh[✞:U+271E] fc aAlc[✞:U+271E]edcb h[✞:U+271E]f[✠:U+2720]lcfpcb [✞:U+271E]A2fl oe[✠:U+2720]h[✟:U+271F]cb
+fln f2r[✠:U+2720][✟:U+271F]ld le[✠:U+2720]c[✟:U+271F][☎:U+260E] y [★:U+2605][✩:U+2729]15 g56 W6S 2enAi[✟:U+271F] pfc d[✞:U+271E][✟:U+271F]l [✠:U+2720]ld[✟:U+271F]atfd[✟:U+271F]n de n[✠:U+2720]cwifv d[✞:U+271E][✟:U+271F] n[✟:U+271F]d[✟:U+271F]hd[✟:U+271F]n ceAln dvw[✟:U+271F] fln
+helu[✠:U+2720]n[✟:U+271F]lh[✟:U+271F] i[✟:U+271F]o[✟:U+271F]i [✠:U+2720]lcdfldiv[☎:U+260E]
+8eiiep[✠:U+2720]la [✞:U+271E]ftnpft[✟:U+271F] ofi[✠:U+2720]nfd[✠:U+2720]elb d[✞:U+271E][✟:U+271F] hieAn rfhR[✟:U+271F]ln pfc n[✟:U+271F]o[✟:U+271F]iew[✟:U+271F]n Ac[✠:U+2720]la .en[✟:U+271F][☎:U+260E]Tc fln melaeSE de
+t[✟:U+271F]h[✟:U+271F][✠:U+2720]o[✟:U+271F]b cdet[✟:U+271F]b fln 2flfa[✟:U+271F] n[✟:U+271F]d[✟:U+271F]hd[✠:U+2720]el nfdf[☎:U+260E] y p[✟:U+271F]rsrfc[✟:U+271F]n nfc[✞:U+271E]reftn pfc [✠:U+2720]2wi[✟:U+271F]2[✟:U+271F]ld[✟:U+271F]n uet t[✟:U+271F]fisd[✠:U+2720]2[✟:U+271F]
+2el[✠:U+2720]det[✠:U+2720]la fln [✞:U+271E][✠:U+2720]cdet[✠:U+2720]hfi flfivc[✠:U+2720]c[☎:U+260E] 8[✠:U+2720]lfiivb fl yg oe[✠:U+2720]h[✟:U+271F]sdesoe[✠:U+2720]h[✟:U+271F] fcc[✠:U+2720]cdfld pfc [✠:U+2720]ld[✟:U+271F]atfd[✟:U+271F]n [✠:U+2720]lde d[✞:U+271E][✟:U+271F] p[✟:U+271F]r
+fwwi[✠:U+2720]hfd[✠:U+2720]elb [✟:U+271F]lfri[✠:U+2720]la [✞:U+271E]flncsut[✟:U+271F][✟:U+271F] [✠:U+2720]ld[✟:U+271F]tfhd[✠:U+2720]el d[✞:U+271E]teAa[✞:U+271E] oe[✠:U+2720]h[✟:U+271F] he22flnc[☎:U+260E] xvcd[✟:U+271F]2si[✟:U+271F]o[✟:U+271F]i d[✟:U+271F]cd[✠:U+2720]la pfc hftt[✠:U+2720][✟:U+271F]n eAd
+de [✟:U+271F]lcAt[✟:U+271F] fhhAtfd[✟:U+271F] n[✟:U+271F]d[✟:U+271F]hd[✠:U+2720]elb t[✟:U+271F]i[✠:U+2720]fri[✟:U+271F] nfdf dtflc2[✠:U+2720]cc[✠:U+2720]elb fln c2eed[✞:U+271E] [✠:U+2720]ld[✟:U+271F]tfhd[✠:U+2720]el r[✟:U+271F]dp[✟:U+271F][✟:U+271F]l fii 2enAi[✟:U+271F]c[☎:U+260E]
+
+[✿:U+273F]age 1 [❀:U+2740] [❁:U+2741][❁:U+2741]
+
+[✁:U+2701] [✁:U+2701][✝:U+271D][✝:U+271D][✄:U+2704]e [✄:U+2704][✄:U+2704][✞:U+271E] [✁:U+2701][☎:U+260E][✠:U+2720][✂:U+2702][✄:U+2704]2[✂:U+2702][✟:U+271F][☎:U+260E]e [✄:U+2704]e[☎:U+260E][✞:U+271E]
+✁|✁
+
+[✁:U+2701][✝:U+271D][✝:U+271D][✄:U+2704]e
+
+c wisefua [☎:U+260E]flialau[✟:U+271F]iabb[✠:U+2720]i[✆:U+2706] psed as the main controller for audio processingH classificationH and
+system controlA
+c wunbag [✝:U+271D]b[✠:U+2720]l[✟:U+271F]i[✠:U+2720][✟:U+271F] [☎:U+260E]fliatdau[✠:U+2720][✆:U+2706] [✼:U+273C]aptures environmental sounds for realEtime monitoring and
+analysisA
+c [✞:U+271E][✟:U+271F][✠:U+2720]2 ,2v Av[✥:U+2725] [✥:U+2725]f[✞:U+271E]tbn[✝:U+271D][✆:U+2706] [✽:U+273D]isplays detected sound type and confidence level for offline
+verificationA
+c was[✠:U+2720]il[✞:U+271E] d [✝:U+271D]fti[✠:U+2720][✞:U+271E][✞:U+271E]il[✞:U+271E][✆:U+2706] psed to build the bac[✩:U+2729]end server for data communication and [✥:U+2725][✿:U+273F][✷:U+2737]
+handlingA
+c [☎:U+260E]auga[✥:U+2725]e[✆:U+2706] 8tores detection logs and alert history for analysis and visualioationA
+c c[✠:U+2720]nl[✟:U+271F]il[✞:U+271E][✆:U+2706] psed to develop the Web dashboard for realEtime monitoringA
+c h[✝:U+271D][✟:U+271F]dau obf[✩:U+2729]ia[✞:U+271E]nn [✞:U+271E]lfsf[✟:U+271F]rb[✠:U+2720]niuv[✆:U+2706] psed for offline audio feature extraction and machine learning
+model trainingA
+c [★:U+2605][✠:U+2720][✩:U+2729] [✆:U+2706]t[✠:U+2720][✠:U+2720]ld wh,[✆:U+2706] [✟:U+271F]nables voiceEbased interaction through speech recognition and
+textEtoEspeechA
+✁|✁
+
+[✁:U+2701][☎:U+260E][✠:U+2720][✂:U+2702][✄:U+2704]2[✂:U+2702][✟:U+271F][☎:U+260E]e
+
+a [✥:U+2725]coustic [✠:U+2720]onitoringt [✼:U+273C]hosen for loWEpoWerH costEeffective detection of poachingErelated
+activitiesA
+a 8ignal [✿:U+273F]rocessingt [✥:U+2725]pplied uuT and amplitude analysis to extract meaningful sound featuresA
+a [✟:U+271F]mbedded [✠:U+2720]achine [✻:U+273B]earningt psed decisionEtree logic for fast and efficient sound
+classification on [✥:U+2725]rduinoA
+a [✼:U+273C]loud [✽:U+273D]ata [✻:U+273B]oggingt [✷:U+2737]mplemented to enable realEtime alerts and historical analysisA
+a poiceE1ased [✷:U+2737]nteractiont psed to provide handsEfree system access for ranger safety and
+efficiencyA
+
+[✿:U+273F]age 6 [❀:U+2740] [❁:U+2741][❁:U+2741]
+
+[✁:U+2701] [✁:U+2701][☎:U+260E]e[✟:U+271F][✄:U+2704][☎:U+260E]e [✄:U+2704][✄:U+2704][✞:U+271E] [✝:U+271D]2e[✠:U+2720][✟:U+271F]ee2[✝:U+271D][✄:U+2704]
+✁|✁
+
+[✂:U+2702]2[✄:U+2704][✄:U+2704][✄:U+2704] [✁:U+2701][☎:U+260E]e[✟:U+271F][✄:U+2704][☎:U+260E]e
+
+The developed [✥:U+2725][✷:U+2737]Eenabled antiEpoaching detection system successfully demonstrated
+realEtime identification of poachingErelated sounds such as gunshotsH chainsaWsH and human
+intrusionA The embedded classification algorithm achieved an overall detection accuracy of
+approximately .6[✄:U+2704]H With gunshot detection accuracy exceeding .,[✄:U+2704] under controlled testing
+conditionsA The system responded to detected events Within an average latency of [❁:U+2741]A. secondsH and
+classification results Were reliably displayed on the local [✻:U+273B][✼:U+273C][✽:U+273D] for offline verificationA [✥:U+2725]ll detected
+events Were successfully logged to the cloud database and visualioed on the Web dashboardH While
+the [✥:U+2725][✷:U+2737] voice assistant accurately responded to ranger voice queries during simulation testsA
+✁|✁
+
+[✝:U+271D]2e[✠:U+2720][✟:U+271F]ee2[✝:U+271D][✄:U+2704]
+
+The prorect obrectives of creating a loWEcostH loWEpoWerH and intelligent antiEpoaching
+monitoring system Were successfully achievedA The results confirm that embedded machine
+learning combined With acoustic sensing can effectively detect poaching threats in real time using
+affordable hardWareA The integration of local [✻:U+273B][✼:U+273C][✽:U+273D] feedbac[✩:U+2729] and voiceEbased interaction
+significantly improved system usabilityH especially in remote and handsEfree operational scenariosA
+[✠:U+2720]inor false detections Were observed during extreme environmental noise conditions such as heavy
+Wind and rain[☎:U+260E] hoWeverH adaptive thresholding minimioed their impactA [✆:U+2706]verallH the system
+demonstrates strong potential for realEWorld deployment and provides a practicalH scalable solution
+for Wildlife protectionA
+
+[✿:U+273F]age w [❀:U+2740] [❁:U+2741][❁:U+2741]
+
+[✁:U+2701] [✁:U+2701][✆:U+2706][✝:U+271D][☎:U+260E][✝:U+271D][☎:U+260E][☎:U+260E][✆:U+2706][☎:U+260E] [✁:U+2701][✂:U+2702][✄:U+2704][✆:U+2706][✞:U+271E][✄:U+2704][✄:U+2704][✆:U+2706][☎:U+260E][☎:U+260E][✆:U+2706][✝:U+271D][✞:U+271E][☎:U+260E][✄:U+2704][✄:U+2704][✆:U+2706][☎:U+260E][✝:U+271D]
+✁|✁
+
+[✁:U+2701][✆:U+2706][✝:U+271D][☎:U+260E][✝:U+271D][☎:U+260E][☎:U+260E][✆:U+2706][☎:U+260E] [✝:U+271D][☎:U+260E]e[✠:U+2720][✆:U+2706]2[✆:U+2706][☎:U+260E]2[✝:U+271D][✄:U+2704]
+
+The developed prototype consists of an [✥:U+2725]rduinoEbased acoustic detection unit integrated With
+an analog electret microphone and a [❁:U+2741]6n, [✷:U+2737],[✼:U+273C] [✻:U+273B][✼:U+273C][✽:U+273D] displayA The system continuously monitors
+environmental soundsH processes audio signals in real timeH and classifies them into categories such
+as gunshotH chainsaWH human voiceH animal soundH or ambient noiseA [✽:U+273D]etected results along With
+confidence levels are displayed locally on the [✻:U+273B][✼:U+273C][✽:U+273D] and simultaneously transmitted to a cloud
+server for logging and visualioationA The prototype supports offline operationH loW poWer
+consumptionH and handsEfree information access through a WebEbased [✥:U+2725][✷:U+2737] voice assistantA
+✁|✁
+
+[✝:U+271D][☎:U+260E]f[☎:U+260E][✄:U+2704][✝:U+271D][✆:U+2706][✆:U+2706][☎:U+260E][✄:U+2704][☎:U+260E] [✁:U+2701][✆:U+2706][✝:U+271D][✠:U+2720][☎:U+260E]ee
+
+The prototype Was developed in a phased mannerH starting With hardWare interfacing of the
+microphone and [✻:U+273B][✼:U+273C][✽:U+273D] With the [✥:U+2725]rduino microcontrollerA uirmWare Was then implemented to handle
+audio samplingH signal processingH and embedded classification logicA [✆:U+2706]ne of the main challenges
+Was implementing sound classification Within [✥:U+2725]rduino[✞:U+271E]s limited memory and processing capabilityH
+Which Was addressed by using lightWeight signal processing features and converting trained
+machine learning models into ruleEbased decision logicA [✟:U+271F]nvironmental noise variation Was another
+challengeH resolved using adaptive thresholding techniquesA [✼:U+273C]loud integration and voice assistant
+features Were added after stable hardWare operation Was achievedA
+[✁:U+2701]i[✁:U+2701]
+
+[✁:U+2701][☎:U+260E]e[☎:U+260E]2[✄:U+2704][✄:U+2704] [✄:U+2704][✄:U+2704][✞:U+271E] [✟:U+271F][✄:U+2704][✄:U+2704]2[✞:U+271E][✄:U+2704][☎:U+260E]2[✝:U+271D][✄:U+2704]
+
+The prototype Was tested using both recorded audio samples and realEWorld sound
+simulations such as gunshotEli[✩:U+2729]e impulsesH chainsaW noiseH and human speechA The system
+achieved an overall detection accuracy of approximately .6[✄:U+2704]H With reliable classification results
+displayed on the [✻:U+273B][✼:U+273C][✽:U+273D] Within an average response time of under , secondsA [✼:U+273C]loud data logging and
+dashboard visualioation Were verified for consistency and accuracyA poice assistant testing
+confirmed correct response to ranger queries during simulationsA ueedbac[✩:U+2729] indicated that the system
+is easy to operateH responsiveH and suitable for field deploymentH With scope for further accuracy
+improvement under extreme environmental conditionsA
+
+[✿:U+273F]age 5 [❀:U+2740] [❁:U+2741][❁:U+2741]
+
+[✁:U+2701] [✁:U+2701][✝:U+271D][✄:U+2704][✠:U+2720][✄:U+2704][✟:U+271F]e2[✝:U+271D][✄:U+2704]
+✁|✁
+
+[✆:U+2706][✟:U+271F][✆:U+2706][✆:U+2706][✄:U+2704][✆:U+2706][☎:U+260E]
+
+This prorect addressed the critical problem of Wildlife poaching by developing a loWEcostH
+[✥:U+2725][✷:U+2737]Eenabled acoustic detection system capable of continuous forest monitoringA The main obrective
+Was to design an affordableH loWEpoWer solution that could detect poachingErelated sounds such as
+gunshots and chainsaWs in real time While supporting offline verification and handsEfree access for
+forest rangersA The developed system successfully met these obrectives by achieving approximately
+.6[✄:U+2704] detection accuracyH providing realEtime local [✻:U+273B][✼:U+273C][✽:U+273D] feedbac[✩:U+2729]H cloudEbased alert loggingH and
+voiceEenabled information accessA The results demonstrate that embedded machine learning
+combined With acoustic sensing is an effective and practical approach for Wildlife protection in
+resourceEconstrained environmentsA
+
+✁|✁
+
+[✁:U+2701][☎:U+260E][✆:U+2706]e[✝:U+271D][✄:U+2704][✄:U+2704][✄:U+2704] [✁:U+2701][☎:U+260E][✞:U+271E][✄:U+2704][☎:U+260E][✠:U+2720][☎:U+260E]2[✝:U+271D][✄:U+2704]
+
+wor[✩:U+2729]ing on this prorect significantly enhanced our understanding of embedded systemsH
+signal processingH and applied machine learningA we gained handsEon experience in integrating
+hardWare and softWare componentsH optimioing algorithms for limited microcontroller resourcesH
+and deploying realEtime systemsA The prorect also improved our problemEsolving s[✩:U+2729]ills by
+addressing challenges such as noise handling and hardWare constraintsA [✆:U+2706]verallH this prorect
+strengthened our practical [✩:U+2729]noWledgeH teamWor[✩:U+2729] abilitiesH and confidence in developing realEWorld
+engineering solutions With social and environmental impactA
+
+[✿:U+273F]age . [❀:U+2740] [❁:U+2741][❁:U+2741]
+
+[✁:U+2701] [✟:U+271F]2e[✟:U+271F][✄:U+2704][✄:U+2704]e
+
+[✿:U+273F]age [❁:U+2741][★:U+2605] [❀:U+2740] [❁:U+2741][❁:U+2741]
+
+[✿:U+273F]age [❁:U+2741][❁:U+2741] [❀:U+2740] [❁:U+2741][❁:U+2741]
+
+

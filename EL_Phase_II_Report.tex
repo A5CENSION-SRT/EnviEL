@@ -188,6 +188,15 @@ Recent advances in Internet of Things (IoT) technology, machine learning, and ac
 
 This paper presents an innovative anti-poaching system that combines Arduino-based acoustic detection with machine learning classification, AI voice-to-voice assistant integration, and local LCD display feedback. The system enables forest rangers to receive real-time information through a web dashboard, access critical data through voice commands, and verify system operation through on-device displays without requiring constant network connectivity. This multi-modal approach significantly enhances response efficiency and represents a novel contribution to accessible technology-driven wildlife conservation.
 
+As illustrated in Figure~\ref{fig:problem_definition_motivation}, traditional wildlife protection frameworks face substantial operational constraints, including restricted spatial coverage of manual ranger patrols, the lack of 24/7 continuous monitoring, cost-prohibitive sensor setups, high power requirements, and a heavy dependency on active internet connectivity. SentinelSound mitigates these challenges through a low-cost, Edge-Al acoustic monitoring node that works offline using local LCD verification, runs gunshot/chainsaw ML classification, and integrates GPS tracking and Gemini voice commands to empower rangers with hands-free, real-time threat response capabilities.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/problem_definition_motivation.png}
+    \caption{Challenges in Existing Wildlife Protection Systems and Proposed Edge-AI Solution}
+    \label{fig:problem_definition_motivation}
+\end{figure}
+
 \section{Real-Time Application and Use Cases}
 The real-time application of the project focuses on two primary threat models:
 \begin{enumerate}
@@ -346,17 +355,60 @@ Table~\ref{tab:pin_config} lists the exact hardware wiring schemas used in the m
 \midrule
 ESP32 & MAX9814 Microphone & GPIO 34 & OUT & Analog Audio Sampling \\
 ESP32 & Status LED & GPIO 2 & VCC & Visual Alert Indicator \\
-ESP32 & I2C LCD & GPIO 21 (SDA) & SDA & System status display \\
-ESP32 & I2C LCD & GPIO 22 (SCL) & SCL & System clock line \\
+ESP32 & I2C LCD & GPIO 21 & SDA & System status display \\
+ESP32 & I2C LCD & GPIO 22 & SCL & System clock line \\
+ESP32 & Battery Voltage Divider & GPIO 35 & Midpoint & VBAT Level Telemetry \\
 \midrule
 Arduino Uno & MAX9814 Microphone & Pin A0 & OUT & Waveform streaming \\
-Arduino Uno & Status LED & Pin 13 & VCC & Event detection blinker \\
-Arduino Uno & SSD1306 OLED & Pin A4 (SDA) & SDA & Telemetry display \\
-Arduino Uno & SSD1306 OLED & Pin A5 (SCL) & SCL & Telemetry clock \\
+Arduino Uno & Status LED & Pin 7 & VCC & Event detection blinker \\
+Arduino Uno & SSD1306 OLED & Pin A4 & SDA & Telemetry display \\
+Arduino Uno & SSD1306 OLED & Pin A5 & SCL & Telemetry clock \\
 \bottomrule
 \end{tabular}%
 }
 \end{table}
+
+The physical wiring schematics corresponding to Table~\ref{tab:pin_config} are visualized in Figure~\ref{fig:hardware_schematics}. The nodes are designed for modular field deployments, allowing interchangeable analog components while maintaining uniform pin mapping layouts.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+        box/.style={rectangle, draw=black, thick, minimum width=2.6cm, minimum height=2.8cm, fill=gray!8, align=center, rounded corners},
+        sensor/.style={rectangle, draw=black, thick, minimum width=2.2cm, minimum height=1.0cm, fill=orange!8, align=center, rounded corners},
+        display/.style={rectangle, draw=black, thick, minimum width=2.2cm, minimum height=1.0cm, fill=blue!8, align=center, rounded corners},
+        led/.style={circle, draw=black, thick, minimum size=0.9cm, fill=red!10, align=center, font=\footnotesize},
+        conn/.style={draw=black, thick, ->, >=stealth}
+    ]
+        % ESP32 Wiring Diagram
+        \node[box] (esp32) at (0,0) {\textbf{ESP32}\\\textbf{Dev Module}};
+        \node[sensor] (mic1) at (-4,0.5) {\textbf{MAX9814}\\\textbf{Microphone}};
+        \node[display] (lcd1) at (4,0.5) {\textbf{16x2 I2C}\\\textbf{LCD Display}};
+        \node[led] (led1) at (-1.5,-2.5) {\textbf{LED}};
+        \node[sensor] (bat1) at (1.5,-2.5) {\textbf{Voltage}\\\textbf{Divider}};
+
+        % Connections for ESP32
+        \path (mic1.east) edge[conn] node[above, font=\tiny] {OUT $\rightarrow$ GPIO34} (esp32.160);
+        \path (esp32.20) edge[conn] node[above, font=\tiny] {GPIO21 $\rightarrow$ SDA} (lcd1.west);
+        \path (esp32.340) edge[conn] node[below, font=\tiny, yshift=-1mm] {GPIO22 $\rightarrow$ SCL} (lcd1.190);
+        \path (esp32.250) edge[conn] node[left, font=\tiny] {GPIO2 $\rightarrow$ VCC} (led1.north);
+        \path (esp32.290) edge[conn] node[right, font=\tiny] {GPIO35 $\leftarrow$ Mid} (bat1.north);
+
+        % Arduino Uno Wiring Diagram
+        \node[box] (uno) at (0,-6.0) {\textbf{Arduino}\\\textbf{Uno}};
+        \node[sensor] (mic2) at (-4,-5.5) {\textbf{MAX9814}\\\textbf{Microphone}};
+        \node[display] (oled) at (4,-5.5) {\textbf{SSD1306}\\\textbf{OLED (I2C)}};
+        \node[led] (led2) at (0,-8.5) {\textbf{LED}};
+
+        % Connections for Arduino Uno
+        \path (mic2.east) edge[conn] node[above, font=\tiny] {OUT $\rightarrow$ Pin A0} (uno.160);
+        \path (uno.20) edge[conn] node[above, font=\tiny] {Pin A4 $\rightarrow$ SDA} (oled.west);
+        \path (uno.340) edge[conn] node[below, font=\tiny, yshift=-1mm] {Pin A5 $\rightarrow$ SCL} (oled.190);
+        \path (uno.south) edge[conn] node[right, font=\tiny] {Pin 7 $\rightarrow$ VCC} (led2.north);
+        
+    \end{tikzpicture}
+    \caption{Hardware Schematic and Pin Wiring Configurations for ESP32 (top) and Arduino Uno (bottom) Sensor Nodes}
+    \label{fig:hardware_schematics}
+\end{figure}
 
 \section{Software Tools Used}
 The software stack spans edge programming, gateway inference, and dashboard presentation:
@@ -432,10 +484,47 @@ A hybrid approach is used where machine learning models are trained offline and 
 Detected events are instantly shown on the LCD for offline verification. Detection data is also logged to a cloud database for monitoring, visualization, and historical analysis.
 
 \subsection{Voice Assistant Interface}
-A web-based AI voice assistant enables rangers to query alerts, detection history, and system status using natural language voice commands. Text-to-speech responses allow safe, hands-free interaction during field operations.
+A web-based AI voice assistant enables rangers to query alerts, detection history, and system status using natural language voice commands. Text-to-speech responses allow safe, hands-free interaction during field operations. The voice assistant interface, powered by Google Gemini, is illustrated in Figure~\ref{fig:voice_chat}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.55\textwidth]{images/gemini_voice_assistant.png}
+    \caption{SentinelSound AI Voice-Enabled Command Interface}
+    \label{fig:voice_chat}
+\end{figure}
 
 \subsection{Web Application}
-A Node.js backend with MongoDB stores and manages detection data, while a web dashboard displays alerts, trends, and system performance metrics.
+A Node.js backend with MongoDB stores and manages detection data, while a web dashboard displays alerts, trends, and system performance metrics. Figure~\ref{fig:ecoguard_landing} and Figure~\ref{fig:gis_map} present the public interface and the interactive geographic information system (GIS) mapping application, respectively. Furthermore, Figure~\ref{fig:ranger_dashboard_snap} and Figure~\ref{fig:events_log} present the Live Control Dashboard and the Poaching Events Log.
+
+\begin{figure}[H]
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/ecoguard_landing_page.png}
+        \caption{EcoGuard Public Landing Page Portal}
+        \label{fig:ecoguard_landing}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/gis_sensor_map.png}
+        \caption{Interactive GIS Sensor Map and Geolocation}
+        \label{fig:gis_map}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/ranger_dashboard.png}
+    \caption{Ranger Control Dashboard Live Feeds}
+    \label{fig:ranger_dashboard_snap}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/poaching_events_log.png}
+    \caption{Poaching Events Log and Verification Queue}
+    \label{fig:events_log}
+\end{figure}
 
 \section{Edge Noise Gate and Dual-Stage Waveform Capture}
 To optimize power consumption, the microcontroller nodes continuously monitor the microphone output using a rapid, low-overhead peak-to-peak amplitude tracking loop. Rather than transferring continuous audio data, the node operates in a sleep-and-poll cycle. This low-power noise gating logic prevents continuous analog-to-digital conversion from draining the battery~\cite{ref_ghadiri}.
@@ -447,20 +536,37 @@ The peak-to-peak amplitude $A_{p-p}$ is calculated over a 50\,ms sample window (
 where $V_{\text{max}}$ and $V_{\text{min}}$ represent the highest and lowest voltage readouts recorded by the 12-bit ADC ($0$ to $4095$ range).
 If $A_{p-p}$ is below the noise gate threshold of $1000$ (representing ambient wind or insect chirps), the data is discarded. If it exceeds $1000$, a full $1.0$-second audio buffer ($4000$ samples at a sampling rate of $4$\,kHz, which satisfies the Shannon sampling limit for forest acoustics~\cite{ref_shannon}) is captured and streamed over USB Serial to the gateway.
 
+\subsection{Hardware-Accelerated ADC Conversion}
+For the Arduino Uno (ATmega328P) node, sampling audio reliably at $4$\,kHz requires low-level optimization of the microcontroller's internal ADC registers. By default, the ATmega328P prescaler is configured to $128$, resulting in an ADC clock speed of $125$\,kHz and a conversion latency of approximately $112\,\mu\text{s}$. This default speed consumes significant CPU cycles and creates substantial jitter in high-frequency sampling loops.
+
+To overcome this bottleneck, the node firmware accelerates conversion by altering the ADC control and status register A (\texttt{ADCSRA}) prescaler bits:
+\begin{lstlisting}[language={C++}, caption={ADC Prescaler Register Configuration in firmware}]
+// Speed up ADC: prescaler 16 -> ~14 us per analogRead (vs 112 us default)
+ADCSRA = (ADCSRA & 0xF8) | 0x04;
+\end{lstlisting}
+Setting the prescaler division factor to $16$ increases the ADC clock to $1.0$\,MHz. This drops the sampling conversion time to approximately $14\,\mu\text{s}$ per \texttt{analogRead}, leaving ample clock cycles for amplitude tracking and serial streaming.
+
+\subsection{Battery Level Telemetry and Voltage Division}
+The ESP32 node incorporates real-time power monitoring to track battery depletion. Since lithium-polymer (LiPo) batteries operate between $3.0$\,V (depleted) and $4.2$\,V (fully charged), direct connection to the ESP32's $3.3$\,V GPIO inputs would cause hardware damage and sensor saturation. 
+
+To safely monitor voltage, a $1:2$ resistive voltage divider consisting of two $100\,\text{k}\Omega$ resistors is connected in parallel with the battery (\text{VBAT}), routing the midpoint voltage to the analog pin \texttt{GPIO35}. In firmware, the raw 12-bit ADC input is scaled back to a voltage and converted to a battery percentage:
+\begin{equation}
+    V_{\text{BAT}} = \left( \frac{\text{ADC}_{\text{raw}}}{4095.0} \right) \times 3.3 \times 2.0, \quad \text{Battery \%} = \frac{V_{\text{BAT}} - 3.0}{4.2 - 3.0} \times 100
+\end{equation}
+The percentage value is transmitted to the Supabase backend during pings to alert rangers when nodes require physical maintenance.
+
 \begin{figure}[H]
-    \begin{minipage}{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/gunshot_waveform_noise_gate.png}
-        \caption{Waveform vs. Noise Gate Threshold}
-        \label{fig:gunshot_waveform_noise_gate}
-    \end{minipage}
-    \hfill
-    \begin{minipage}{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/noise_gate_detailed.png}
-        \caption{Detailed Two-Stage Noise Gating Mechanism}
-        \label{fig:detailed_noise_gate}
-    \end{minipage}
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/gunshot_waveform_noise_gate.png}
+    \caption{Waveform vs. Noise Gate Threshold}
+    \label{fig:gunshot_waveform_noise_gate}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/noise_gate_detailed.png}
+    \caption{Detailed Two-Stage Noise Gating Mechanism}
+    \label{fig:detailed_noise_gate}
 \end{figure}
 
 The detailed two-stage noise gating mechanism depicted in Figure~\ref{fig:detailed_noise_gate} functions as a power-efficiency and precision filter. In the first stage, the ESP32 or Arduino Uno microcontroller performs low-level peak-to-peak amplitude $A_{p-p}$ evaluation in hardware. In the second stage, if the amplitude threshold is breached, the raw waveform data is streamed to the gateway where a digital noise gate threshold (defined as $NOISE\_GATE\_AMPLITUDE = 110$ in the python script) is checked:
@@ -482,19 +588,17 @@ The audio buffer is processed using a window length of 512 samples and hop lengt
 \end{equation}
 
 \begin{figure}[H]
-    \begin{minipage}{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/detection_pipeline.png}
-        \caption{Acoustic Threat Detection Pipeline Stages}
-        \label{fig:detection_pipeline}
-    \end{minipage}
-    \hfill
-    \begin{minipage}{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/mfcc_pipeline_detailed.png}
-        \caption{MFCC Feature Extraction Pipeline}
-        \label{fig:mfcc_pipeline_details}
-    \end{minipage}
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/detection_pipeline.png}
+    \caption{Acoustic Threat Detection Pipeline Stages}
+    \label{fig:detection_pipeline}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/mfcc_pipeline_detailed.png}
+    \caption{MFCC Feature Extraction Pipeline}
+    \label{fig:mfcc_pipeline_details}
 \end{figure}
 
 The acoustic feature extraction pipeline, detailed in Figure~\ref{fig:mfcc_pipeline_details}, maps the normalized time-domain signal to the non-linear Mel scale to mimic human auditory perception. In our codebase, rather than manually implementing windowing, FFT, filter banks, and discrete cosine transforms (which are computed internally by Librosa's backend library), the feature vector components are aggregated directly from the extracted coefficient windows:
@@ -517,10 +621,74 @@ Alerts generated by the Python bridge are logged to the local SQLite database us
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.55\textwidth]{images/database_flow_diagram.png}
+    \includegraphics[width=0.85\textwidth]{images/database_flow_diagram.png}
     \caption{Local-First Data Architecture and Database Flow Diagram}
     \label{fig:database_flow_diagram}
 \end{figure}
+
+\subsection{Database Schema Design}
+The relational database layout that manages telemetry, alerts, and node configurations is illustrated in the Entity-Relationship (ER) diagram in Figure~\ref{fig:database_er_diagram}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/database_er_diagram.png}
+    \caption{SentinelSound Relational Database Schema and Table Entity-Relationship Diagram}
+    \label{fig:database_er_diagram}
+\end{figure}
+
+The database architecture is designed with a normalized, relational structure optimized for transactional integrity and low-latency queries on resource-constrained edge gateways. The system utilizes four core entities:
+\begin{itemize}
+    \item \textbf{\texttt{sensor\_nodes} (Physical Devices):} Tracks the state, physical location, and battery level of deployed edge nodes. The attributes include:
+    \begin{itemize}
+        \item \texttt{id} (\texttt{TEXT}, Primary Key): Unique alphanumeric identifier for each physical deployment node (e.g., \texttt{NODE-001}).
+        \item \texttt{name} (\texttt{TEXT}, Not Null): User-friendly display label.
+        \item \texttt{zone} (\texttt{TEXT}, Default \texttt{'Unassigned'}): Logical division grouping nodes by forest sector (e.g., \texttt{'Bandipur-Zone-A'}).
+        \item \texttt{gps\_lat} and \texttt{gps\_lon} (\texttt{REAL}, Default \texttt{0.0}): Spatial coordinates mapping node geolocations for GIS plotting.
+        \item \texttt{battery\_level} (\texttt{INTEGER}, Default \texttt{100}): Ranging from $0$ to $100$ to represent the estimated battery state of charge from voltage telemetry.
+        \item \texttt{status} (\texttt{TEXT}, Default \texttt{'online'}): Constrained by check-in rules to values of \texttt{'online'}, \texttt{'offline'}, or \texttt{'maintenance'}.
+        \item \texttt{last\_seen} (\texttt{TEXT}, Default current timestamp): Tracked to detect node dropouts.
+    \end{itemize}
+    
+    \item \textbf{\texttt{poaching\_events} (Acoustic Detections):} Stores incident data triggered by high-amplitude noise-gate events. The attributes include:
+    \begin{itemize}
+        \item \texttt{id} (\texttt{INTEGER}, Primary Key, Autoincrement): Monotonically increasing event ID.
+        \item \texttt{node\_id} (\texttt{TEXT}, Foreign Key): Relates the event to the originating record in the \texttt{sensor\_nodes} table.
+        \item \texttt{timestamp} (\texttt{TEXT}, Default current time): Records the temporal moment of incident capture.
+        \item \texttt{event\_type} (\texttt{TEXT}, Not Null): Classification result of the model (e.g., \texttt{'gunshot'}, \texttt{'chainsaw'}, \texttt{'vehicle'}).
+        \item \texttt{confidence} (\texttt{REAL}, Not Null): Machine learning model probability score.
+        \item \texttt{severity} (\texttt{TEXT}, Not Null): Binned into \texttt{'low'}, \texttt{'medium'}, \texttt{'high'}, or \texttt{'critical'} check constraints.
+        \item \texttt{verification\_status} (\texttt{TEXT}, Default \texttt{'pending'}): Operational triage status binned into \texttt{'pending'}, \texttt{'verified\_poaching'}, \texttt{'false\_positive'}, or \texttt{'under\_review'}.
+        \item \texttt{verified\_at} (\texttt{TEXT}): Logs the timestamp of ranger verification.
+        \item \texttt{raw\_amplitude} (\texttt{INTEGER}): Records peak-to-peak amplitude $A_{p-p}$ for threshold tuning.
+        \item \texttt{audio\_url} (\texttt{TEXT}): Optional storage pointer to raw audio waveform files.
+        \item \texttt{notes} (\texttt{TEXT}): Explanatory ranger comments entered during triage.
+        \item \texttt{response\_dispatched} (\texttt{INTEGER}, Default \texttt{0}): Boolean flag tracking whether patrol teams have been deployed.
+    \end{itemize}
+
+    \item \textbf{\texttt{patrol\_units} (Ranger Teams):} Manages personnel deployment metadata. The attributes include \texttt{id} (\texttt{TEXT}, Primary Key), \texttt{name} (\texttt{TEXT}, Not Null), and \texttt{status} (\texttt{TEXT}, Default \texttt{'standby'} representing active dispatch states).
+    \item \textbf{\texttt{sessions} (Web Sessions):} Secures administrative state, capturing \texttt{id} (\texttt{TEXT}, Primary Key) and creation timestamp data.
+\end{itemize}
+
+\subsection{Referential Integrity and Indexing Optimization}
+To prevent database corruption and maximize dashboard loading performance, several relational constraints and indexing strategies are implemented:
+\begin{itemize}
+    \item \textbf{One-to-Many Cardinality:} The relationship between \texttt{sensor\_nodes} and \texttt{poaching\_events} has a cardinality of $1:N$. One physical node may detect multiple acoustic threats, but each event belongs to exactly one node. This relationship is enforced via the foreign key constraint:
+    \begin{equation}
+        \texttt{poaching\_events.node\_id} \xrightarrow{\text{FK}} \texttt{sensor\_nodes.id}
+    \end{equation}
+    To guarantee cascade integrity, SQLite's foreign key enforcement is turned on using:
+    \begin{lstlisting}[language=SQL]
+PRAGMA foreign_keys = ON;
+    \end{lstlisting}
+    
+    \item \textbf{Database Indexing:} High-frequency polling and real-time dashboard queries require rapid data retrieval. Indexing columns prevents sequential full-table scans. Four custom indices are built:
+    \begin{itemize}
+        \item \texttt{idx\_events\_ts}: Indexes \texttt{poaching\_events(timestamp DESC)} to optimize dashboard landing queries that fetch recent events.
+        \item \texttt{idx\_events\_node}: Indexes \texttt{poaching\_events(node\_id)} to optimize relational joins between events and spatial node tables.
+        \item \texttt{idx\_events\_status}: Indexes \texttt{poaching\_events(verification\_status)} to accelerate triage queues.
+        \item \texttt{idx\_events\_sev}: Indexes \texttt{poaching\_events(severity)} to allow prioritized alert fetching.
+    \end{itemize}
+\end{itemize}
 
 To support hands-free field execution, voice logs uploaded by rangers are processed through Google Gemini 2.0. Generative language models~\cite{ref_brown} utilizing underlying multi-head self-attention mechanisms~\cite{ref_vaswani} translate spoken sentences into structured parameters. The text transcript is passed to a regex command router:
 \begin{lstlisting}[language=SQL, caption={SQL Event Status Update execution}]
@@ -596,53 +764,7 @@ The developed AI-enabled anti-poaching detection system successfully demonstrate
 \subsection{Discussion}
 The project objectives of creating a low-cost, low-power, and intelligent anti-poaching monitoring system were successfully achieved. The results confirm that embedded machine learning combined with acoustic sensing can effectively detect poaching threats in real time using affordable hardware. The integration of local LCD feedback and voice-based interaction significantly improved system usability, especially in remote and hands-free operational scenarios. Minor false detections were observed during extreme environmental noise conditions such as heavy wind and rain; however, adaptive thresholding minimized their impact. Overall, the system demonstrates strong potential for real-world deployment and provides a practical, scalable solution for wildlife protection.
 
-\section{System Snapshots}
-The following subsections present visual snapshots of the deployed software system.
 
-\subsection{EcoGuard Landing Page \& GIS Sensor Map}
-Figures \ref{fig:ecoguard_landing} and \ref{fig:gis_map} present the public interface and the interactive geographic information system (GIS) mapping application:
-\begin{figure}[H]
-    \begin{minipage}{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/ecoguard_landing_page.png}
-        \caption{EcoGuard Public Landing Page Portal}
-        \label{fig:ecoguard_landing}
-    \end{minipage}
-    \hfill
-    \begin{minipage}{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/gis_sensor_map.png}
-        \caption{Interactive GIS Sensor Map and Geolocation}
-        \label{fig:gis_map}
-    \end{minipage}
-\end{figure}
-
-\subsection{Ranger Control Dashboard \& Poaching Events Log}
-Figures \ref{fig:ranger_dashboard_snap} and \ref{fig:events_log} illustrate the operator metrics panel and the corresponding verification database logs:
-\begin{figure}[H]
-    \begin{minipage}{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/ranger_dashboard.png}
-        \caption{Ranger Control Dashboard Live Feeds}
-        \label{fig:ranger_dashboard_snap}
-    \end{minipage}
-    \hfill
-    \begin{minipage}{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/poaching_events_log.png}
-        \caption{Poaching Events Log and Verification Queue}
-        \label{fig:events_log}
-    \end{minipage}
-\end{figure}
-
-\subsection{AI Voice Assistant Interface}
-Figure~\ref{fig:voice_chat} displays the conversational query interface driven by Google Gemini 2.0 Flash for ranger hands-free operation:
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.55\textwidth]{images/gemini_voice_assistant.png}
-    \caption{SentinelSound AI Voice-Enabled Command Interface}
-    \label{fig:voice_chat}
-\end{figure}
 
 \section{README / Operations Guide}
 Follow these steps to deploy and run the **SentinelSound** project:

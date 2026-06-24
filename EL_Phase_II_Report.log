@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian) (preloaded format=pdflatex 2026.1.22)  24 JUN 2026 21:34
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian) (preloaded format=pdflatex 2026.1.22)  24 JUN 2026 22:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -906,6 +906,12 @@ Overfull \hbox (27.65263pt too wide) in paragraph at lines 162--172
 
 ]
 Chapter 1.
+<images/problem_definition_motivation.png, id=244, 1407.2575pt x 1126.2075pt>
+File: images/problem_definition_motivation.png Graphic file (type png)
+<use images/problem_definition_motivation.png>
+Package pdftex.def Info: images/problem_definition_motivation.png  used on inpu
+t line 195.
+(pdftex.def)             Requested size: 317.07614pt x 253.74663pt.
 
 
 
@@ -913,25 +919,24 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.196     \item \textbf
-                       {Intrusion and Vehicle Detection:} Spotting illegal o...
-[1
+l.199 
+       [1
 
 ]
-<images/anti_poaching_workflow.png, id=247, 634.37pt x 732.7375pt>
+<images/anti_poaching_workflow.png, id=249, 634.37pt x 732.7375pt>
 File: images/anti_poaching_workflow.png Graphic file (type png)
 <use images/anti_poaching_workflow.png>
 Package pdftex.def Info: images/anti_poaching_workflow.png  used on input line 
-211.
+220.
 (pdftex.def)             Requested size: 217.42265pt x 251.13997pt.
-<images/response_workflow.png, id=249, 592.2125pt x 1148.29pt>
+<images/response_workflow.png, id=251, 592.2125pt x 1148.29pt>
 File: images/response_workflow.png Graphic file (type png)
 <use images/response_workflow.png>
-Package pdftex.def Info: images/response_workflow.png  used on input line 218.
+Package pdftex.def Info: images/response_workflow.png  used on input line 227.
 (pdftex.def)             Requested size: 217.42265pt x 421.58412pt.
 
 
-[2]
+[2 <./images/problem_definition_motivation.png (PNG copy)>]
 
 [3 <./images/anti_poaching_workflow.png> <./images/response_workflow.png>]
 Chapter 2.
@@ -944,47 +949,47 @@ Package microtype Info: Loading generic protrusion settings for font family
 [4
 
 ]
-Underfull \hbox (badness 3323) in paragraph at lines 266--266
+Underfull \hbox (badness 3323) in paragraph at lines 275--275
 []\OT1/cmr/m/n/10.95 (+20) Motion-activated op-ti-
  []
 
 
-Underfull \hbox (badness 5637) in paragraph at lines 266--266
+Underfull \hbox (badness 5637) in paragraph at lines 275--275
 []\OT1/cmr/m/n/10.95 (+20) High-resolution vi-sual
  []
 
 
-Underfull \hbox (badness 7379) in paragraph at lines 266--266
+Underfull \hbox (badness 7379) in paragraph at lines 275--275
 []\OT1/cmr/m/n/10.95 (+20) Multi-spectral re-mote
  []
 
 
-Underfull \hbox (badness 1320) in paragraph at lines 266--266
+Underfull \hbox (badness 1320) in paragraph at lines 275--275
 \OT1/cmr/m/n/10.95 (+20) vis-i-bil-ity; no acous-tic
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 266--266
+Underfull \hbox (badness 10000) in paragraph at lines 275--275
 []\OT1/cmr/m/n/10.95 (+20) Distributed ar-ray of
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 266--266
+Underfull \hbox (badness 10000) in paragraph at lines 275--275
 \OT1/cmr/m/n/10.95 (+20) high-grade acous-tic
  []
 
 
-Underfull \hbox (badness 5050) in paragraph at lines 266--266
+Underfull \hbox (badness 5050) in paragraph at lines 275--275
 \OT1/cmr/m/n/10.95 (+20) con-stant power, and
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 266--266
+Underfull \hbox (badness 10000) in paragraph at lines 275--275
 []\OT1/cmr/m/n/10.95 (+20) Extremely ex-pen-sive;
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 266--266
+Underfull \hbox (badness 10000) in paragraph at lines 275--275
 \OT1/cmr/m/n/10.95 (+20) un-suited for off-grid
  []
 
@@ -994,16 +999,16 @@ Underfull \hbox (badness 10000) in paragraph at lines 266--266
 
 [6]
 Chapter 3.
-<images/system_at_a_glance.png, id=317, 928.46875pt x 771.88374pt>
+<images/system_at_a_glance.png, id=320, 928.46875pt x 771.88374pt>
 File: images/system_at_a_glance.png Graphic file (type png)
 <use images/system_at_a_glance.png>
-Package pdftex.def Info: images/system_at_a_glance.png  used on input line 312.
+Package pdftex.def Info: images/system_at_a_glance.png  used on input line 321.
 
 (pdftex.def)             Requested size: 217.42265pt x 180.75668pt.
-<images/system_architecture.png, id=318, 1541.76pt x 1027.84pt>
+<images/system_architecture.png, id=321, 1541.76pt x 1027.84pt>
 File: images/system_architecture.png Graphic file (type png)
 <use images/system_architecture.png>
-Package pdftex.def Info: images/system_architecture.png  used on input line 319
+Package pdftex.def Info: images/system_architecture.png  used on input line 328
 .
 (pdftex.def)             Requested size: 217.42265pt x 144.94742pt.
 
@@ -1012,7 +1017,7 @@ Package pdftex.def Info: images/system_architecture.png  used on input line 319
 
  <./images/system_at_a_glance.png> <./images/system_architecture.png (PNG copy)
 >]
-Underfull \hbox (badness 10000) in paragraph at lines 358--358
+Underfull \hbox (badness 10000) in paragraph at lines 368--368
 []\OT1/cmr/bx/n/10.95 (+20) Peripheral
  []
 
@@ -1021,133 +1026,56 @@ Underfull \hbox (badness 10000) in paragraph at lines 358--358
 [8]
 
 [9]
+
+[10]
 Chapter 4.
 
 
-[10
+[11
 
 ]
-Overfull \hbox (42.00284pt too wide) in paragraph at lines 443--444
+<images/gemini_voice_assistant.png, id=378, 2887.78876pt x 1589.94pt>
+File: images/gemini_voice_assistant.png Graphic file (type png)
+<use images/gemini_voice_assistant.png>
+Package pdftex.def Info: images/gemini_voice_assistant.png  used on input line 
+491.
+(pdftex.def)             Requested size: 249.13371pt x 137.14459pt.
+<images/ecoguard_landing_page.png, id=383, 2887.78876pt x 1589.94pt>
+File: images/ecoguard_landing_page.png Graphic file (type png)
+<use images/ecoguard_landing_page.png>
+Package pdftex.def Info: images/ecoguard_landing_page.png  used on input line 5
+02.
+(pdftex.def)             Requested size: 217.42265pt x 119.7013pt.
+<images/gis_sensor_map.png, id=384, 2887.78876pt x 1589.94pt>
+File: images/gis_sensor_map.png Graphic file (type png)
+<use images/gis_sensor_map.png>
+Package pdftex.def Info: images/gis_sensor_map.png  used on input line 509.
+(pdftex.def)             Requested size: 217.42265pt x 119.7013pt.
+<images/ranger_dashboard.png, id=385, 1894.07625pt x 907.39pt>
+File: images/ranger_dashboard.png Graphic file (type png)
+<use images/ranger_dashboard.png>
+Package pdftex.def Info: images/ranger_dashboard.png  used on input line 517.
+(pdftex.def)             Requested size: 385.02547pt x 184.4516pt.
+
+
+[12 <./images/gemini_voice_assistant.png> <./images/ecoguard_landing_page.png> 
+<./images/gis_sensor_map.png>]
+<images/poaching_events_log.png, id=398, 1894.07625pt x 907.39pt>
+File: images/poaching_events_log.png Graphic file (type png)
+<use images/poaching_events_log.png>
+Package pdftex.def Info: images/poaching_events_log.png  used on input line 524
+.
+(pdftex.def)             Requested size: 385.02547pt x 184.4516pt.
+
+Overfull \hbox (42.00284pt too wide) in paragraph at lines 532--533
 []\OT1/cmr/m/n/10.95 (-20) The peak-to-peak am-pli-tude $\OML/cmm/m/it/10.95 A[
 ]$ \OT1/cmr/m/n/10.95 (-20) is cal-cu-lated over a 50ms sam-ple win-dow ($[]$)
  []
 
-<images/gunshot_waveform_noise_gate.png, id=367, 694.595pt x 588.1975pt>
-File: images/gunshot_waveform_noise_gate.png Graphic file (type png)
-<use images/gunshot_waveform_noise_gate.png>
-Package pdftex.def Info: images/gunshot_waveform_noise_gate.png  used on input 
-line 453.
-(pdftex.def)             Requested size: 217.42265pt x 184.11641pt.
-<images/noise_gate_detailed.png, id=368, 1541.76pt x 1027.84pt>
-File: images/noise_gate_detailed.png Graphic file (type png)
-<use images/noise_gate_detailed.png>
-Package pdftex.def Info: images/noise_gate_detailed.png  used on input line 460
-.
-(pdftex.def)             Requested size: 217.42265pt x 144.94742pt.
 
 
-[11]
-
-[12 <./images/gunshot_waveform_noise_gate.png> <./images/noise_gate_detailed.pn
-g (PNG copy)>]
-<images/detection_pipeline.png, id=393, 796.9775pt x 1017.8025pt>
-File: images/detection_pipeline.png Graphic file (type png)
-<use images/detection_pipeline.png>
-Package pdftex.def Info: images/detection_pipeline.png  used on input line 487.
-
-(pdftex.def)             Requested size: 217.42265pt x 277.66794pt.
-<images/mfcc_pipeline_detailed.png, id=394, 1541.76pt x 1027.84pt>
-File: images/mfcc_pipeline_detailed.png Graphic file (type png)
-<use images/mfcc_pipeline_detailed.png>
-Package pdftex.def Info: images/mfcc_pipeline_detailed.png  used on input line 
-494.
-(pdftex.def)             Requested size: 217.42265pt x 144.94742pt.
-
-
-[13 <./images/detection_pipeline.png> <./images/mfcc_pipeline_detailed.png (PNG
- copy)>]
-<images/database_flow_diagram.png, id=409, 1541.76pt x 1027.84pt>
-File: images/database_flow_diagram.png Graphic file (type png)
-<use images/database_flow_diagram.png>
-Package pdftex.def Info: images/database_flow_diagram.png  used on input line 5
-20.
-(pdftex.def)             Requested size: 249.13371pt x 166.08885pt.
- (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2024/09/23 1.10c listings language file
-)
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 526.
-
-
-[14 <./images/database_flow_diagram.png (PNG copy)>]
-Chapter 5.
-
-
-[15
-
-]
-<images/hardware_prototype_casing.png, id=433, 981.6675pt x 612.2875pt>
-File: images/hardware_prototype_casing.png Graphic file (type png)
-<use images/hardware_prototype_casing.png>
-Package pdftex.def Info: images/hardware_prototype_casing.png  used on input li
-ne 558.
-(pdftex.def)             Requested size: 217.42265pt x 135.60991pt.
-<images/hardware_prototype_assembled.png, id=434, 984.67876pt x 616.3025pt>
-File: images/hardware_prototype_assembled.png Graphic file (type png)
-<use images/hardware_prototype_assembled.png>
-Package pdftex.def Info: images/hardware_prototype_assembled.png  used on input
- line 560.
-(pdftex.def)             Requested size: 217.42265pt x 136.07597pt.
-
-
-[16 <./images/hardware_prototype_casing.png> <./images/hardware_prototype_assem
-bled.png>]
-<images/ecoguard_landing_page.png, id=446, 2887.78876pt x 1589.94pt>
-File: images/ecoguard_landing_page.png Graphic file (type png)
-<use images/ecoguard_landing_page.png>
-Package pdftex.def Info: images/ecoguard_landing_page.png  used on input line 6
-07.
-(pdftex.def)             Requested size: 217.42265pt x 119.7013pt.
-<images/gis_sensor_map.png, id=447, 2887.78876pt x 1589.94pt>
-File: images/gis_sensor_map.png Graphic file (type png)
-<use images/gis_sensor_map.png>
-Package pdftex.def Info: images/gis_sensor_map.png  used on input line 614.
-(pdftex.def)             Requested size: 217.42265pt x 119.7013pt.
-
-
-[17]
-<images/ranger_dashboard.png, id=455, 1894.07625pt x 907.39pt>
-File: images/ranger_dashboard.png Graphic file (type png)
-<use images/ranger_dashboard.png>
-Package pdftex.def Info: images/ranger_dashboard.png  used on input line 625.
-(pdftex.def)             Requested size: 217.42265pt x 104.14688pt.
-<images/poaching_events_log.png, id=456, 1894.07625pt x 907.39pt>
-File: images/poaching_events_log.png Graphic file (type png)
-<use images/poaching_events_log.png>
-Package pdftex.def Info: images/poaching_events_log.png  used on input line 632
-.
-(pdftex.def)             Requested size: 217.42265pt x 104.14688pt.
-<images/gemini_voice_assistant.png, id=458, 2887.78876pt x 1589.94pt>
-File: images/gemini_voice_assistant.png Graphic file (type png)
-<use images/gemini_voice_assistant.png>
-Package pdftex.def Info: images/gemini_voice_assistant.png  used on input line 
-642.
-(pdftex.def)             Requested size: 249.13371pt x 137.14459pt.
-
-
-[18 <./images/ecoguard_landing_page.png> <./images/gis_sensor_map.png> <./image
-s/ranger_dashboard.png> <./images/poaching_events_log.png> <./images/gemini_voi
-ce_assistant.png>]
+[13 <./images/ranger_dashboard.png> <./images/poaching_events_log.png>]
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2024/09/23 1.10c listings language file
-)
-(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2024/09/23 1.10c listings language file
-)
-
-[19]
-
-[20] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2024/09/23 1.10c listings language file
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
@@ -1156,58 +1084,173 @@ File: lstlang1.sty 2024/09/23 1.10c listings language file
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2024/09/23 1.10c (Carsten Heinz)
 )
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
+nput line 543.
+<images/gunshot_waveform_noise_gate.png, id=415, 694.595pt x 588.1975pt>
+File: images/gunshot_waveform_noise_gate.png Graphic file (type png)
+<use images/gunshot_waveform_noise_gate.png>
+Package pdftex.def Info: images/gunshot_waveform_noise_gate.png  used on input 
+line 560.
+(pdftex.def)             Requested size: 385.02547pt x 326.05856pt.
+
+
+[14]
+<images/noise_gate_detailed.png, id=426, 1541.76pt x 1027.84pt>
+File: images/noise_gate_detailed.png Graphic file (type png)
+<use images/noise_gate_detailed.png>
+Package pdftex.def Info: images/noise_gate_detailed.png  used on input line 567
+.
+(pdftex.def)             Requested size: 385.02547pt x 256.67706pt.
+
+
+[15 <./images/gunshot_waveform_noise_gate.png> <./images/noise_gate_detailed.pn
+g (PNG copy)>]
+<images/detection_pipeline.png, id=436, 796.9775pt x 1017.8025pt>
+File: images/detection_pipeline.png Graphic file (type png)
+<use images/detection_pipeline.png>
+Package pdftex.def Info: images/detection_pipeline.png  used on input line 592.
+
+(pdftex.def)             Requested size: 385.02547pt x 491.70786pt.
+
+
+[16]
+<images/mfcc_pipeline_detailed.png, id=446, 1541.76pt x 1027.84pt>
+File: images/mfcc_pipeline_detailed.png Graphic file (type png)
+<use images/mfcc_pipeline_detailed.png>
+Package pdftex.def Info: images/mfcc_pipeline_detailed.png  used on input line 
+599.
+(pdftex.def)             Requested size: 385.02547pt x 256.67706pt.
+
+
+[17 <./images/detection_pipeline.png>]
+
+[18 <./images/mfcc_pipeline_detailed.png (PNG copy)>]
+<images/database_flow_diagram.png, id=466, 1541.76pt x 1027.84pt>
+File: images/database_flow_diagram.png Graphic file (type png)
+<use images/database_flow_diagram.png>
+Package pdftex.def Info: images/database_flow_diagram.png  used on input line 6
+24.
+(pdftex.def)             Requested size: 385.02547pt x 256.67706pt.
+<images/database_er_diagram.png, id=468, 1541.76pt x 1027.84pt>
+File: images/database_er_diagram.png Graphic file (type png)
+<use images/database_er_diagram.png>
+Package pdftex.def Info: images/database_er_diagram.png  used on input line 634
+.
+(pdftex.def)             Requested size: 385.02547pt x 256.67706pt.
+
+
+[19 <./images/database_flow_diagram.png (PNG copy)>]
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10.95> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 641.
+
+Overfull \hbox (2.48698pt too wide) in paragraph at lines 648--649
+[]\OT1/cmtt/m/n/10.95 status \OT1/cmr/m/n/10.95 (-20) (\OT1/cmtt/m/n/10.95 TEXT
+\OT1/cmr/m/n/10.95 (-20) , De-fault \OT1/cmtt/m/n/10.95 'online'\OT1/cmr/m/n/10
+.95 (-20) ): Con-strained by check-in rules to val-ues of \OT1/cmtt/m/n/10.95 '
+online'\OT1/cmr/m/n/10.95 (-20) ,
+ []
+
+
+
+[20 <./images/database_er_diagram.png (PNG copy)>]
+Overfull \hbox (10.27303pt too wide) in paragraph at lines 675--676
+[]\OT1/cmr/bx/n/10.95 (-20) One-to-Many Car-di-nal-ity: \OT1/cmr/m/n/10.95 (-20
+) The re-la-tion-ship be-tween \OT1/cmtt/m/n/10.95 sensor[]nodes \OT1/cmr/m/n/1
+0.95 (-20) and \OT1/cmtt/m/n/10.95 poaching[]events
+ []
+
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2024/09/23 1.10c listings language file
 )
 
-[21
-
-]
+[21]
 
 [22]
+Chapter 5.
 
-[23]
 
-[24
+[23
+
+]
+<images/hardware_prototype_casing.png, id=507, 981.6675pt x 612.2875pt>
+File: images/hardware_prototype_casing.png Graphic file (type png)
+<use images/hardware_prototype_casing.png>
+Package pdftex.def Info: images/hardware_prototype_casing.png  used on input li
+ne 726.
+(pdftex.def)             Requested size: 217.42265pt x 135.60991pt.
+<images/hardware_prototype_assembled.png, id=508, 984.67876pt x 616.3025pt>
+File: images/hardware_prototype_assembled.png Graphic file (type png)
+<use images/hardware_prototype_assembled.png>
+Package pdftex.def Info: images/hardware_prototype_assembled.png  used on input
+ line 728.
+(pdftex.def)             Requested size: 217.42265pt x 136.07597pt.
+
+
+[24 <./images/hardware_prototype_casing.png> <./images/hardware_prototype_assem
+bled.png>]
+
+[25] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2024/09/23 1.10c listings language file
+)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2024/09/23 1.10c listings language file
+)
+
+[26]
+
+[27] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2024/09/23 1.10c listings language file
+)
+
+[28
 
 ]
 
-[25]
+[29]
 
-[26] (./EL_Phase_II_Report.aux)
+[30]
+
+[31
+
+]
+
+[32]
+
+[33] (./EL_Phase_II_Report.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `EL_Phase_II_Report.out' has not changed.
-(rerunfilecheck)             Checksum: 8689544D345FD09A1101F3E4CACC821F;10360.
+(rerunfilecheck)             Checksum: 3101EF857F43289B74FB5957F34E0E16;10452.
  ) 
 Here is how much of TeX's memory you used:
- 28723 strings out of 475178
- 518804 string characters out of 5766539
- 1422981 words of memory out of 5000000
- 50776 multiletter control sequences out of 15000+600000
- 578215 words of font info for 195 fonts, out of 8000000 for 9000
+ 29006 strings out of 475178
+ 524278 string characters out of 5766539
+ 1426004 words of memory out of 5000000
+ 51035 multiletter control sequences out of 15000+600000
+ 578981 words of font info for 200 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  84i,12n,91p,1117b,2140s stack positions out of 10000i,1000n,20000p,200000b,200000s
  </home/snehal-reddy/.texlive2025/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1
 095.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.
 pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></
-usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/sh
-are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/te
-xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/c
-mtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.p
-fb>
-Output written on EL_Phase_II_Report.pdf (29 pages, 13217350 bytes).
+usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/sha
+re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/font
+s/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+sy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pf
+b></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></us
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
+Output written on EL_Phase_II_Report.pdf (36 pages, 17218361 bytes).
 PDF statistics:
- 760 PDF objects out of 1000 (max. 8388607)
- 667 compressed objects within 7 object streams
- 283 named destinations out of 1000 (max. 500000)
- 44565 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 821 PDF objects out of 1000 (max. 8388607)
+ 714 compressed objects within 8 object streams
+ 301 named destinations out of 1000 (max. 500000)
+ 47647 words of extra memory for PDF output out of 51595 (max. 10000000)
 

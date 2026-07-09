@@ -22,6 +22,9 @@ import os
 import sys
 import time
 import sqlite3
+import json
+from datetime import datetime
+from collections import deque
 
 import joblib
 import serial
@@ -35,7 +38,7 @@ except ImportError:
 
 # ── Configuration ─────────────────────────────────────────────────────────────
 
-SERIAL_PORT = '/dev/ttyACM0'   # Arduino Uno R3
+SERIAL_PORT = 'COM3'           # Arduino Uno R3 (Windows)
 BAUD_RATE   = 115200           # must match the Arduino sketch
 
 SAMPLE_RATE  = 4000            # Hz — matches the Arduino ADC loop (250 µs / sample)
@@ -61,12 +64,82 @@ MODEL_PATH = os.path.join(SCRIPT_DIR, '..', 'gunshot_animal_model.pkl')
 
 # ── ML Model ──────────────────────────────────────────────────────────────────
 
+def get_timestamp():
+    """Get current timestamp in HH:MM:SS.mmm format"""
+    return datetime.now().strftime('%H:%M:%S.%f')[:-3]
+
+
 def load_model():
     model = joblib.load(MODEL_PATH)
     print(f'[bridge] Model  : {model.__class__.__name__}')
     print(f'[bridge] Classes: {model.classes_}  (1 = gunshot)')
     print(f'[bridge] Features expected: {model.n_features_in_}')
     return model
+
+
+# ── Debug Logger ──────────────────────────────────────────────────────────────
+
+class DebugLogger:
+    """Tracks inference results for real-time monitoring"""
+    def __init__(self, max_history=50):
+        self.history = deque(maxlen=max_history)
+        self.stats = {
+            'total_windows': 0,
+            'gunshot_detections': 0,
+            'false_positives': 0,
+            'avg_confidence': 0.0,
+            'last_updated': None
+        }
+    
+    def log_inference(self, window_idx, amplitude, is_gunshot, confidence, features_mean):
+        """Log a single inference result"""
+        entry = {
+            'timestamp': datetime.now().isoformat(),
+            'window': window_idx,
+            'amplitude': amplitude,
+            'is_gunshot': is_gunshot,
+            'confidence': round(confidence, 4),
+            'features_mean': round(float(features_mean), 4)
+        }
+        self.history.append(entry)
+        
+        # Update stats
+        self.stats['total_windows'] += 1
+        if is_gunshot:
+            self.stats['gunshot_detections'] += 1
+        self.stats['avg_confidence'] = round(confidence, 4)
+        self.stats['last_updated'] = datetime.now().isoformat()
+    
+    def print_dashboard(self):
+        """Print a formatted debug dashboard"""
+        print('\n' + '='*80)
+        print(f"  ML MODEL DEBUG DASHBOARD — {datetime.now().strftime('%H:%M:%S')}")
+        print('='*80)
+        
+        print(f"\n📊 STATISTICS:")
+        print(f"   Total windows processed: {self.stats['total_windows']}")
+        print(f"   Gunshot detections: {self.stats['gunshot_detections']}")
+        print(f"   Current confidence: {self.stats['avg_confidence']:.4f}")
+        
+        if self.history:
+            print(f"\n📋 RECENT INFERENCES (last {len(self.history)} windows):")
+            print(f"   {'Window':<8} {'Time':<12} {'Amp':<6} {'Result':<10} {'Confidence':<12}")
+            print(f"   {'-'*60}")
+            for entry in list(self.history)[-10:]:
+                time_str = entry['timestamp'].split('T')[1][:8]
+                result = "🔴 GUNSHOT" if entry['is_gunshot'] else "✅ Clear"
+                print(f"   {entry['window']:<8} {time_str:<12} "
+                      f"{entry['amplitude']:<6} {result:<10} {entry['confidence']:<12.4f}")
+        
+        print('\n' + '='*80 + '\n')
+    
+    def save_to_file(self, filepath='ml_debug_log.json'):
+        """Save debug log to JSON file"""
+        with open(filepath, 'w') as f:
+            json.dump({
+                'stats': self.stats,
+                'recent_history': list(self.history)
+            }, f, indent=2)
 
 
 def extract_features(raw_bytes: bytes) -> np.ndarray:
@@ -118,18 +191,23 @@ def save_gunshot(conn: sqlite3.Connection, confidence: float):
 
 # ── Main loop ─────────────────────────────────────────────────────────────────
 
-def run(model, conn: sqlite3.Connection):
+def get_timestamp():
+    """Get current timestamp in HH:MM:SS.mmm format"""
+    return datetime.now().strftime('%H:%M:%S.%f')[:-3]
+
+
+def run(model, conn: sqlite3.Connection, debug_logger: DebugLogger):
     buffer       = bytearray()
     window_index = 0
 
-    print(f'[bridge] Opening serial port {SERIAL_PORT} @ {BAUD_RATE} baud ...')
+    print(f'[bridge] {get_timestamp()} Opening serial port {SERIAL_PORT} @ {BAUD_RATE} baud ...')
 
     with serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1) as ser:
         # Flush any stale bytes that accumulated during Arduino boot
         time.sleep(2)
         ser.reset_input_buffer()
 
-        print(f'[bridge] Connected. Streaming {WINDOW_BYTES} bytes/window '
+        print(f'[bridge] {get_timestamp()} Connected. Streaming {WINDOW_BYTES} bytes/window '
               f'({WINDOW_SECS:.1f} s @ {SAMPLE_RATE} Hz)\n')
 
         while True:
@@ -147,13 +225,14 @@ def run(model, conn: sqlite3.Connection):
                 window        = bytes(buffer[:WINDOW_BYTES])
                 buffer        = buffer[WINDOW_BYTES:]
                 window_index += 1
+                ts = get_timestamp()
 
                 # ── Noise gate ────────────────────────────────────────────
                 raw          = np.frombuffer(window, dtype=np.uint8)
                 peak_to_peak = int(raw.max()) - int(raw.min())
 
                 if peak_to_peak < NOISE_GATE_AMPLITUDE:
-                    print(f'[gate]      #{window_index:04d}  '
+                    print(f'[gate]      {ts}  #{window_index:04d}  '
                           f'amp={peak_to_peak:3d} < {NOISE_GATE_AMPLITUDE} — too quiet, skipped')
                     # Don't send anything back; Arduino keeps streaming
                     continue
@@ -168,10 +247,15 @@ def run(model, conn: sqlite3.Connection):
                     is_gunshot   = bool(pred == 1)
                     gunshot_prob = float(proba[1])
 
-                    tag = '*** GUNSHOT ***' if is_gunshot else 'clear'
-                    print(f'[inference] #{window_index:04d}  '
+                    tag = '🔴 *** GUNSHOT ***' if is_gunshot else '✅ clear'
+                    print(f'[inference] {ts}  #{window_index:04d}  '
                           f'amp={peak_to_peak:3d}  '
                           f'P(gunshot)={gunshot_prob:.3f}  →  {tag}')
+
+                    # Log to debug logger
+                    debug_logger.log_inference(
+                        window_index, peak_to_peak, is_gunshot, gunshot_prob, features.mean()
+                    )
 
                     # Send single-byte result back to Arduino
                     ser.write(b'G' if is_gunshot else b'N')
@@ -179,39 +263,48 @@ def run(model, conn: sqlite3.Connection):
                     if is_gunshot:
                         upsert_node(conn)
                         save_gunshot(conn, gunshot_prob)
+                    
+                    # Print dashboard every 10 windows
+                    if window_index % 10 == 0:
+                        debug_logger.print_dashboard()
+                        debug_logger.save_to_file()
 
                 except Exception as exc:
-                    print(f'[bridge] Inference error: {exc}')
+                    print(f'[bridge] {get_timestamp()} Inference error: {exc}')
                     ser.write(b'N')
 
 
 def main():
-    print('=' * 50)
+    print('=' * 70)
     print(' EnviEL ML Serial Bridge')
-    print('=' * 50)
-    print(f'[bridge] Model : {os.path.abspath(MODEL_PATH)}')
-    print(f'[bridge] DB    : {os.path.abspath(DB_PATH)}')
-    print(f'[bridge] Port  : {SERIAL_PORT}\n')
+    print('=' * 70)
+    print(f'[bridge] {get_timestamp()} Model : {os.path.abspath(MODEL_PATH)}')
+    print(f'[bridge] {get_timestamp()} DB    : {os.path.abspath(DB_PATH)}')
+    print(f'[bridge] {get_timestamp()} Port  : {SERIAL_PORT}\n')
 
     model = load_model()
     conn  = get_conn()
     upsert_node(conn)
+    
+    # Initialize debug logger
+    debug_logger = DebugLogger(max_history=50)
 
     while True:
         try:
-            run(model, conn)
+            run(model, conn, debug_logger)
 
         except serial.SerialException as exc:
-            print(f'[bridge] Serial error: {exc}  — retrying in 5 s')
+            print(f'[bridge] {get_timestamp()} Serial error: {exc}  — retrying in 5 s')
             time.sleep(5)
 
         except KeyboardInterrupt:
-            print('\n[bridge] Stopped by user.')
+            print(f'\n[bridge] {get_timestamp()} Stopped by user.')
+            debug_logger.save_to_file()
             conn.close()
             sys.exit(0)
 
         except Exception as exc:
-            print(f'[bridge] Unexpected error: {exc}  — retrying in 5 s')
+            print(f'[bridge] {get_timestamp()} Unexpected error: {exc}  — retrying in 5 s')
             time.sleep(5)
 
 

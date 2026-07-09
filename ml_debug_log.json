@@ -1,0 +1,179 @@
+{
+  "stats": {
+    "total_windows": 21,
+    "gunshot_detections": 3,
+    "false_positives": 0,
+    "avg_confidence": 0.0,
+    "last_updated": "2026-07-09T12:08:41.374173"
+  },
+  "recent_history": [
+    {
+      "timestamp": "2026-07-09T12:07:39.105764",
+      "window": 8,
+      "amplitude": 169,
+      "is_gunshot": false,
+      "confidence": 0.0,
+      "features_mean": 11.5635
+    },
+    {
+      "timestamp": "2026-07-09T12:07:39.919129",
+      "window": 9,
+      "amplitude": 169,
+      "is_gunshot": false,
+      "confidence": 0.0,
+      "features_mean": 6.8014
+    },
+    {
+      "timestamp": "2026-07-09T12:07:40.967369",
+      "window": 10,
+      "amplitude": 170,
+      "is_gunshot": false,
+      "confidence": 0.0,
+      "features_mean": 12.0612
+    },
+    {
+      "timestamp": "2026-07-09T12:07:42.059962",
+      "window": 11,
+      "amplitude": 170,
+      "is_gunshot": false,
+      "confidence": 0.0,
+      "features_mean": 10.9249
+    },
+    {
+      "timestamp": "2026-07-09T12:07:43.708024",
+      "window": 12,
+      "amplitude": 110,
+      "is_gunshot": false,
+      "confidence": 0.0057,
+      "features_mean": 7.2833
+    },
+    {
+      "timestamp": "2026-07-09T12:07:45.554840",
+      "window": 13,
+      "amplitude": 117,
+      "is_gunshot": false,
+      "confidence": 0.0,
+      "features_mean": 7.1112
+    },
+    {
+      "timestamp": "2026-07-09T12:07:50.937328",
+      "window": 14,
+      "amplitude": 169,
+      "is_gunshot": false,
+      "confidence": 0.0,
+      "features_mean": 10.051
+    },
+    {
+      "timestamp": "2026-07-09T12:07:51.988477",
+      "window": 15,
+      "amplitude": 170,
+      "is_gunshot": false,
+      "confidence": 0.0,
+      "features_mean": 7.5299
+    },
+    {
+      "timestamp": "2026-07-09T12:07:53.083905",
+      "window": 16,
+      "amplitude": 159,
+      "is_gunshot": false,
+      "confidence": 0.0,
+      "features_mean": 7.0367
+    },
+    {
+      "timestamp": "2026-07-09T12:07:54.718314",
+      "window": 17,
+      "amplitude": 138,
+      "is_gunshot": true,
+      "confidence": 0.5364,
+      "features_mean": 6.7494
+    },
+    {
+      "timestamp": "2026-07-09T12:08:05.412225",
+      "window": 19,
+      "amplitude": 117,
+      "is_gunshot": false,
+      "confidence": 0.0001,
+      "features_mean": 6.6515
+    },
+    {
+      "timestamp": "2026-07-09T12:08:14.463520",
+      "window": 20,
+      "amplitude": 159,
+      "is_gunshot": true,
+      "confidence": 1.0,
+      "features_mean": 8.8495
+    },
+    {
+      "timestamp": "2026-07-09T12:08:25.525409",
+      "window": 22,
+      "amplitude": 159,
+      "is_gunshot": true,
+      "confidence": 1.0,
+      "features_mean": 10.0789
+    },
+    {
+      "timestamp": "2026-07-09T12:08:30.785340",
+      "window": 23,
+      "amplitude": 170,
+      "is_gunshot": false,
+      "confidence": 0.0,
+      "features_mean": 7.57
+    },
+    {
+      "timestamp": "2026-07-09T12:08:31.945509",
+      "window": 24,
+      "amplitude": 170,
+      "is_gunshot": false,
+      "confidence": 0.0,
+      "features_mean": 10.0266
+    },
+    {
+      "timestamp": "2026-07-09T12:08:34.876997",
+      "window": 25,
+      "amplitude": 129,
+      "is_gunshot": false,
+      "confidence": 0.1014,
+      "features_mean": 8.2456
+    },
+    {
+      "timestamp": "2026-07-09T12:08:36.587968",
+      "window": 26,
+      "amplitude": 170,
+      "is_gunshot": false,
+      "confidence": 0.0,
+      "features_mean": 7.669
+    },
+    {
+      "timestamp": "2026-07-09T12:08:37.634526",
+      "window": 27,
+      "amplitude": 169,
+      "is_gunshot": false,
+      "confidence": 0.0,
+      "features_mean": 7.4344
+    },
+    {
+      "timestamp": "2026-07-09T12:08:39.193139",
+      "window": 28,
+      "amplitude": 170,
+      "is_gunshot": false,
+      "confidence": 0.0,
+      "features_mean": 8.8815
+    },
+    {
+      "timestamp": "2026-07-09T12:08:40.326947",
+      "window": 29,
+      "amplitude": 169,
+      "is_gunshot": false,
+      "confidence": 0.0,
+      "features_mean": 8.3798
+    },
+    {
+      "timestamp": "2026-07-09T12:08:41.374173",
+      "window": 30,
+      "amplitude": 170,
+      "is_gunshot": false,
+      "confidence": 0.0,
+      "features_mean": 9.9894
+    }
+  ]
+}

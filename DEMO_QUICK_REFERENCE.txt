@@ -1,0 +1,194 @@
+════════════════════════════════════════════════════════════════════════════════
+                       EnviEL + VLC DEMO - QUICK START
+════════════════════════════════════════════════════════════════════════════════
+
+YOUR SETUP: Laptop (Dashboard) + Phone/Emulator (VLC App)
+
+════════════════════════════════════════════════════════════════════════════════
+STEP 1: Prepare Laptop (5 minutes)
+════════════════════════════════════════════════════════════════════════════════
+
+1. Generate audio files:
+   $ cd c:\coding\EnviEL
+   $ node scripts/generate-audio-samples.js
+
+2. Start dashboard:
+   $ npm run dev
+   
+   SHOULD SEE: "▲ Next.js ... - Local: http://localhost:3000"
+
+3. Open dashboard in browser:
+   http://localhost:3000/dashboard
+
+4. Find your laptop IP:
+   $ ipconfig
+   
+   LOOK FOR: "IPv4 Address: 192.168.x.x"
+   EXAMPLE: 192.168.1.100
+
+════════════════════════════════════════════════════════════════════════════════
+STEP 2: Build & Deploy VLC App (10 minutes)
+════════════════════════════════════════════════════════════════════════════════
+
+1. Build Android app:
+   $ cd c:\coding\EnviEL\android
+   $ ./gradlew build
+   $ ./gradlew installDebug
+
+   WAIT FOR: "BUILD SUCCESSFUL"
+
+2. App opens on phone/emulator
+
+3. Tap ⚙️ Settings (top right corner)
+
+4. Enter server:
+   http://192.168.1.100:3000
+   
+   (Replace with YOUR laptop IP)
+
+5. Tap Save
+
+════════════════════════════════════════════════════════════════════════════════
+STEP 3: Test Connection (1 minute)
+════════════════════════════════════════════════════════════════════════════════
+
+1. On phone: Tap 🔫 GUNSHOT
+2. Tap first audio file
+3. Tap ▶️ PLAY
+
+EXPECTED RESULTS:
+
+   Phone:              Dashboard:
+   ▶️ Audio playing    📱 New event appears!
+                       🔫 GUNSHOT DETECTED
+                       Detection_gunshot_001.wav
+                       3.5s • 14:32:10
+
+✅ If dashboard updates = System working!
+❌ If nothing appears = Check IP in Settings again
+
+════════════════════════════════════════════════════════════════════════════════
+DEMO SCRIPT (5-8 minutes)
+════════════════════════════════════════════════════════════════════════════════
+
+INTRO (30 sec):
+  "EnviEL detects wildlife threats. Rangers record audio in the field.
+   Watch how it syncs to headquarters in real-time."
+
+SHOW DASHBOARD (30 sec):
+  Point at screen: "HQ dashboard monitors everything live."
+
+PLAY GUNSHOT (2 min):
+  "Field ranger plays gunshot detection..."
+  [Tap play on phone]
+  "See - instantly on the dashboard! 🔫 GUNSHOT DETECTED"
+
+SWITCH TO ANIMAL (2 min):
+  "Different threat type..."
+  [Switch to animal, play]
+  "Animal detected! 🦁 Same real-time sync."
+
+SHOW OFFLINE (1 min):
+  "Field has no WiFi sometimes..."
+  [Enable airplane mode on phone]
+  "App still works. Events queue locally, sync when reconnected."
+
+CLOSE (30 sec):
+  "That's EnviEL - instant threat detection with mobile integration."
+
+════════════════════════════════════════════════════════════════════════════════
+TROUBLESHOOTING
+════════════════════════════════════════════════════════════════════════════════
+
+PROBLEM: "Can't connect to server"
+
+  CHECK:
+  • Both on same WiFi? ✓
+  • Correct IP in VLC settings? ✓
+  • `npm run dev` still running? ✓
+
+  FIX:
+  • Get new IP: ipconfig
+  • Update in VLC settings again
+  • Or restart: npm run dev
+
+
+PROBLEM: "Dashboard shows nothing"
+
+  CHECK:
+  • Did you play audio on VLC?
+  • Waited 10 seconds?
+  • Any browser errors (F12 console)?
+
+  FIX:
+  • Play audio again
+  • Refresh browser
+  • Check: http://localhost:3000/api/audio-events
+
+
+PROBLEM: "Audio won't play on phone"
+
+  FIX:
+  • Regenerate: node scripts/generate-audio-samples.js
+  • Check files: ls public/audio/gunshot/
+  • Reinstall app: ./gradlew uninstallDebug && ./gradlew installDebug
+
+════════════════════════════════════════════════════════════════════════════════
+DEMO CHECKLIST
+════════════════════════════════════════════════════════════════════════════════
+
+Before showing anyone:
+
+  PRE-DEMO:
+  □ npm run dev running
+  □ Dashboard loads (http://localhost:3000/dashboard)
+  □ Audio files exist (ls public/audio/gunshot/detection_001.wav)
+  □ VLC app installed on phone
+  □ VLC settings configured with laptop IP
+  □ Test: Play audio → Dashboard updates
+
+  DURING DEMO:
+  □ Full battery on phone
+  □ WiFi stable
+  □ Close other tabs/windows
+  □ Have network IP written down
+  □ Demo script printed or memorized
+  □ Airplane mode ready for offline demo
+
+════════════════════════════════════════════════════════════════════════════════
+FILE LOCATIONS
+════════════════════════════════════════════════════════════════════════════════
+
+Dashboard Code:         c:\coding\EnviEL\app\dashboard\page.tsx
+API Endpoints:          c:\coding\EnviEL\app\api\audio-*\
+Audio Files:            c:\coding\EnviEL\public\audio\{gunshot,animal}\
+VLC App Code:           c:\coding\EnviEL\android\app\src\main\kotlin\
+Configuration:          c:\coding\EnviEL\next.config.ts
+
+════════════════════════════════════════════════════════════════════════════════
+WHAT'S HAPPENING BEHIND THE SCENES
+════════════════════════════════════════════════════════════════════════════════
+
+1. Phone plays audio via ExoPlayer
+2. VLC app sends POST to: /api/audio-events
+3. Server receives: {fileName, audioType, duration}
+4. Server stores in memory + SQLite
+5. Dashboard fetches: GET /api/audio-events every 10s
+6. Dashboard shows new event with emoji badge
+
+OFFLINE:
+1. Phone detects no network
+2. Shows "OFFLINE - Using Local Audio"
+3. Plays audio anyway
+4. When reconnected, events sync
+
+════════════════════════════════════════════════════════════════════════════════
+SUCCESS = 
+  Dashboard updates when you play audio on VLC ✅
+
+FAILURE = 
+  Dashboard stays empty after playing audio ❌
+
+════════════════════════════════════════════════════════════════════════════════
+Questions? Read full guide: DEMO_SETUP_GUIDE.md
+════════════════════════════════════════════════════════════════════════════════

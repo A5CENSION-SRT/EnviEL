@@ -67,10 +67,22 @@ export function getDb(): DatabaseSync {
       created_at TEXT DEFAULT (datetime('now'))
     );
 
+    CREATE TABLE IF NOT EXISTS audio_events (
+      id            INTEGER PRIMARY KEY AUTOINCREMENT,
+      file_name     TEXT    NOT NULL,
+      audio_type    TEXT    NOT NULL
+                      CHECK(audio_type IN ('gunshot','animal')),
+      duration      INTEGER NOT NULL,
+      mobile_timestamp TEXT,
+      received_at   TEXT    DEFAULT (datetime('now'))
+    );
+
     CREATE INDEX IF NOT EXISTS idx_events_ts     ON poaching_events(timestamp DESC);
     CREATE INDEX IF NOT EXISTS idx_events_node   ON poaching_events(node_id);
     CREATE INDEX IF NOT EXISTS idx_events_status ON poaching_events(verification_status);
     CREATE INDEX IF NOT EXISTS idx_events_sev    ON poaching_events(severity);
+    CREATE INDEX IF NOT EXISTS idx_audio_type    ON audio_events(audio_type);
+    CREATE INDEX IF NOT EXISTS idx_audio_ts      ON audio_events(received_at DESC);
   `);
 
   global.__db = database;

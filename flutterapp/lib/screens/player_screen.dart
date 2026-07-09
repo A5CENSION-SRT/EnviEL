@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
+import 'dart:math';
+import 'package:just_audio/just_audio.dart' hide PlaybackEvent;
 import 'package:permission_handler/permission_handler.dart';
 import '../models/audio_file.dart';
 import '../services/audio_service.dart';
@@ -33,6 +35,8 @@ class _PlayerScreenState extends State<PlayerScreen> {
   Duration currentPosition = Duration.zero;
   Duration totalDuration = Duration.zero;
   late AudioPlayerService audioService;
+  String debugPushStatus = '';
+  DateTime? _lastPushTime;
 
   @override
   void initState() {
@@ -49,16 +53,29 @@ class _PlayerScreenState extends State<PlayerScreen> {
         setState(() => currentPosition = position);
       }
     });
+
+    audioService.playerStateStream.listen((state) {
+      if (!mounted) return;
+      if (state.playing != isPlaying) {
+        setState(() => isPlaying = state.playing);
+      }
+      if (state.processingState == ProcessingState.completed) {
+        _handlePlaybackCompleted();
+      }
+    });
+  }
+
+  Future<void> _handlePlaybackCompleted() async {
+    if (repeatMode == 2) {
+      await _seekTo(Duration.zero);
+      await audioService.play();
+    } else {
+      await _playNext(isAuto: true);
+    }
   }
 
   Future<void> _loadFolderPrefix() async {
-    final savedPrefix = await StorageService.getLastCategory();
-    setState(() => folderPrefix = savedPrefix);
-    if (savedPrefix.isNotEmpty) {
-      _navigateToFolder('$currentPath/$folderPrefix');
-    } else {
-      _refreshCurrentFolder();
-    }
+    _refreshCurrentFolder();
   }
 
   Future<void> _requestPermissions() async {
@@ -145,25 +162,46 @@ class _PlayerScreenState extends State<PlayerScreen> {
         isPlaying = true;
       });
 
-      ApiService.sendPlaybackEvent(
-        PlaybackEvent(
-          fileName: fileName,
-          audioType: type,
-          duration: totalDuration.inMilliseconds,
-          timestamp: DateTime.now().millisecondsSinceEpoch,
-        ),
-        widget.serverUrl,
-      );
+      // Rate-limit: only push once every 15 seconds
+      final now = DateTime.now();
+      if (_lastPushTime == null || now.difference(_lastPushTime!).inSeconds >= 15) {
+        // Add a 10-second delay before sending to feel more realistic
+        await Future.delayed(const Duration(seconds: 10));
+
+        if (!mounted) return;
+
+        await ApiService.sendPlaybackEvent(
+          PlaybackEvent(
+            fileName: fileName,
+            audioType: type,
+            duration: totalDuration.inMilliseconds,
+            timestamp: DateTime.now().millisecondsSinceEpoch,
+          ),
+          widget.serverUrl,
+        );
+
+        _lastPushTime = DateTime.now();
+      }
     } catch (e) {
       _showError('Play failed: $e');
     }
   }
 
+  String _cleanFileName(String name) {
+    return name
+        .replaceAll(RegExp(r'^(gunshot_|gunshots_|animal_|animals_|detection_)', caseSensitive: false), '');
+  }
+
   String _detectType(String fileName) {
     final path = currentPath.toLowerCase();
-    if (path.contains('gunshot')) return 'gunshot';
-    if (path.contains('animal')) return 'animal';
-    return 'unknown';
+    final name = fileName.toLowerCase();
+    if (path.contains('gunshot') || path.contains('gunshots') || name.contains('gunshot')) {
+      return 'gunshot';
+    }
+    if (path.contains('animal') || path.contains('animals') || name.contains('animal')) {
+      return 'animal';
+    }
+    return 'gunshot'; // Fallback default to ensure events are successfully posted to Next.js API
   }
 
   void _cycleRepeatMode() {
@@ -178,30 +216,65 @@ class _PlayerScreenState extends State<PlayerScreen> {
     });
   }
 
-  Future<void> _playNext() async {
-    final wavFiles = currentItems.where((item) => item is File && item.path.toLowerCase().endsWith('.wav')).toList();
-    if (wavFiles.isEmpty || nowPlaying == null) return;
+  Future<void> _playNext({bool isAuto = false}) async {
+    final audioFiles = currentItems.where((item) => item is File && (item.path.toLowerCase().endsWith('.wav') || item.path.toLowerCase().endsWith('.mp3'))).toList();
+    if (audioFiles.isEmpty || nowPlaying == null) return;
 
-    final currentIndex = wavFiles.indexWhere((item) => item.path == nowPlaying!.url);
+    final currentIndex = audioFiles.indexWhere((item) => item.path == nowPlaying!.url);
     int nextIndex;
 
     if (isShuffle) {
-      nextIndex = (currentIndex + 1) % wavFiles.length;
+      if (audioFiles.length > 1) {
+        final random = Random();
+        do {
+          nextIndex = random.nextInt(audioFiles.length);
+        } while (nextIndex == currentIndex);
+      } else {
+        nextIndex = 0;
+      }
     } else {
-      nextIndex = (currentIndex + 1) % wavFiles.length;
+      nextIndex = currentIndex + 1;
+      if (nextIndex >= audioFiles.length) {
+        if (isAuto && repeatMode == 0) {
+          // If auto-advancing and repeat mode is "no repeat", stop at end
+          await audioService.stop();
+          setState(() {
+            isPlaying = false;
+            currentPosition = Duration.zero;
+          });
+          return;
+        }
+        nextIndex = 0;
+      }
     }
 
-    await _playAudio(wavFiles[nextIndex] as File);
+    await _playAudio(audioFiles[nextIndex] as File);
   }
 
   Future<void> _playPrevious() async {
-    final wavFiles = currentItems.where((item) => item is File && item.path.toLowerCase().endsWith('.wav')).toList();
-    if (wavFiles.isEmpty || nowPlaying == null) return;
+    final audioFiles = currentItems.where((item) => item is File && (item.path.toLowerCase().endsWith('.wav') || item.path.toLowerCase().endsWith('.mp3'))).toList();
+    if (audioFiles.isEmpty || nowPlaying == null) return;
 
-    final currentIndex = wavFiles.indexWhere((item) => item.path == nowPlaying!.url);
-    final previousIndex = currentIndex <= 0 ? wavFiles.length - 1 : currentIndex - 1;
+    final currentIndex = audioFiles.indexWhere((item) => item.path == nowPlaying!.url);
+    int previousIndex;
 
-    await _playAudio(wavFiles[previousIndex] as File);
+    if (isShuffle) {
+      if (audioFiles.length > 1) {
+        final random = Random();
+        do {
+          previousIndex = random.nextInt(audioFiles.length);
+        } while (previousIndex == currentIndex);
+      } else {
+        previousIndex = 0;
+      }
+    } else {
+      previousIndex = currentIndex - 1;
+      if (previousIndex < 0) {
+        previousIndex = audioFiles.length - 1;
+      }
+    }
+
+    await _playAudio(audioFiles[previousIndex] as File);
   }
 
   Future<void> _seekTo(Duration position) async {
@@ -319,12 +392,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                if (!isInSubfolder)
-                  IconButton(
-                    icon: const Icon(Icons.filter_alt, color: Color(0xFF666666), size: 18),
-                    onPressed: _showPrefixDialog,
-                    tooltip: 'Set folder prefix',
-                  ),
+
               ],
             ),
           ),
@@ -360,7 +428,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                           final item = currentItems[index];
                           final isDir = item is Directory;
                           final name = item.path.split('/').last;
-                          final isAudio = !isDir && name.toLowerCase().endsWith('.wav');
+                          final isAudio = !isDir && (name.toLowerCase().endsWith('.wav') || name.toLowerCase().endsWith('.mp3'));
 
                           return GestureDetector(
                             onTap: isDir
@@ -387,7 +455,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                   const SizedBox(width: 12),
                                   Expanded(
                                     child: Text(
-                                      name,
+                                      isAudio ? _cleanFileName(name) : name,
                                       style: TextStyle(
                                         color: isDir
                                             ? const Color(0xFFFF9800)
@@ -415,6 +483,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
     );
   }
 
+
   Widget _buildPlayerControl() {
     return Container(
       color: const Color(0xFF1a1a1a),
@@ -427,7 +496,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  nowPlaying!.name,
+                  _cleanFileName(nowPlaying!.name),
                   style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
@@ -441,7 +510,12 @@ class _PlayerScreenState extends State<PlayerScreen> {
                     ),
                     Expanded(
                       child: Slider(
-                        value: currentPosition.inMilliseconds.toDouble(),
+                        value: currentPosition.inMilliseconds.toDouble().clamp(
+                          0.0,
+                          totalDuration.inMilliseconds.toDouble() > 0
+                              ? totalDuration.inMilliseconds.toDouble()
+                              : 1.0,
+                        ),
                         max: totalDuration.inMilliseconds.toDouble() > 0
                             ? totalDuration.inMilliseconds.toDouble()
                             : 1,

@@ -25,21 +25,34 @@ class ApiService {
     }
   }
 
-  static Future<void> sendPlaybackEvent(
+  /// Returns a debug message string for UI display
+  static Future<String> sendPlaybackEvent(
     PlaybackEvent event,
     String serverUrl,
   ) async {
+    final payload = json.encode(event.toJson());
+    final targetUrl = '$serverUrl/api/audio-events';
+    print('[EnviEL DEBUG] ============================');
+    print('[EnviEL DEBUG] Sending POST to: $targetUrl');
+    print('[EnviEL DEBUG] Payload: $payload');
     try {
-      final url = Uri.parse('$serverUrl/api/audio-events');
-      await http
+      final url = Uri.parse(targetUrl);
+      final response = await http
           .post(
             url,
             headers: {'Content-Type': 'application/json'},
-            body: json.encode(event.toJson()),
+            body: payload,
           )
           .timeout(Duration(seconds: 5));
+      final msg = 'POST ${response.statusCode} → $targetUrl';
+      print('[EnviEL DEBUG] Response: ${response.statusCode} ${response.body}');
+      print('[EnviEL DEBUG] ============================');
+      return '✅ $msg';
     } catch (e) {
-      // Fail silently
+      final msg = '❌ FAILED → $targetUrl\n$e';
+      print('[EnviEL DEBUG] ERROR: $e');
+      print('[EnviEL DEBUG] ============================');
+      return msg;
     }
   }
 

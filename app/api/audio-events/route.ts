@@ -11,9 +11,6 @@ interface PlaybackEvent {
   mlDetectionType: 'gunshot' | 'animal' | 'noise';
 }
 
-const recentEvents: PlaybackEvent[] = [];
-const MAX_RECENT_EVENTS = 50;
-
 function generateMockMLDetection(audioType: string) {
   const baseConfidence = 0.75 + Math.random() * 0.2;
 
@@ -44,7 +41,38 @@ function generateMockMLDetection(audioType: string) {
 }
 
 export async function GET() {
-  return NextResponse.json(recentEvents);
+  try {
+    const db = getDb();
+    const rows = db.prepare(`
+      SELECT file_name, audio_type, duration, mobile_timestamp, received_at, confidence, ml_detection_type
+      FROM audio_events
+      ORDER BY id DESC
+      LIMIT 50
+    `).all() as Array<{
+      file_name: string;
+      audio_type: string;
+      duration: number;
+      mobile_timestamp: string;
+      received_at: string;
+      confidence: number;
+      ml_detection_type: string;
+    }>;
+
+    const events: PlaybackEvent[] = rows.map(row => ({
+      fileName: row.file_name,
+      audioType: row.audio_type,
+      duration: row.duration,
+      timestamp: new Date(row.mobile_timestamp).getTime(),
+      receivedAt: row.received_at,
+      confidence: row.confidence ?? 0.85,
+      mlDetectionType: (row.ml_detection_type ?? row.audio_type) as 'gunshot' | 'animal' | 'noise',
+    }));
+
+    return NextResponse.json(events);
+  } catch (error) {
+    console.error('Error fetching audio events:', error);
+    return NextResponse.json([]);
+  }
 }
 
 export async function POST(request: Request) {
@@ -78,11 +106,6 @@ export async function POST(request: Request) {
       mlDetectionType: mlDetection.mlDetectionType,
     };
 
-    recentEvents.unshift(event);
-    if (recentEvents.length > MAX_RECENT_EVENTS) {
-      recentEvents.pop();
-    }
-
     try {
       const db = getDb();
       db.prepare(`
@@ -96,6 +119,29 @@ export async function POST(request: Request) {
         new Date().toISOString(),
         mlDetection.confidence,
         mlDetection.mlDetectionType
+      );
+
+      // Map correctly: gunshots to 'gunshot', animal sounds to 'animal_distress'
+      const eventType = audioType === 'gunshot' ? 'gunshot' : 'animal_distress';
+      const severity = mlDetection.confidence > 0.9 ? 'critical'
+                     : mlDetection.confidence > 0.8 ? 'high'
+                     : mlDetection.confidence > 0.6 ? 'medium' : 'low';
+
+      // Always map to SN-001 (RVCE College Dept of ISE)
+      const nodeId = 'SN-001';
+
+      const nowIso = new Date().toISOString();
+
+      db.prepare(`
+        INSERT INTO poaching_events (node_id, event_type, confidence, severity, verification_status, notes, timestamp)
+        VALUES (?, ?, ?, ?, 'pending', ?, ?)
+      `).run(
+        nodeId,
+        eventType,
+        mlDetection.confidence,
+        severity,
+        `Acoustic Detection: ${fileName}`,
+        nowIso
       );
     } catch (dbError) {
       console.warn('Could not persist audio event to database:', dbError);

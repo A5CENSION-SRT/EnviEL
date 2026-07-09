@@ -34,6 +34,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     router.push('/')
   }
 
+  const handleClearDb = async () => {
+    if (confirm('Are you sure you want to clear all audio and poaching event logs?')) {
+      const res = await fetch('/api/clear-db', { method: 'POST' })
+      if (res.ok) {
+        alert('Database event logs cleared successfully!')
+        router.refresh()
+      } else {
+        alert('Failed to clear database logs.')
+      }
+    }
+  }
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -102,6 +114,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <Bot />
                   <span>Voice Assistant</span>
                 </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>System Administration</SidebarGroupLabel>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton onClick={handleClearDb} tooltip="Clear Database">
+                <AlertTriangle className="text-red-500" />
+                <span className="text-red-500">Clear Logs</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>

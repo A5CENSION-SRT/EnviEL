@@ -53,8 +53,8 @@ WINDOW_BYTES = int(SAMPLE_RATE * WINDOW_SECS)  # 4000 bytes = 1 second of audio
 # gunshots are being missed.
 NOISE_GATE_AMPLITUDE = 110
 
-NODE_ID = 'NODE-001'
-ZONE    = 'Bandipur-Zone-A'
+NODE_ID = 'SN-001'
+ZONE    = 'Zone A - Gopalaswamy Betta'
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
 
@@ -161,6 +161,21 @@ def extract_features(raw_bytes: bytes) -> np.ndarray:
     feat_std  = mfcc.std(axis=1)           # shape (13,)
     return np.concatenate([feat_mean, feat_std])  # shape (26,)
 
+
+def backend_recently_active(conn: sqlite3.Connection, seconds: int = 30) -> bool:
+    """
+    Check if the Next.js backend received any audio events in the last `seconds`.
+    If so, yield to the mobile app and skip serial ML processing.
+    """
+    try:
+        row = conn.execute(
+            "SELECT COUNT(*) AS c FROM audio_events WHERE received_at >= datetime('now', ?)",
+            (f'-{seconds} seconds',)
+        ).fetchone()
+        return row['c'] > 0 if row else False
+    except Exception:
+        return False
+
 # ── Database ──────────────────────────────────────────────────────────────────
 
 def get_conn() -> sqlite3.Connection:
@@ -235,6 +250,13 @@ def run(model, conn: sqlite3.Connection, debug_logger: DebugLogger):
                     print(f'[gate]      {ts}  #{window_index:04d}  '
                           f'amp={peak_to_peak:3d} < {NOISE_GATE_AMPLITUDE} — too quiet, skipped')
                     # Don't send anything back; Arduino keeps streaming
+                    continue
+
+                # ── Backend activity check ─────────────────────────────
+                if backend_recently_active(conn, seconds=30):
+                    print(f'[bridge]    {ts}  #{window_index:04d}  '
+                          f'amp={peak_to_peak:3d}  — mobile app active, skipping serial ML')
+                    ser.write(b'N')  # keep Arduino happy
                     continue
 
                 # ── ML inference ──────────────────────────────────────────

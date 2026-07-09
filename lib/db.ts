@@ -74,7 +74,9 @@ export function getDb(): DatabaseSync {
                       CHECK(audio_type IN ('gunshot','animal')),
       duration      INTEGER NOT NULL,
       mobile_timestamp TEXT,
-      received_at   TEXT    DEFAULT (datetime('now'))
+      received_at   TEXT    DEFAULT (datetime('now')),
+      confidence    REAL,
+      ml_detection_type TEXT
     );
 
     CREATE INDEX IF NOT EXISTS idx_events_ts     ON poaching_events(timestamp DESC);

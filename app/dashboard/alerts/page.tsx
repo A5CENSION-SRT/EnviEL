@@ -40,6 +40,11 @@ export default function AlertsPage() {
   const [filterStatus,  setFilterStatus]  = useState<string>('all')
   const [filterType,    setFilterType]    = useState<string>('all')
   const [dialogOpen,    setDialogOpen]    = useState(false)
+  const [isMounted,     setIsMounted]     = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   const fetchEvents = useCallback(async () => {
     const params = new URLSearchParams()
@@ -75,16 +80,7 @@ export default function AlertsPage() {
   }
 
   const getEventIcon = (type: string) => {
-    switch (type) {
-      case 'gunshot':        return '🔫'
-      case 'chainsaw':       return '🪚'
-      case 'vehicle':        return '🚗'
-      case 'animal_distress':return '🦁'
-      case 'human_voice':    return '🗣️'
-      case 'explosion':      return '💥'
-      case 'trap_sound':     return '🪤'
-      default:               return '⚠️'
-    }
+    return null;
   }
 
   const getSeverityBadge = (severity: string) => {
@@ -167,31 +163,33 @@ export default function AlertsPage() {
             </div>
             <div className="flex items-center gap-2">
               <Filter className="h-4 w-4 text-muted-foreground" />
-              <Select value={filterType} onValueChange={setFilterType}>
-                <SelectTrigger className="w-[150px]">
-                  <SelectValue placeholder="Event Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Types</SelectItem>
-                  <SelectItem value="gunshot">Gunshot</SelectItem>
-                  <SelectItem value="chainsaw">Chainsaw</SelectItem>
-                  <SelectItem value="vehicle">Vehicle</SelectItem>
-                  <SelectItem value="animal_distress">Animal Distress</SelectItem>
-                  <SelectItem value="trap_sound">Trap Sound</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select value={filterStatus} onValueChange={setFilterStatus}>
-                <SelectTrigger className="w-[150px]">
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="verified_poaching">Verified</SelectItem>
-                  <SelectItem value="false_positive">False Positive</SelectItem>
-                  <SelectItem value="under_review">Under Review</SelectItem>
-                </SelectContent>
-              </Select>
+              {isMounted && (
+                <>
+                  <Select value={filterType} onValueChange={setFilterType}>
+                    <SelectTrigger className="w-[150px]">
+                      <SelectValue placeholder="Event Type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Types</SelectItem>
+                      <SelectItem value="gunshot">Gunshot</SelectItem>
+                      <SelectItem value="animal_distress">Animal Distress</SelectItem>
+                      <SelectItem value="ambient_noise">Ambient Noise</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Select value={filterStatus} onValueChange={setFilterStatus}>
+                    <SelectTrigger className="w-[150px]">
+                      <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Status</SelectItem>
+                      <SelectItem value="pending">Pending</SelectItem>
+                      <SelectItem value="verified_poaching">Verified</SelectItem>
+                      <SelectItem value="false_positive">False Positive</SelectItem>
+                      <SelectItem value="under_review">Under Review</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </>
+              )}
             </div>
           </div>
         </CardHeader>
@@ -233,8 +231,7 @@ export default function AlertsPage() {
                       </TableCell>
                       <TableCell>
                         <span className="flex items-center gap-2">
-                          <span className="text-lg">{getEventIcon(event.event_type)}</span>
-                          <span className="capitalize text-sm">{event.event_type.replace('_', ' ')}</span>
+                          <span className="capitalize text-sm font-medium">{event.event_type.replace('_', ' ')}</span>
                         </span>
                       </TableCell>
                       <TableCell className="text-sm">
@@ -288,7 +285,6 @@ export default function AlertsPage() {
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <span className="text-2xl">{selectedEvent && getEventIcon(selectedEvent.event_type)}</span>
               Event #{selectedEvent?.id} — {selectedEvent?.event_type.replace('_', ' ').toUpperCase()}
             </DialogTitle>
             <DialogDescription>

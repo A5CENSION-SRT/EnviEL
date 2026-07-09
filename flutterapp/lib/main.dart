@@ -15,7 +15,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String serverUrl = 'http://192.168.1.100:3000';
+  String serverUrl = 'http://10.162.31.160:3000';
   bool isPlayerScreen = true;
 
   @override
@@ -27,7 +27,11 @@ class _MyAppState extends State<MyApp> {
   Future<void> _loadServerUrl() async {
     final url = await StorageService.getServerUrl();
     setState(() {
-      if (url != null) serverUrl = url;
+      if (url != null && url != 'http://192.168.1.100:3000' && url.isNotEmpty) {
+        serverUrl = url;
+      } else {
+        serverUrl = 'http://10.162.31.160:3000';
+      }
     });
   }
 

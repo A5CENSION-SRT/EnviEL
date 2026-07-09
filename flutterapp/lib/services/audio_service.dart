@@ -46,6 +46,8 @@ class AudioPlayerService {
 
   Stream<Duration?> get positionStream => _audioPlayer.positionStream;
 
+  Stream<PlayerState> get playerStateStream => _audioPlayer.playerStateStream;
+
   Future<Duration?> getDuration() async {
     return _audioPlayer.duration;
   }

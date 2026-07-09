@@ -1,0 +1,4 @@
+Get-NetIPAddress -InterfaceAlias "*Wi-Fi*" -AddressFamily IPv4 | ForEach-Object { Write-Host "Connect phone to: http://$($_.IPAddress):3000" -ForegroundColor Green }
+
+
+npx next dev -H 0.0.0.0

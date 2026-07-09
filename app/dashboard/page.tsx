@@ -39,6 +39,15 @@ interface PoachingEvent {
   node_zone?:          string
 }
 
+interface AudioPlaybackEvent {
+  fileName: string
+  audioType: string
+  duration: number
+  receivedAt: string
+  confidence: number
+  mlDetectionType: 'gunshot' | 'animal' | 'noise'
+}
+
 interface DashboardStats {
   totalEvents:      number
   criticalEvents:   number
@@ -51,9 +60,10 @@ interface DashboardStats {
 }
 
 export default function DashboardPage() {
-  const [nodes,        setNodes]        = useState<SensorNode[]>([])
-  const [recentEvents, setRecentEvents] = useState<PoachingEvent[]>([])
-  const [stats,        setStats]        = useState<DashboardStats>({
+  const [nodes,                setNodes]                = useState<SensorNode[]>([])
+  const [recentEvents,         setRecentEvents]         = useState<PoachingEvent[]>([])
+  const [mobileAudioEvents,    setMobileAudioEvents]    = useState<AudioPlaybackEvent[]>([])
+  const [stats,                setStats]                = useState<DashboardStats>({
     totalEvents: 0, criticalEvents: 0, onlineNodes: 0, totalNodes: 0,
     deployedPatrols: 0, lastEventAt: null, eventsLastHour: 0, accuracy: null,
   })
@@ -76,6 +86,16 @@ export default function DashboardPage() {
     setRecentEvents(data)
   }
 
+  const fetchMobileAudioEvents = async () => {
+    try {
+      const res  = await fetch('/api/audio-events')
+      const data = await res.json() as AudioPlaybackEvent[]
+      setMobileAudioEvents(data.slice(0, 5))
+    } catch (error) {
+      // Fail silently if endpoint not ready
+    }
+  }
+
   const fetchStats = async () => {
     const res  = await fetch('/api/stats')
     const data = await res.json()
@@ -91,7 +111,7 @@ export default function DashboardPage() {
   }
 
   const fetchDashboardData = async () => {
-    await Promise.all([fetchNodes(), fetchRecentEvents(), fetchStats()])
+    await Promise.all([fetchNodes(), fetchRecentEvents(), fetchMobileAudioEvents(), fetchStats()])
     setLoading(false)
   }
 
@@ -127,6 +147,22 @@ export default function DashboardPage() {
     const hours = Math.floor(mins / 60)
     if (hours < 24) return `${hours} hours ago`
     return `${Math.floor(hours / 24)} days ago`
+  }
+
+  const getAudioTypeIcon = (type: string) => {
+    switch (type) {
+      case 'gunshot': return '🔫'
+      case 'animal': return '🦁'
+      default: return '📱'
+    }
+  }
+
+  const getAudioTypeColor = (type: string): 'default' | 'destructive' | 'secondary' => {
+    switch (type) {
+      case 'gunshot': return 'destructive'
+      case 'animal': return 'secondary'
+      default: return 'default'
+    }
   }
 
   return (
@@ -302,6 +338,58 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Mobile Audio Playback Events */}
+      {mobileAudioEvents.length > 0 && (
+        <Card className="border-border shadow-sm bg-gradient-to-r from-blue-500/5 to-purple-500/5 border-blue-500/20">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <span className="text-2xl">📱</span>
+              Mobile Audio Player Activity
+            </CardTitle>
+            <CardDescription>Real-time playback events from connected device with ML detection</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {mobileAudioEvents.map((event, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-blue-500/20 hover:bg-white/10 transition-colors"
+                >
+                  <div className="flex items-center gap-3 flex-1">
+                    <span className="text-2xl">{getAudioTypeIcon(event.mlDetectionType)}</span>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <p className="text-sm font-medium text-card-foreground">
+                          {event.fileName}
+                        </p>
+                        <Badge variant={getAudioTypeColor(event.mlDetectionType)} className="text-xs">
+                          {event.mlDetectionType.toUpperCase()} DETECTED
+                        </Badge>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Duration: {Math.round(event.duration / 1000)}s • {getTimeAgo(event.receivedAt)}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="text-right">
+                      <p className="text-sm font-bold text-primary">
+                        {(event.confidence * 100).toFixed(1)}%
+                      </p>
+                      <p className="text-xs text-muted-foreground">confidence</p>
+                    </div>
+                    <Progress 
+                      value={event.confidence * 100} 
+                      className="h-2 w-24"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   )
 }

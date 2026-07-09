@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getDb } from '@/lib/db';
+import { sendSMS, isTwilioConfigured } from '@/lib/twilio';
 
 interface PlaybackEvent {
   fileName: string;
@@ -143,6 +144,29 @@ export async function POST(request: Request) {
         `Acoustic Detection: ${fileName}`,
         nowIso
       );
+
+      // Send SMS alert for gunshot detections
+      if (mlDetection.mlDetectionType === 'gunshot' && isTwilioConfigured()) {
+        const alertPhoneNumber = process.env.ALERT_PHONE_NUMBER;
+        if (alertPhoneNumber) {
+          // Fixed location for all alerts
+          const locationLink = 'https://maps.google.com/?q=12.922988,77.500657';
+
+          const message = `GUNSHOT DETECTED\n\nConfidence: ${(mlDetection.confidence * 100).toFixed(1)}%\nSeverity: ${severity.toUpperCase()}\nNode: ${nodeId}\nTime: ${new Date().toLocaleString()}\nLocation: ${locationLink}\n\nPlease investigate immediately.`;
+          
+          sendSMS({ to: alertPhoneNumber, body: message })
+            .then(result => {
+              if (!result.success && !result.skipped) {
+                console.error('Failed to send SMS alert:', result.error);
+              }
+            })
+            .catch(err => {
+              console.error('SMS sending error:', err);
+            });
+        } else {
+          console.warn('ALERT_PHONE_NUMBER not configured. SMS alert not sent.');
+        }
+      }
     } catch (dbError) {
       console.warn('Could not persist audio event to database:', dbError);
     }

@@ -289,7 +289,7 @@ export default function DashboardPage() {
                             {event.event_type.replace('_', ' ')}
                           </p>
                           <Badge variant={getSeverityColor(event.severity)} className="text-xs">
-                            {Math.round(event.confidence * 100)}% conf
+                            {Math.floor(event.confidence * 100)}% conf
                           </Badge>
                         </div>
                         <p className="text-xs text-muted-foreground">

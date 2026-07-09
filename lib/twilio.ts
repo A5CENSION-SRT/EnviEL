@@ -3,9 +3,14 @@ import twilio from 'twilio';
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER;
+const smsEnabled = process.env.SMS_ENABLED === 'true';
 
 if (!accountSid || !authToken || !twilioPhoneNumber) {
   console.warn('Twilio credentials not configured. SMS functionality will be disabled.');
+}
+
+if (!smsEnabled) {
+  console.log('SMS functionality is disabled via SMS_ENABLED environment variable.');
 }
 
 // Validate accountSid format before creating client
@@ -14,7 +19,7 @@ if (accountSid && !isValidAccountSid) {
   console.error('Invalid TWILIO_ACCOUNT_SID format. Must start with "AC". SMS functionality disabled.');
 }
 
-const client = isValidAccountSid && authToken ? twilio(accountSid, authToken) : null;
+const client = isValidAccountSid && authToken && smsEnabled ? twilio(accountSid, authToken) : null;
 
 // Rate limiting: prevent SMS spam
 const SMS_COOLDOWN_MS = 5 * 60 * 1000; // 5 minutes between SMS
@@ -60,5 +65,5 @@ export async function sendSMS({ to, body }: SMSOptions): Promise<{ success: bool
 }
 
 export function isTwilioConfigured(): boolean {
-  return !!(accountSid && authToken && twilioPhoneNumber);
+  return !!(accountSid && authToken && twilioPhoneNumber && smsEnabled);
 }

@@ -251,7 +251,7 @@ export default function AlertsPage() {
                               style={{ width: `${event.confidence * 100}%` }}
                             />
                           </div>
-                          <span className="text-xs font-mono">{Math.round(event.confidence * 100)}%</span>
+                          <span className="text-xs font-mono">{Math.floor(event.confidence * 100)}%</span>
                         </div>
                       </TableCell>
                       <TableCell>{getSeverityBadge(event.severity)}</TableCell>
@@ -301,7 +301,7 @@ export default function AlertsPage() {
                 </div>
                 <div className="space-y-2">
                   <p className="text-sm text-muted-foreground">Confidence Score</p>
-                  <p className="font-medium text-xl">{Math.round(selectedEvent.confidence * 100)}%</p>
+                  <p className="font-medium text-xl">{Math.floor(selectedEvent.confidence * 100)}%</p>
                 </div>
                 <div className="space-y-2">
                   <p className="text-sm text-muted-foreground">Location</p>

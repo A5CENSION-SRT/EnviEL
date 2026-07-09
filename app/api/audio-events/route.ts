@@ -152,7 +152,7 @@ export async function POST(request: Request) {
           // Fixed location for all alerts
           const locationLink = 'https://maps.google.com/?q=12.922988,77.500657';
 
-          const message = `GUNSHOT DETECTED\n\nConfidence: ${(mlDetection.confidence * 100).toFixed(1)}%\nSeverity: ${severity.toUpperCase()}\nNode: ${nodeId}\nTime: ${new Date().toLocaleString()}\nLocation: ${locationLink}\n\nPlease investigate immediately.`;
+          const message = `GUNSHOT DETECTED\n\nConfidence: ${Math.floor(mlDetection.confidence * 100)}\nSeverity: ${severity.toUpperCase()}\nNode: ${nodeId}\nTime: ${new Date().toLocaleString()}\nLocation: ${locationLink}\n\nPlease investigate immediately.`;
           
           sendSMS({ to: alertPhoneNumber, body: message })
             .then(result => {
@@ -174,7 +174,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         success: true,
-        message: `${mlDetection.mlDetectionType.toUpperCase()} detected (${(mlDetection.confidence * 100).toFixed(1)}%)`,
+        message: `${mlDetection.mlDetectionType.toUpperCase()} detected (${Math.floor(mlDetection.confidence * 100)}%)`,
         event,
       },
       { status: 201 }

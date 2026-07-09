@@ -36,6 +36,7 @@ interface PoachingEvent {
   verification_status: string
   gps_lat:             number | null
   gps_lon:             number | null
+  notes?:              string
 }
 
 export default function Map() {
@@ -146,7 +147,7 @@ export default function Map() {
                   </strong><br />
                   {!isAmbient && (
                     <>
-                      <span>Confidence: {(event.confidence * 100).toFixed(0)}%</span><br />
+                      <span>Confidence: {Math.floor(event.confidence * 100)}%</span><br />
                       <span>Severity: {event.severity}</span><br />
                     </>
                   )}
